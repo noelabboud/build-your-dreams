@@ -49,7 +49,7 @@ function ConceptPage() {
           A courtroom story where YOU decide the fate. Submit your defense, vote on others, and shape the verdict.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
-          {c.tags.map((t) => (
+          {c.tags.map((t: string) => (
             <span key={t} className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">{t}</span>
           ))}
         </div>
