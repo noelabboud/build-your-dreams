@@ -9,38 +9,141 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PassportRouteImport } from './routes/passport'
+import { Route as MyConceptsRouteImport } from './routes/my-concepts'
+import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as HostIdRouteImport } from './routes/host.$id'
+import { Route as EpisodeIdRouteImport } from './routes/episode.$id'
+import { Route as ConceptIdRouteImport } from './routes/concept.$id'
 
+const PassportRoute = PassportRouteImport.update({
+  id: '/passport',
+  path: '/passport',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyConceptsRoute = MyConceptsRouteImport.update({
+  id: '/my-concepts',
+  path: '/my-concepts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HostIdRoute = HostIdRouteImport.update({
+  id: '/host/$id',
+  path: '/host/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EpisodeIdRoute = EpisodeIdRouteImport.update({
+  id: '/episode/$id',
+  path: '/episode/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConceptIdRoute = ConceptIdRouteImport.update({
+  id: '/concept/$id',
+  path: '/concept/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/explore': typeof ExploreRoute
+  '/my-concepts': typeof MyConceptsRoute
+  '/passport': typeof PassportRoute
+  '/concept/$id': typeof ConceptIdRoute
+  '/episode/$id': typeof EpisodeIdRoute
+  '/host/$id': typeof HostIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/explore': typeof ExploreRoute
+  '/my-concepts': typeof MyConceptsRoute
+  '/passport': typeof PassportRoute
+  '/concept/$id': typeof ConceptIdRoute
+  '/episode/$id': typeof EpisodeIdRoute
+  '/host/$id': typeof HostIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/explore': typeof ExploreRoute
+  '/my-concepts': typeof MyConceptsRoute
+  '/passport': typeof PassportRoute
+  '/concept/$id': typeof ConceptIdRoute
+  '/episode/$id': typeof EpisodeIdRoute
+  '/host/$id': typeof HostIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/explore'
+    | '/my-concepts'
+    | '/passport'
+    | '/concept/$id'
+    | '/episode/$id'
+    | '/host/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/explore'
+    | '/my-concepts'
+    | '/passport'
+    | '/concept/$id'
+    | '/episode/$id'
+    | '/host/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/explore'
+    | '/my-concepts'
+    | '/passport'
+    | '/concept/$id'
+    | '/episode/$id'
+    | '/host/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExploreRoute: typeof ExploreRoute
+  MyConceptsRoute: typeof MyConceptsRoute
+  PassportRoute: typeof PassportRoute
+  ConceptIdRoute: typeof ConceptIdRoute
+  EpisodeIdRoute: typeof EpisodeIdRoute
+  HostIdRoute: typeof HostIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/passport': {
+      id: '/passport'
+      path: '/passport'
+      fullPath: '/passport'
+      preLoaderRoute: typeof PassportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-concepts': {
+      id: '/my-concepts'
+      path: '/my-concepts'
+      fullPath: '/my-concepts'
+      preLoaderRoute: typeof MyConceptsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +151,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/host/$id': {
+      id: '/host/$id'
+      path: '/host/$id'
+      fullPath: '/host/$id'
+      preLoaderRoute: typeof HostIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/episode/$id': {
+      id: '/episode/$id'
+      path: '/episode/$id'
+      fullPath: '/episode/$id'
+      preLoaderRoute: typeof EpisodeIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/concept/$id': {
+      id: '/concept/$id'
+      path: '/concept/$id'
+      fullPath: '/concept/$id'
+      preLoaderRoute: typeof ConceptIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExploreRoute: ExploreRoute,
+  MyConceptsRoute: MyConceptsRoute,
+  PassportRoute: PassportRoute,
+  ConceptIdRoute: ConceptIdRoute,
+  EpisodeIdRoute: EpisodeIdRoute,
+  HostIdRoute: HostIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
