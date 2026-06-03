@@ -9,9 +9,17 @@ import marc from "@/assets/avatar-marc.jpg";
 
 export const images = { courtroom, impostor, beirut, survivor, voicenote, excuse, samer, marc };
 
+export type ConceptType =
+  | "Narrative Series"
+  | "Episodic Series"
+  | "Competitive Series"
+  | "One Shot Event"
+  | "Minigame";
+
 export type Concept = {
   id: string;
   title: string;
+  type: ConceptType;
   host: string;
   hostId: string;
   rating: number;
@@ -22,12 +30,12 @@ export type Concept = {
 };
 
 export const concepts: Concept[] = [
-  { id: "courtroom", title: "The Courtroom", host: "Samer", hostId: "samer", rating: 4.8, participants: "1.2K", image: courtroom, tags: ["Story", "Competition", "Weekly Series"], status: "live" },
-  { id: "voice-roulette", title: "Voice Note Roulette", host: "Samer", hostId: "samer", rating: 4.7, participants: "982", image: voicenote, tags: ["Voice Notes", "Community"], status: "upcoming" },
-  { id: "impostor", title: "Impostor League", host: "Basit", hostId: "basit", rating: 4.6, participants: "1.3K", image: impostor, tags: ["Mystery", "Competition"] },
-  { id: "escape-beirut", title: "Escape Beirut", host: "Elissa", hostId: "elissa", rating: 4.6, participants: "740", image: beirut, tags: ["Story", "Adventure"] },
-  { id: "survivor", title: "Survivor League", host: "Basit", hostId: "basit", rating: 4.8, participants: "2.1K", image: survivor, tags: ["Competition", "Reality"] },
-  { id: "excuse-champ", title: "Worst Excuse Championship", host: "Elissa", hostId: "elissa", rating: 4.6, participants: "2.4K", image: excuse, tags: ["Comedy"] },
+  { id: "courtroom", title: "The Courtroom", type: "Narrative Series", host: "Samer", hostId: "samer", rating: 4.8, participants: "1.2K", image: courtroom, tags: ["Story", "Audience-Driven", "Weekly"], status: "live" },
+  { id: "escape-beirut", title: "Escape Beirut", type: "Episodic Series", host: "Elissa", hostId: "elissa", rating: 4.6, participants: "740", image: beirut, tags: ["Adventure", "Recurring"] },
+  { id: "survivor", title: "Survivor League", type: "Competitive Series", host: "Basit", hostId: "basit", rating: 4.8, participants: "2.1K", image: survivor, tags: ["Elimination", "Tournament"] },
+  { id: "excuse-champ", title: "Worst Excuse Championship", type: "One Shot Event", host: "Elissa", hostId: "elissa", rating: 4.6, participants: "2.4K", image: excuse, tags: ["Comedy", "Standalone"] },
+  { id: "voice-roulette", title: "Voice Note Roulette", type: "Minigame", host: "Samer", hostId: "samer", rating: 4.7, participants: "982", image: voicenote, tags: ["Live", "Automated"], status: "upcoming" },
+  { id: "impostor", title: "Impostor League", type: "Competitive Series", host: "Basit", hostId: "basit", rating: 4.6, participants: "1.3K", image: impostor, tags: ["Mystery", "Elimination"] },
 ];
 
 export const episodes = [
