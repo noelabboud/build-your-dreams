@@ -33,7 +33,8 @@ function ConceptPage() {
           <TopBar back actions="share" />
         </div>
         <div className="absolute inset-x-0 bottom-3 px-4 text-center text-white">
-          <div className="font-display text-3xl font-bold tracking-wide drop-shadow">{c.title.toUpperCase()}</div>
+          <div className="text-[11px] font-medium uppercase tracking-[0.3em] text-white/85">{c.type}</div>
+          <div className="mt-1 font-display text-3xl font-bold tracking-wide drop-shadow">{c.title.toUpperCase()}</div>
         </div>
       </div>
 
