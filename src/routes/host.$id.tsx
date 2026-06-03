@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { BadgeCheck, Star } from "lucide-react";
+import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
 import { MobileShell } from "@/components/MobileShell";
 import { TopBar, SectionHeader } from "@/components/TopBar";
 import { concepts, topHosts } from "@/data/mock";
@@ -11,10 +12,21 @@ export const Route = createFileRoute("/host/$id")({
     return h;
   },
   head: ({ loaderData }) => ({
-    meta: [{ title: `${loaderData?.name ?? "Host"} — Wave` }, { name: "description", content: `Concepts and series hosted by ${loaderData?.name}.` }],
+    meta: [
+      { title: `${loaderData?.name ?? "Host"} — Wave` },
+      { name: "description", content: `Concepts and series hosted by ${loaderData?.name}.` },
+    ],
   }),
-  notFoundComponent: () => <MobileShell><div className="p-10 text-center text-muted-foreground">Host not found.</div></MobileShell>,
-  errorComponent: () => <MobileShell><div className="p-10 text-center text-muted-foreground">Something went wrong.</div></MobileShell>,
+  notFoundComponent: () => (
+    <MobileShell>
+      <div className="p-10 text-center text-muted-foreground">Host not found.</div>
+    </MobileShell>
+  ),
+  errorComponent: () => (
+    <MobileShell>
+      <div className="p-10 text-center text-muted-foreground">Something went wrong.</div>
+    </MobileShell>
+  ),
   component: HostPage,
 });
 
@@ -28,16 +40,31 @@ function HostPage() {
       <div className="relative bg-wave-sky pb-4">
         <TopBar back actions="more" title={null} />
         <div className="flex items-center gap-3 px-4 pt-2">
-          <img src={h.avatar} alt={h.name} width={72} height={72} className="h-18 w-18 rounded-full object-cover ring-4 ring-background" />
+          <img
+            src={h.avatar}
+            alt={h.name}
+            width={72}
+            height={72}
+            className="h-18 w-18 rounded-full object-cover ring-4 ring-background"
+          />
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1 text-lg font-bold">{h.name} <BadgeCheck className="h-5 w-5 text-primary" /></div>
+            <div className="flex items-center gap-1 text-lg font-bold">
+              {h.name} <BadgeCheck className="h-5 w-5 text-primary" />
+            </div>
             <div className="text-xs text-muted-foreground">@{h.id}.mind</div>
             <div className="mt-1 flex items-center gap-3 text-xs">
-              <span><b>{h.followers.replace("K", "K")}</b> <span className="text-muted-foreground">followers</span></span>
-              <span><b>520K</b> <span className="text-muted-foreground">likes</span></span>
+              <span>
+                <b>{h.followers.replace("K", "K")}</b>{" "}
+                <span className="text-muted-foreground">followers</span>
+              </span>
+              <span>
+                <b>520K</b> <span className="text-muted-foreground">likes</span>
+              </span>
             </div>
           </div>
-          <button className="rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-primary-foreground">Follow</button>
+          <button className="rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-primary-foreground">
+            Follow
+          </button>
         </div>
 
         <div className="mx-4 mt-4 grid grid-cols-4 gap-2 rounded-2xl bg-card p-3 text-center shadow-sm">
@@ -77,16 +104,38 @@ function Stat({ label, value }: { label: string; value: string }) {
 function Row({ c, live }: { c: (typeof concepts)[number]; live?: boolean }) {
   return (
     <li>
-      <Link to="/concept/$id" params={{ id: c.id }} className="flex items-center gap-3 rounded-xl border border-border bg-card p-2.5">
-        <img src={c.image} alt={c.title} width={48} height={48} loading="lazy" className="h-12 w-12 rounded-lg object-cover" />
+      <Link
+        to="/concept/$id"
+        params={{ id: c.id }}
+        className="flex items-center gap-3 rounded-xl border border-border bg-card p-2.5"
+      >
+        <div className="relative shrink-0 overflow-hidden rounded-lg">
+          <img
+            src={c.image}
+            alt={c.title}
+            width={48}
+            height={48}
+            loading="lazy"
+            className="h-12 w-12 rounded-lg object-cover"
+          />
+          <ConceptFormatBadge type={c.type} className="right-2 h-4 w-2.5" />
+        </div>
         <div className="flex-1 min-w-0">
           <div className="truncate font-semibold">{c.title}</div>
           <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
-            {live ? <span className="flex items-center gap-1 text-success"><span className="h-1.5 w-1.5 rounded-full bg-success" /> live</span> : <span>ended</span>}
+            {live ? (
+              <span className="flex items-center gap-1 text-success">
+                <span className="h-1.5 w-1.5 rounded-full bg-success" /> live
+              </span>
+            ) : (
+              <span>ended</span>
+            )}
             <span>· {c.participants} participants</span>
           </div>
         </div>
-        <span className="flex items-center gap-1 text-xs font-medium text-warning"><Star className="h-3 w-3 fill-warning" /> {c.rating}</span>
+        <span className="flex items-center gap-1 text-xs font-medium text-warning">
+          <Star className="h-3 w-3 fill-warning" /> {c.rating}
+        </span>
       </Link>
     </li>
   );

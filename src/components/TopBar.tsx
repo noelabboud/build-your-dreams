@@ -26,12 +26,18 @@ export function TopBar({
       <div className="flex-1 truncate text-base font-semibold">{title}</div>
       {actions === "share" && (
         <>
-          <button className="grid h-9 w-9 place-items-center rounded-full hover:bg-muted"><Bookmark className="h-5 w-5" /></button>
-          <button className="grid h-9 w-9 place-items-center rounded-full hover:bg-muted"><Share2 className="h-5 w-5" /></button>
+          <button className="grid h-9 w-9 place-items-center rounded-full hover:bg-muted">
+            <Bookmark className="h-5 w-5" />
+          </button>
+          <button className="grid h-9 w-9 place-items-center rounded-full hover:bg-muted">
+            <Share2 className="h-5 w-5" />
+          </button>
         </>
       )}
       {actions === "more" && (
-        <button className="grid h-9 w-9 place-items-center rounded-full hover:bg-muted"><MoreHorizontal className="h-5 w-5" /></button>
+        <button className="grid h-9 w-9 place-items-center rounded-full hover:bg-muted">
+          <MoreHorizontal className="h-5 w-5" />
+        </button>
       )}
       {typeof actions !== "string" && actions}
     </div>
@@ -40,10 +46,15 @@ export function TopBar({
 
 export function SectionHeader({ title, to }: { title: string; to?: string }) {
   return (
-    <div className="flex items-center justify-between px-4 pb-2 pt-5">
-      <h2 className="text-[15px] font-semibold tracking-tight">{title}</h2>
+    <div className="flex items-end justify-between px-4 pb-2 pt-5">
+      <h2 className="relative inline-block pb-1 text-[17px] font-bold tracking-tight">
+        {title}
+        <span className="absolute bottom-0 left-0 h-0.5 w-1/2 rounded-full bg-gradient-to-r from-primary/80 to-primary/0" />
+      </h2>
       {to && (
-        <Link to={to} className="text-xs font-medium text-primary">See all</Link>
+        <Link to={to} className="text-xs font-medium text-primary">
+          See all
+        </Link>
       )}
     </div>
   );

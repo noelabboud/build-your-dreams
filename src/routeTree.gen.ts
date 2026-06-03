@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PassportRouteImport } from './routes/passport'
+import { Route as OpenToJoinRouteImport } from './routes/open-to-join'
 import { Route as MyConceptsRouteImport } from './routes/my-concepts'
 import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as IndexRouteImport } from './routes/index'
@@ -20,6 +21,11 @@ import { Route as ConceptIdRouteImport } from './routes/concept.$id'
 const PassportRoute = PassportRouteImport.update({
   id: '/passport',
   path: '/passport',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpenToJoinRoute = OpenToJoinRouteImport.update({
+  id: '/open-to-join',
+  path: '/open-to-join',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MyConceptsRoute = MyConceptsRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/explore': typeof ExploreRoute
   '/my-concepts': typeof MyConceptsRoute
+  '/open-to-join': typeof OpenToJoinRoute
   '/passport': typeof PassportRoute
   '/concept/$id': typeof ConceptIdRoute
   '/episode/$id': typeof EpisodeIdRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/explore': typeof ExploreRoute
   '/my-concepts': typeof MyConceptsRoute
+  '/open-to-join': typeof OpenToJoinRoute
   '/passport': typeof PassportRoute
   '/concept/$id': typeof ConceptIdRoute
   '/episode/$id': typeof EpisodeIdRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/explore': typeof ExploreRoute
   '/my-concepts': typeof MyConceptsRoute
+  '/open-to-join': typeof OpenToJoinRoute
   '/passport': typeof PassportRoute
   '/concept/$id': typeof ConceptIdRoute
   '/episode/$id': typeof EpisodeIdRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/explore'
     | '/my-concepts'
+    | '/open-to-join'
     | '/passport'
     | '/concept/$id'
     | '/episode/$id'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/explore'
     | '/my-concepts'
+    | '/open-to-join'
     | '/passport'
     | '/concept/$id'
     | '/episode/$id'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/explore'
     | '/my-concepts'
+    | '/open-to-join'
     | '/passport'
     | '/concept/$id'
     | '/episode/$id'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ExploreRoute: typeof ExploreRoute
   MyConceptsRoute: typeof MyConceptsRoute
+  OpenToJoinRoute: typeof OpenToJoinRoute
   PassportRoute: typeof PassportRoute
   ConceptIdRoute: typeof ConceptIdRoute
   EpisodeIdRoute: typeof EpisodeIdRoute
@@ -128,6 +141,13 @@ declare module '@tanstack/react-router' {
       path: '/passport'
       fullPath: '/passport'
       preLoaderRoute: typeof PassportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/open-to-join': {
+      id: '/open-to-join'
+      path: '/open-to-join'
+      fullPath: '/open-to-join'
+      preLoaderRoute: typeof OpenToJoinRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/my-concepts': {
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ExploreRoute: ExploreRoute,
   MyConceptsRoute: MyConceptsRoute,
+  OpenToJoinRoute: OpenToJoinRoute,
   PassportRoute: PassportRoute,
   ConceptIdRoute: ConceptIdRoute,
   EpisodeIdRoute: EpisodeIdRoute,
