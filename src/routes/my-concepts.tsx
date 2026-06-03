@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bell, ChevronRight, Hourglass, Trophy } from "lucide-react";
 import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
+import { HostLink } from "@/components/HostLink";
 import { MobileShell } from "@/components/MobileShell";
 import { SectionHeader } from "@/components/TopBar";
 import { concepts, type Concept } from "@/data/mock";
@@ -35,6 +36,8 @@ function MyConcepts() {
           image={concepts[0].image}
           title="The Courtroom"
           type={concepts[0].type}
+          host={concepts[0].host}
+          hostId={concepts[0].hostId}
           subtitle="Episode 4 in 2 days"
           pct={70}
         />
@@ -43,6 +46,8 @@ function MyConcepts() {
           image={concepts[2].image}
           title="Impostor League"
           type={concepts[2].type}
+          host={concepts[2].host}
+          hostId={concepts[2].hostId}
           subtitle={
             <>
               Round 3 — Voting · <span className="text-success">You're qualified</span>
@@ -58,6 +63,8 @@ function MyConcepts() {
           image={concepts[1].image}
           title="Voice Note Roulette"
           type={concepts[4].type}
+          host={concepts[4].host}
+          hostId={concepts[4].hostId}
           subtitle="Voting ends tomorrow"
           icon={<Hourglass className="h-4 w-4 text-warning" />}
         />
@@ -70,6 +77,8 @@ function MyConcepts() {
           image={concepts[5].image}
           title="Worst Excuse Championship"
           type={concepts[3].type}
+          host={concepts[3].host}
+          hostId={concepts[3].hostId}
           subtitle="You placed Top 5% · Completed on May 4"
           icon={<Trophy className="h-4 w-4 text-warning" />}
         />
@@ -83,6 +92,8 @@ function Row({
   image,
   title,
   type,
+  host,
+  hostId,
   subtitle,
   pct,
   icon,
@@ -91,18 +102,20 @@ function Row({
   image: string;
   title: string;
   type: Concept["type"];
+  host: string;
+  hostId: string;
   subtitle: React.ReactNode;
   pct?: number;
   icon?: React.ReactNode;
 }) {
   return (
     <li>
-      <Link
-        to="/concept/$id"
-        params={{ id }}
-        className="flex items-center gap-3 rounded-xl border border-border bg-card p-2.5"
-      >
-        <div className="relative shrink-0 overflow-hidden rounded-lg">
+      <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-2.5">
+        <Link
+          to="/concept/$id"
+          params={{ id }}
+          className="relative shrink-0 overflow-hidden rounded-lg"
+        >
           <img
             src={image}
             alt={title}
@@ -112,12 +125,13 @@ function Row({
             className="h-12 w-12 rounded-lg object-cover"
           />
           <ConceptFormatBadge type={type} className="right-2 h-4 w-2.5" />
-        </div>
+        </Link>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 font-semibold">
+          <Link to="/concept/$id" params={{ id }} className="flex items-center gap-2 font-semibold">
             {title}
             {icon}
-          </div>
+          </Link>
+          <HostLink host={host} hostId={hostId} className="mt-1 px-2 py-0.5 text-[10px]" />
           <div className="text-xs text-muted-foreground">{subtitle}</div>
           {pct !== undefined && (
             <div className="mt-1.5 h-1 w-full overflow-hidden rounded-full bg-muted">
@@ -125,8 +139,10 @@ function Row({
             </div>
           )}
         </div>
-        <ChevronRight className="h-5 w-5 text-muted-foreground" />
-      </Link>
+        <Link to="/concept/$id" params={{ id }} aria-label={title}>
+          <ChevronRight className="h-5 w-5 text-muted-foreground" />
+        </Link>
+      </div>
     </li>
   );
 }

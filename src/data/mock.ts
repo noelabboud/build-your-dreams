@@ -106,6 +106,8 @@ export type OpenToJoinItem = {
   title: string;
   subtitle: string;
   type: ConceptType;
+  host: string;
+  hostId: string;
   image: string;
   participants: string;
   availability:
@@ -120,6 +122,8 @@ export const openToJoinItems: OpenToJoinItem[] = [
     title: "The Missing Witness",
     subtitle: "Submit your defense before voting opens.",
     type: "Narrative Series",
+    host: "Samer",
+    hostId: "samer",
     image: courtroom,
     participants: "1.2K joined",
     availability: { kind: "capped", spotsLeft: 18, totalSpots: 60 },
@@ -130,6 +134,8 @@ export const openToJoinItems: OpenToJoinItem[] = [
     title: "Voice Note Roulette",
     subtitle: "Quick round, instant scoring, live reactions.",
     type: "Minigame",
+    host: "Samer",
+    hostId: "samer",
     image: voicenote,
     participants: "982 ready",
     availability: { kind: "uncapped", closesIn: "4h" },
@@ -140,6 +146,8 @@ export const openToJoinItems: OpenToJoinItem[] = [
     title: "Worst Excuse Championship",
     subtitle: "Last chance to enter the comedy bracket.",
     type: "One Shot Event",
+    host: "Elissa",
+    hostId: "elissa",
     image: excuse,
     participants: "2.4K watching",
     availability: { kind: "capped", spotsLeft: 3, totalSpots: 40 },

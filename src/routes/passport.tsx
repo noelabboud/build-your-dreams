@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Settings, ChevronRight, Sparkles } from "lucide-react";
 import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
+import { HostLink } from "@/components/HostLink";
 import { MobileShell } from "@/components/MobileShell";
 import { SectionHeader } from "@/components/TopBar";
 import { concepts, me } from "@/data/mock";
@@ -101,18 +102,19 @@ function Passport() {
       </div>
 
       <SectionHeader title="Concept History" />
-      <Link
-        to="/concept/$id"
-        params={{ id: "courtroom" }}
-        className="relative mx-4 mb-6 flex items-center justify-between overflow-hidden rounded-xl border border-border bg-card p-3 pt-5"
-      >
+      <div className="relative mx-4 mb-6 flex items-center justify-between overflow-hidden rounded-xl border border-border bg-card p-3 pt-5">
         <ConceptFormatBadge type={historyConcept.type} className="h-5 w-3" />
         <div>
-          <div className="font-semibold">{historyConcept.title}</div>
+          <Link to="/concept/$id" params={{ id: "courtroom" }} className="font-semibold">
+            {historyConcept.title}
+          </Link>
+          <HostLink host={historyConcept.host} hostId={historyConcept.hostId} className="mt-1" />
           <div className="text-xs text-muted-foreground">8 episodes · ★ 4.8</div>
         </div>
-        <ChevronRight className="h-5 w-5 text-muted-foreground" />
-      </Link>
+        <Link to="/concept/$id" params={{ id: "courtroom" }} aria-label={historyConcept.title}>
+          <ChevronRight className="h-5 w-5 text-muted-foreground" />
+        </Link>
+      </div>
     </MobileShell>
   );
 }

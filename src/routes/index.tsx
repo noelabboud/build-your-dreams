@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Bell, Play, Star } from "lucide-react";
 import { useRef, useState } from "react";
 import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
+import { HostLink } from "@/components/HostLink";
 import { MobileShell } from "@/components/MobileShell";
 import { OpenToJoinCard } from "@/components/OpenToJoinCard";
 import { SectionHeader } from "@/components/TopBar";
@@ -112,35 +113,43 @@ function Home() {
         className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-4"
       >
         {continuingEvents.map(({ concept, detail, progress }) => (
-          <Link
-            key={concept.id}
-            to="/concept/$id"
-            params={{ id: concept.id }}
-            className="block basis-[88%] shrink-0 snap-start scroll-ml-4"
-          >
+          <div key={concept.id} className="block basis-[88%] shrink-0 snap-start scroll-ml-4">
             <div className="relative overflow-hidden rounded-2xl">
-              <img
-                src={concept.image}
-                alt={concept.title}
-                width={1024}
-                height={1024}
-                className="h-52 w-full object-cover"
-              />
+              <Link to="/concept/$id" params={{ id: concept.id }} className="block">
+                <img
+                  src={concept.image}
+                  alt={concept.title}
+                  width={1024}
+                  height={1024}
+                  className="h-52 w-full object-cover"
+                />
+              </Link>
               <ConceptFormatBadge type={concept.type} className="h-6 w-3.5" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-4 text-white">
-                <div className="text-lg font-bold drop-shadow">{concept.title}</div>
+                <Link
+                  to="/concept/$id"
+                  params={{ id: concept.id }}
+                  className="block text-lg font-bold drop-shadow"
+                >
+                  {concept.title}
+                </Link>
                 <div className="mt-0.5 text-xs opacity-90">{detail}</div>
+                <HostLink host={concept.host} hostId={concept.hostId} light className="mt-2" />
                 <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/25">
                   <div className="h-full rounded-full bg-white" style={{ width: `${progress}%` }} />
                 </div>
                 <div className="mt-1 text-[11px] opacity-80">{progress}%</div>
-                <div className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground shadow-lg">
+                <Link
+                  to="/concept/$id"
+                  params={{ id: concept.id }}
+                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground shadow-lg"
+                >
                   <Play className="h-4 w-4 fill-current" /> Continue
-                </div>
+                </Link>
               </div>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
       <div className="mt-3 flex justify-center gap-1.5">
@@ -201,24 +210,27 @@ function Home() {
       <SectionHeader title="Trending Concepts" to="/explore" />
       <div className="no-scrollbar flex gap-3 overflow-x-auto px-4 pb-6">
         {trending.map((c) => (
-          <Link key={c.id} to="/concept/$id" params={{ id: c.id }} className="w-32 shrink-0">
-            <div className="relative h-40 overflow-hidden rounded-2xl">
-              <img
-                src={c.image}
-                alt={c.title}
-                width={400}
-                height={500}
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
-              <ConceptFormatBadge type={c.type} className="h-6 w-3.5" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-            </div>
-            <div className="mt-2 text-sm font-semibold leading-tight">{c.title}</div>
-            <div className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
+          <div key={c.id} className="w-32 shrink-0">
+            <Link to="/concept/$id" params={{ id: c.id }} className="block">
+              <div className="relative h-40 overflow-hidden rounded-2xl">
+                <img
+                  src={c.image}
+                  alt={c.title}
+                  width={400}
+                  height={500}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+                <ConceptFormatBadge type={c.type} className="h-6 w-3.5" />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              </div>
+              <div className="mt-2 text-sm font-semibold leading-tight">{c.title}</div>
+            </Link>
+            <HostLink host={c.host} hostId={c.hostId} className="mt-1.5" />
+            <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
               <Star className="h-3 w-3 fill-warning text-warning" /> {c.rating}
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </MobileShell>

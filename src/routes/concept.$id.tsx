@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Star, Users, CheckCircle2, Lock } from "lucide-react";
+import { HostLink } from "@/components/HostLink";
 import { MobileShell } from "@/components/MobileShell";
 import { TopBar } from "@/components/TopBar";
 import { concepts, episodes } from "@/data/mock";
@@ -13,44 +14,77 @@ export const Route = createFileRoute("/concept/$id")({
   head: ({ loaderData }) => ({
     meta: [
       { title: `${loaderData?.title ?? "Concept"} — Wave` },
-      { name: "description", content: `Join ${loaderData?.title} on Wave — submit, vote, and shape the verdict.` },
+      {
+        name: "description",
+        content: `Join ${loaderData?.title} on Wave — submit, vote, and shape the verdict.`,
+      },
       { property: "og:image", content: loaderData?.image },
     ],
   }),
-  notFoundComponent: () => <MobileShell><div className="p-10 text-center text-muted-foreground">Concept not found.</div></MobileShell>,
-  errorComponent: () => <MobileShell><div className="p-10 text-center text-muted-foreground">Something went wrong.</div></MobileShell>,
+  notFoundComponent: () => (
+    <MobileShell>
+      <div className="p-10 text-center text-muted-foreground">Concept not found.</div>
+    </MobileShell>
+  ),
+  errorComponent: () => (
+    <MobileShell>
+      <div className="p-10 text-center text-muted-foreground">Something went wrong.</div>
+    </MobileShell>
+  ),
   component: ConceptPage,
 });
 
 function ConceptPage() {
   const c = Route.useLoaderData();
-  const isSeries = c.type === "Narrative Series" || c.type === "Episodic Series" || c.type === "Competitive Series";
+  const isSeries =
+    c.type === "Narrative Series" ||
+    c.type === "Episodic Series" ||
+    c.type === "Competitive Series";
   return (
     <MobileShell>
       <div className="relative">
-        <img src={c.image} alt={c.title} width={1024} height={1024} className="h-56 w-full object-cover" />
+        <img
+          src={c.image}
+          alt={c.title}
+          width={1024}
+          height={1024}
+          className="h-56 w-full object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/30" />
         <div className="absolute inset-x-0 top-0">
           <TopBar back actions="share" />
         </div>
         <div className="absolute inset-x-0 bottom-3 px-4 text-center text-white">
-          <div className="text-[11px] font-medium uppercase tracking-[0.3em] text-white/85">{c.type}</div>
-          <div className="mt-1 font-display text-3xl font-bold tracking-wide drop-shadow">{c.title.toUpperCase()}</div>
+          <div className="text-[11px] font-medium uppercase tracking-[0.3em] text-white/85">
+            {c.type}
+          </div>
+          <div className="mt-1 font-display text-3xl font-bold tracking-wide drop-shadow">
+            {c.title.toUpperCase()}
+          </div>
         </div>
       </div>
 
       <div className="px-4 pt-4">
         <h1 className="text-xl font-bold">{c.title}</h1>
-        <div className="mt-0.5 text-sm text-muted-foreground">by {c.host}</div>
+        <HostLink host={c.host} hostId={c.hostId} className="mt-1" />
         <div className="mt-2 flex items-center gap-3 text-sm">
-          <span className="flex items-center gap-1 font-semibold text-warning"><Star className="h-4 w-4 fill-warning" /> {c.rating}</span>
+          <span className="flex items-center gap-1 font-semibold text-warning">
+            <Star className="h-4 w-4 fill-warning" /> {c.rating}
+          </span>
           <span className="text-muted-foreground">({c.participants})</span>
-          <span className="flex items-center gap-1 text-muted-foreground"><Users className="h-4 w-4" /> 1,245 participants</span>
+          <span className="flex items-center gap-1 text-muted-foreground">
+            <Users className="h-4 w-4" /> 1,245 participants
+          </span>
         </div>
         <p className="mt-3 text-sm leading-relaxed text-foreground">{descriptions[c.type]}</p>
         <div className="mt-3 flex flex-wrap gap-2">
           {c.tags.map((t: string) => (
-            <span key={t} className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">{t}</span>
+            <span
+              key={t}
+              className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground"
+            >
+              {t}
+            </span>
           ))}
         </div>
 
@@ -95,7 +129,9 @@ function ConceptPage() {
                     } ${locked ? "opacity-60" : "hover:bg-muted/40"}`}
                   >
                     <div className="flex-1">
-                      <div className="text-sm font-semibold">Episode {ep.n} — {ep.title}</div>
+                      <div className="text-sm font-semibold">
+                        Episode {ep.n} — {ep.title}
+                      </div>
                       <div className="mt-0.5 text-xs text-muted-foreground capitalize">
                         {ep.status === "upcoming" ? "Unlocks in 2 days" : ep.status}
                       </div>
@@ -117,7 +153,9 @@ function ConceptPage() {
 
       {!isSeries && (
         <div className="px-4 pt-5">
-          <h2 className="mb-2 text-[15px] font-semibold">{c.type === "Minigame" ? "How it plays" : "Event details"}</h2>
+          <h2 className="mb-2 text-[15px] font-semibold">
+            {c.type === "Minigame" ? "How it plays" : "Event details"}
+          </h2>
           <div className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
             {c.type === "Minigame"
               ? "Jump into a quick automated round. Score points, climb the live leaderboard, and replay anytime."
@@ -128,7 +166,11 @@ function ConceptPage() {
 
       <div className="space-y-2 px-4 py-5">
         <button className="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:opacity-95">
-          {c.type === "Minigame" ? "Play Now" : c.type === "One Shot Event" ? "Enter Event" : "Join Series"}
+          {c.type === "Minigame"
+            ? "Play Now"
+            : c.type === "One Shot Event"
+              ? "Enter Event"
+              : "Join Series"}
         </button>
         {isSeries && (
           <button className="w-full rounded-xl border border-border bg-card py-3 text-sm font-semibold text-primary">
@@ -141,11 +183,14 @@ function ConceptPage() {
 }
 
 const descriptions: Record<string, string> = {
-  "Narrative Series": "A story-driven series where the audience shapes the direction. Submit, vote, and bend the plot week by week.",
-  "Episodic Series": "A recurring format with self-contained episodes. Drop in any time — no catch-up required.",
-  "Competitive Series": "A tournament across episodes with eliminations. Outlast the field, climb the bracket, claim the crown.",
+  "Narrative Series":
+    "A story-driven series where the audience shapes the direction. Submit, vote, and bend the plot week by week.",
+  "Episodic Series":
+    "A recurring format with self-contained episodes. Drop in any time — no catch-up required.",
+  "Competitive Series":
+    "A tournament across episodes with eliminations. Outlast the field, climb the bracket, claim the crown.",
   "One Shot Event": "A standalone single event. One submission window, one vote, one winner.",
-  "Minigame": "A live automated game. Quick rounds, instant scoring, leaderboard glory.",
+  Minigame: "A live automated game. Quick rounds, instant scoring, leaderboard glory.",
 };
 
 function Stat({ label, value }: { label: string; value: string }) {

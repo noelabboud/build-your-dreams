@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Search, SlidersHorizontal, Star, BadgeCheck } from "lucide-react";
 import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
+import { HostLink } from "@/components/HostLink";
 import { MobileShell } from "@/components/MobileShell";
 import { SectionHeader } from "@/components/TopBar";
 import { concepts, categories, topHosts } from "@/data/mock";
@@ -40,12 +41,12 @@ function Explore() {
       <ul className="space-y-2 px-4">
         {concepts.slice(0, 3).map((c) => (
           <li key={c.id}>
-            <Link
-              to="/concept/$id"
-              params={{ id: c.id }}
-              className="flex items-center gap-3 rounded-xl bg-card p-2.5 border border-border"
-            >
-              <div className="relative shrink-0 overflow-hidden rounded-lg">
+            <div className="flex items-center gap-3 rounded-xl bg-card p-2.5 border border-border">
+              <Link
+                to="/concept/$id"
+                params={{ id: c.id }}
+                className="relative shrink-0 overflow-hidden rounded-lg"
+              >
                 <img
                   src={c.image}
                   alt={c.title}
@@ -55,20 +56,22 @@ function Explore() {
                   className="h-12 w-12 rounded-lg object-cover"
                 />
                 <ConceptFormatBadge type={c.type} className="right-2 h-4 w-2.5" />
-              </div>
+              </Link>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="truncate font-semibold">{c.title}</span>
+                  <Link to="/concept/$id" params={{ id: c.id }} className="truncate font-semibold">
+                    {c.title}
+                  </Link>
                   <span className="flex shrink-0 items-center gap-1 text-xs font-medium text-warning">
                     <Star className="h-3 w-3 fill-warning" /> {c.rating}
                   </span>
                 </div>
                 <div className="mt-0.5 flex items-center justify-between text-xs text-muted-foreground">
-                  <span>by {c.host}</span>
+                  <HostLink host={c.host} hostId={c.hostId} className="px-2 py-0.5 text-[10px]" />
                   <span>{c.participants} participants</span>
                 </div>
               </div>
-            </Link>
+            </div>
           </li>
         ))}
       </ul>
