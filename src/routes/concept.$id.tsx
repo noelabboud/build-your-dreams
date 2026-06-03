@@ -24,6 +24,7 @@ export const Route = createFileRoute("/concept/$id")({
 
 function ConceptPage() {
   const c = Route.useLoaderData();
+  const isSeries = c.type === "Narrative Series" || c.type === "Episodic Series" || c.type === "Competitive Series";
   return (
     <MobileShell>
       <div className="relative">
