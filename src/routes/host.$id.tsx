@@ -4,6 +4,7 @@ import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
 import { MobileShell } from "@/components/MobileShell";
 import { TopBar, SectionHeader } from "@/components/TopBar";
 import { concepts, topHosts } from "@/data/mock";
+import { getConceptStatusLabel, isConceptEnded } from "@/lib/concept-status";
 
 export const Route = createFileRoute("/host/$id")({
   loader: ({ params }) => {
@@ -32,8 +33,9 @@ export const Route = createFileRoute("/host/$id")({
 
 function HostPage() {
   const h = Route.useLoaderData();
-  const active = concepts.filter((c) => c.hostId === h.id).slice(0, 2);
-  const ended = concepts.filter((c) => c.hostId === h.id).slice(0, 3);
+  const hostConcepts = concepts.filter((c) => c.hostId === h.id);
+  const active = hostConcepts.filter((c) => !isConceptEnded(c.status)).slice(0, 2);
+  const ended = hostConcepts.filter((c) => isConceptEnded(c.status)).slice(0, 3);
 
   return (
     <MobileShell>
@@ -82,12 +84,16 @@ function HostPage() {
         ))}
       </ul>
 
-      <SectionHeader title="Ended Concepts" to="/explore" />
-      <ul className="space-y-2 px-4 pb-6">
-        {ended.map((c) => (
-          <Row key={c.id + "e"} c={c} />
-        ))}
-      </ul>
+      {ended.length > 0 && (
+        <>
+          <SectionHeader title="Ended Concepts" to="/explore" />
+          <ul className="space-y-2 px-4 pb-6">
+            {ended.map((c) => (
+              <Row key={c.id + "e"} c={c} />
+            ))}
+          </ul>
+        </>
+      )}
     </MobileShell>
   );
 }
@@ -125,7 +131,8 @@ function Row({ c, live }: { c: (typeof concepts)[number]; live?: boolean }) {
           <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
             {live ? (
               <span className="flex items-center gap-1 text-success">
-                <span className="h-1.5 w-1.5 rounded-full bg-success" /> live
+                <span className="h-1.5 w-1.5 rounded-full bg-success" />{" "}
+                {getConceptStatusLabel(c.status).toLowerCase()}
               </span>
             ) : (
               <span>ended</span>
@@ -133,9 +140,15 @@ function Row({ c, live }: { c: (typeof concepts)[number]; live?: boolean }) {
             <span>· {c.participants} participants</span>
           </div>
         </div>
-        <span className="flex items-center gap-1 text-xs font-medium text-warning">
-          <Star className="h-3 w-3 fill-warning" /> {c.rating}
-        </span>
+        {isConceptEnded(c.status) ? (
+          <span className="flex items-center gap-1 text-xs font-medium text-warning">
+            <Star className="h-3 w-3 fill-warning" /> {c.rating}
+          </span>
+        ) : (
+          <span className="shrink-0 text-xs font-medium text-muted-foreground">
+            {getConceptStatusLabel(c.status)}
+          </span>
+        )}
       </Link>
     </li>
   );

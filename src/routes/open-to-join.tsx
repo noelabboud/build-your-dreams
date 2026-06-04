@@ -13,7 +13,7 @@ const filters: { label: string; value: Filter }[] = [
   { label: "Episodic", value: "Episodic Series" },
   { label: "Competitive", value: "Competitive Series" },
   { label: "One Shot", value: "One Shot Event" },
-  { label: "Minigames", value: "Minigame" },
+  { label: "Minigame", value: "Minigame" },
 ];
 
 export const Route = createFileRoute("/open-to-join")({

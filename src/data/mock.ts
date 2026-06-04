@@ -78,13 +78,25 @@ export const concepts: Concept[] = [
   {
     id: "voice-roulette",
     title: "Voice Note Roulette",
-    type: "Minigame",
+    type: "One Shot Event",
     host: "Samer",
     hostId: "samer",
     rating: 4.7,
     participants: "982",
     image: voicenote,
-    tags: ["Live", "Automated"],
+    tags: ["Voice", "One Shot"],
+    status: "upcoming",
+  },
+  {
+    id: "chifomi-duel",
+    title: "Chifomi Duel",
+    type: "Minigame",
+    host: "Basit",
+    hostId: "basit",
+    rating: 4.5,
+    participants: "620",
+    image: impostor,
+    tags: ["Real-Time", "Duel", "Elimination"],
     status: "upcoming",
   },
   {
@@ -97,6 +109,53 @@ export const concepts: Concept[] = [
     participants: "1.3K",
     image: impostor,
     tags: ["Mystery", "Elimination"],
+  },
+];
+
+export type MyConceptStatus = "toSubmit" | "toVote" | "waiting" | "completed";
+
+export type MyConceptItem = {
+  id: string;
+  conceptId: string;
+  status: MyConceptStatus;
+  subtitle: string;
+  note?: string;
+  progress?: number;
+};
+
+export const myConceptItems: MyConceptItem[] = [
+  {
+    id: "courtroom-active",
+    conceptId: "courtroom",
+    status: "toSubmit",
+    subtitle: "Episode 4 in 2 days",
+    progress: 70,
+  },
+  {
+    id: "escape-submit",
+    conceptId: "escape-beirut",
+    status: "toSubmit",
+    subtitle: "Episode 2 submission due tonight",
+    progress: 35,
+  },
+  {
+    id: "impostor-vote",
+    conceptId: "impostor",
+    status: "toVote",
+    subtitle: "Round 3 — Voting",
+    note: "You're qualified",
+  },
+  {
+    id: "voice-waiting",
+    conceptId: "voice-roulette",
+    status: "waiting",
+    subtitle: "Final entries close tomorrow",
+  },
+  {
+    id: "excuse-completed",
+    conceptId: "excuse-champ",
+    status: "completed",
+    subtitle: "You placed Top 5% · Completed on May 4",
   },
 ];
 
@@ -132,13 +191,37 @@ export const openToJoinItems: OpenToJoinItem[] = [
     id: "voice-roulette-open",
     conceptId: "voice-roulette",
     title: "Voice Note Roulette",
-    subtitle: "Quick round, instant scoring, live reactions.",
-    type: "Minigame",
+    subtitle: "Send one voice note before the event locks.",
+    type: "One Shot Event",
     host: "Samer",
     hostId: "samer",
     image: voicenote,
-    participants: "982 ready",
+    participants: "982 joined",
     availability: { kind: "uncapped", closesIn: "4h" },
+  },
+  {
+    id: "escape-beirut-open",
+    conceptId: "escape-beirut",
+    title: "Rooftop Escape",
+    subtitle: "Join the next episode and solve the route.",
+    type: "Episodic Series",
+    host: "Elissa",
+    hostId: "elissa",
+    image: beirut,
+    participants: "740 joined",
+    availability: { kind: "capped", spotsLeft: 24, totalSpots: 80 },
+  },
+  {
+    id: "impostor-qualifier",
+    conceptId: "impostor",
+    title: "Impostor Qualifier",
+    subtitle: "Enter the next elimination bracket.",
+    type: "Competitive Series",
+    host: "Basit",
+    hostId: "basit",
+    image: impostor,
+    participants: "1.3K joined",
+    availability: { kind: "capped", spotsLeft: 12, totalSpots: 64 },
   },
   {
     id: "excuse-final-call",
@@ -149,8 +232,20 @@ export const openToJoinItems: OpenToJoinItem[] = [
     host: "Elissa",
     hostId: "elissa",
     image: excuse,
-    participants: "2.4K watching",
+    participants: "2.4K joined",
     availability: { kind: "capped", spotsLeft: 3, totalSpots: 40 },
+  },
+  {
+    id: "chifomi-live-duel",
+    conceptId: "chifomi-duel",
+    title: "Chifomi Duel",
+    subtitle: "Play live once the room fills.",
+    type: "Minigame",
+    host: "Basit",
+    hostId: "basit",
+    image: impostor,
+    participants: "620 joined",
+    availability: { kind: "capped", spotsLeft: 27, totalSpots: 120 },
   },
 ];
 

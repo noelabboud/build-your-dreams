@@ -5,6 +5,7 @@ import { HostLink } from "@/components/HostLink";
 import { MobileShell } from "@/components/MobileShell";
 import { SectionHeader } from "@/components/TopBar";
 import { concepts, categories, topHosts } from "@/data/mock";
+import { getConceptStatusLabel, isConceptEnded } from "@/lib/concept-status";
 
 export const Route = createFileRoute("/explore")({
   head: () => ({
@@ -62,8 +63,21 @@ function Explore() {
                   <Link to="/concept/$id" params={{ id: c.id }} className="truncate font-semibold">
                     {c.title}
                   </Link>
-                  <span className="flex shrink-0 items-center gap-1 text-xs font-medium text-warning">
-                    <Star className="h-3 w-3 fill-warning" /> {c.rating}
+                  <span
+                    className={`flex shrink-0 items-center gap-1 text-xs font-medium ${
+                      isConceptEnded(c.status) ? "text-warning" : "text-muted-foreground"
+                    }`}
+                  >
+                    {isConceptEnded(c.status) ? (
+                      <>
+                        <Star className="h-3 w-3 fill-warning" /> {c.rating}
+                      </>
+                    ) : (
+                      <>
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                        {getConceptStatusLabel(c.status)}
+                      </>
+                    )}
                   </span>
                 </div>
                 <div className="mt-0.5 flex items-center justify-between text-xs text-muted-foreground">

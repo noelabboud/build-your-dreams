@@ -7,6 +7,7 @@ import { MobileShell } from "@/components/MobileShell";
 import { OpenToJoinCard } from "@/components/OpenToJoinCard";
 import { SectionHeader } from "@/components/TopBar";
 import { concepts, openToJoinItems } from "@/data/mock";
+import { getConceptStatusLabel, isConceptEnded } from "@/lib/concept-status";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -27,10 +28,13 @@ function Home() {
   const [activeOpenJoinIndex, setActiveOpenJoinIndex] = useState(0);
   const continueScrollRef = useRef<HTMLDivElement>(null);
   const openJoinScrollRef = useRef<HTMLDivElement>(null);
+  const courtroom = concepts.find((concept) => concept.id === "courtroom") ?? concepts[0];
+  const survivor = concepts.find((concept) => concept.id === "survivor") ?? concepts[2];
+  const chifomi = concepts.find((concept) => concept.id === "chifomi-duel") ?? concepts[4];
   const continuingEvents = [
-    { concept: concepts[0], detail: "Episode 4 - In 2 days", progress: 70 },
-    { concept: concepts[2], detail: "Round 3 - Voting closes tonight", progress: 55 },
-    { concept: concepts[4], detail: "Live room opens soon", progress: 35 },
+    { concept: courtroom, detail: "Episode 4 - In 2 days", progress: 70 },
+    { concept: survivor, detail: "Round 3 - Voting closes tonight", progress: 55 },
+    { concept: chifomi, detail: "Live room opens soon", progress: 35 },
   ];
   const trending = concepts.slice(2, 5);
 
@@ -228,7 +232,16 @@ function Home() {
             </Link>
             <HostLink host={c.host} hostId={c.hostId} className="mt-1.5" />
             <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
-              <Star className="h-3 w-3 fill-warning text-warning" /> {c.rating}
+              {isConceptEnded(c.status) ? (
+                <>
+                  <Star className="h-3 w-3 fill-warning text-warning" /> {c.rating}
+                </>
+              ) : (
+                <>
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  {getConceptStatusLabel(c.status)}
+                </>
+              )}
             </div>
           </div>
         ))}
