@@ -291,9 +291,57 @@ export const categories = [
 ];
 
 export const topHosts = [
-  { id: "samer", name: "Samer", followers: "200K", concepts: 12, rating: 4.8, avatar: samer },
-  { id: "basit", name: "Basit", followers: "120K", concepts: 8, rating: 4.7, avatar: marc },
-  { id: "elissa", name: "Elissa", followers: "80K", concepts: 6, rating: 4.6, avatar: samer },
+  {
+    id: "samer",
+    name: "Samer",
+    followers: "200K",
+    concepts: 12,
+    rating: 4.8,
+    avatar: samer,
+    coverImage: courtroom,
+    verified: true,
+    completedEpisodes: 18,
+    bio: "Interactive fiction host building courtroom stories, voice events, and audience-shaped mysteries across MIDAN.",
+    socials: {
+      instagram: "https://instagram.com",
+      youtube: "https://youtube.com",
+      twitch: "https://twitch.tv",
+    },
+  },
+  {
+    id: "basit",
+    name: "Basit",
+    followers: "120K",
+    concepts: 8,
+    rating: 4.7,
+    avatar: marc,
+    coverImage: impostor,
+    verified: true,
+    completedEpisodes: 11,
+    bio: "Competition designer focused on elimination formats, live rooms, and quick games with clear winners.",
+    socials: {
+      instagram: "https://instagram.com",
+      tiktok: "https://tiktok.com",
+      twitch: "https://twitch.tv",
+    },
+  },
+  {
+    id: "elissa",
+    name: "Elissa",
+    followers: "80K",
+    concepts: 6,
+    rating: 4.6,
+    avatar: samer,
+    coverImage: beirut,
+    verified: false,
+    completedEpisodes: 9,
+    bio: "Episode host creating adventure prompts, comedy events, and one-shot challenges for fast community play.",
+    socials: {
+      instagram: "https://instagram.com",
+      tiktok: "https://tiktok.com",
+      youtube: "https://youtube.com",
+    },
+  },
 ];
 
 export const me = {

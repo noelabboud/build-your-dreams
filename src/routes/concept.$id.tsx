@@ -1,9 +1,8 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { Star, CheckCircle2, Lock, Trophy, Scale } from "lucide-react";
+import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
+import { ArrowLeft, Bookmark, Share2, Star, CheckCircle2, Lock, Trophy, Scale } from "lucide-react";
 import { useState } from "react";
 import { HostLink } from "@/components/HostLink";
 import { MobileShell } from "@/components/MobileShell";
-import { TopBar } from "@/components/TopBar";
 import { concepts, episodes } from "@/data/mock";
 import { getConceptStatusLabel, isConceptEnded } from "@/lib/concept-status";
 
@@ -38,6 +37,7 @@ export const Route = createFileRoute("/concept/$id")({
 
 function ConceptPage() {
   const c = Route.useLoaderData();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("overview");
   const isSeries =
     c.type === "Narrative Series" ||
@@ -57,34 +57,61 @@ function ConceptPage() {
 
   return (
     <MobileShell>
-      <div className="relative">
+      <div className="relative overflow-hidden">
         <img
           src={c.image}
           alt={c.title}
           width={1024}
           height={1024}
-          className="h-56 w-full object-cover"
+          className="h-72 w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/30" />
-        <div className="absolute inset-x-0 top-0">
-          <TopBar back actions="share" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/35" />
+        <div className="absolute inset-x-0 top-0 flex items-center justify-between px-4 pt-4">
+          <button
+            type="button"
+            onClick={() => router.history.back()}
+            aria-label="Back"
+            className="grid h-10 w-10 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              aria-label="Save concept"
+              className="grid h-10 w-10 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
+            >
+              <Bookmark className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              aria-label="Share concept"
+              className="grid h-10 w-10 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
+            >
+              <Share2 className="h-5 w-5" />
+            </button>
+          </div>
         </div>
-        <div className="absolute inset-x-0 bottom-3 px-4 text-center text-white">
-          <div className="text-[11px] font-medium uppercase tracking-[0.3em] text-white/85">
+        <div className="absolute inset-x-0 bottom-5 px-5 text-center text-white">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.26em] text-white/80">
             {c.type}
           </div>
-          <div className="mt-1 font-display text-3xl font-bold tracking-wide drop-shadow">
+          <div className="mx-auto mt-2 max-w-sm font-display text-[2rem] font-black leading-none tracking-wide drop-shadow">
             {c.title.toUpperCase()}
           </div>
         </div>
       </div>
 
-      <div className="space-y-4 px-4 pt-4">
-        <section>
+      <div className="px-4 pt-4">
+        <section className="rounded-2xl border border-border bg-card p-3">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <h1 className="text-xl font-bold">{c.title}</h1>
-              <HostLink host={c.host} hostId={c.hostId} variant="plain" className="mt-1.5" />
+              <HostLink
+                host={c.host}
+                hostId={c.hostId}
+                variant="plain"
+                className="text-sm font-bold text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary"
+              />
             </div>
             {hasEnded && (
               <span className="flex shrink-0 items-center gap-1 rounded-full bg-warning/15 px-2 py-1 text-xs font-bold text-warning">
@@ -92,40 +119,40 @@ function ConceptPage() {
               </span>
             )}
           </div>
-        </section>
 
-        <section className="grid grid-cols-3 gap-2 rounded-2xl border border-border bg-card p-3 text-center">
-          {isSeries ? (
-            <>
-              <Stat label="Episodes" value="6" />
-              <Stat label="Participants" value="1,245" />
-              {hasEnded ? (
-                <Stat label="Completion" value="84%" />
-              ) : (
-                <Stat label="Status" value={getConceptStatusLabel(c.status)} />
-              )}
-            </>
-          ) : c.type === "Minigame" ? (
-            <>
-              <Stat label="Mode" value="Live" />
-              <Stat label="Players" value={c.participants} />
-              {hasEnded ? (
-                <Stat label="Rating" value={String(c.rating)} />
-              ) : (
-                <Stat label="Status" value={getConceptStatusLabel(c.status)} />
-              )}
-            </>
-          ) : (
-            <>
-              <Stat label="Format" value="Single" />
-              <Stat label="Entrants" value={c.participants} />
-              {hasEnded ? (
-                <Stat label="Rating" value={String(c.rating)} />
-              ) : (
-                <Stat label="Status" value={getConceptStatusLabel(c.status)} />
-              )}
-            </>
-          )}
+          <div className="mt-3 grid grid-cols-3 gap-2 border-t border-border pt-3 text-center">
+            {isSeries ? (
+              <>
+                <Stat label="Episodes" value="6" />
+                <Stat label="Participants" value="1,245" />
+                {hasEnded ? (
+                  <Stat label="Completion" value="84%" />
+                ) : (
+                  <Stat label="Status" value={getConceptStatusLabel(c.status)} />
+                )}
+              </>
+            ) : c.type === "Minigame" ? (
+              <>
+                <Stat label="Mode" value="Live" />
+                <Stat label="Players" value={c.participants} />
+                {hasEnded ? (
+                  <Stat label="Rating" value={String(c.rating)} />
+                ) : (
+                  <Stat label="Status" value={getConceptStatusLabel(c.status)} />
+                )}
+              </>
+            ) : (
+              <>
+                <Stat label="Format" value="Single" />
+                <Stat label="Entries" value={c.participants} />
+                {hasEnded ? (
+                  <Stat label="Rating" value={String(c.rating)} />
+                ) : (
+                  <Stat label="Status" value={getConceptStatusLabel(c.status)} />
+                )}
+              </>
+            )}
+          </div>
         </section>
       </div>
 
