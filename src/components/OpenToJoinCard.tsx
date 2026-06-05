@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { UserRound } from "lucide-react";
+import { Star, UserRound } from "lucide-react";
 import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
 import type { ConceptType, OpenToJoinItem } from "@/data/mock";
 import { cn } from "@/lib/utils";
@@ -45,10 +45,12 @@ export function OpenToJoinCard({
   item,
   className,
   variant = "default",
+  index,
 }: {
   item: OpenToJoinItem;
   className?: string;
   variant?: "default" | "compact";
+  index?: number;
 }) {
   const availability = availabilityPill(item);
   const cappedAvailability = item.availability.kind === "capped" ? item.availability : null;
@@ -60,59 +62,56 @@ export function OpenToJoinCard({
     return (
       <article
         className={cn(
-          "flex overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:bg-muted/30",
+          "flex min-h-28 overflow-hidden rounded-2xl border border-border bg-card shadow-sm",
           className,
         )}
       >
         <Link
           to="/concept/$id"
           params={{ id: item.conceptId }}
-          className="relative w-28 shrink-0 overflow-hidden"
+          className="group relative w-28 shrink-0 overflow-hidden"
         >
           <img
             src={item.image}
             alt={item.title}
-            width={240}
-            height={260}
+            width={224}
+            height={224}
             loading="lazy"
-            className="h-full min-h-36 w-full object-cover"
+            className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
           />
           <ConceptFormatBadge type={item.type} className="right-2 h-5 w-3" />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
         </Link>
         <div className="min-w-0 flex-1 p-3">
-          <div
-            className={cn(
-              "truncate text-[10px] font-semibold uppercase tracking-wide",
-              conceptTypeTextColors[item.type],
-            )}
-          >
-            {conceptTypeLabels[item.type]}
+          <div className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wide text-primary">
+            <Star className="h-3.5 w-3.5 fill-primary" />
+            {typeof index === "number" ? `Open #${index + 1}` : conceptTypeLabels[item.type]}
           </div>
           <Link
             to="/concept/$id"
             params={{ id: item.conceptId }}
-            className="mt-1 block line-clamp-1 text-sm font-bold leading-tight"
+            className="mt-1 block line-clamp-2 text-base font-black leading-tight transition hover:text-primary"
           >
             {item.title}
           </Link>
-          <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{item.subtitle}</p>
-          <div className="mt-2">
-            <AvailabilityPill availability={availability} />
+          <div className="mt-1 truncate text-sm font-medium text-muted-foreground">
+            Hosted by {item.host}
           </div>
-          <div className="mt-1 text-[10px] font-medium text-muted-foreground">
-            {availabilityDetail}
+          <div className="mt-2 flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <AvailabilityPill availability={availability} />
+              <div className="mt-1 truncate text-[11px] font-semibold text-muted-foreground">
+                {availabilityDetail}
+              </div>
+            </div>
+            <Link
+              to="/concept/$id"
+              params={{ id: item.conceptId }}
+              className="shrink-0 rounded-full bg-primary px-4 py-2 text-sm font-black text-primary-foreground shadow-sm transition hover:bg-primary/90"
+              aria-label={`Join ${item.title}`}
+            >
+              Join
+            </Link>
           </div>
-          <div className="mt-0.5 flex justify-end">
-            <HostButton host={item.host} hostId={item.hostId} />
-          </div>
-          <Link
-            to="/concept/$id"
-            params={{ id: item.conceptId }}
-            className="mt-2 flex w-full items-center justify-center rounded-xl bg-primary px-3 py-2 text-xs font-bold text-primary-foreground shadow-sm"
-          >
-            Join Now
-          </Link>
         </div>
       </article>
     );

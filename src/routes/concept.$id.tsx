@@ -3,7 +3,7 @@ import { ArrowLeft, Bookmark, Share2, Star, CheckCircle2, Lock, Trophy, Scale } 
 import { useState } from "react";
 import { HostLink } from "@/components/HostLink";
 import { MobileShell } from "@/components/MobileShell";
-import { concepts, episodes } from "@/data/mock";
+import { concepts, episodes, topHosts } from "@/data/mock";
 import { getConceptStatusLabel, isConceptEnded } from "@/lib/concept-status";
 
 export const Route = createFileRoute("/concept/$id")({
@@ -54,6 +54,7 @@ function ConceptPage() {
       ];
   const brief = conceptBriefs[c.type];
   const hasEnded = isConceptEnded(c.status);
+  const hostProfile = topHosts.find((host) => host.id === c.hostId);
 
   return (
     <MobileShell>
@@ -109,8 +110,9 @@ function ConceptPage() {
               <HostLink
                 host={c.host}
                 hostId={c.hostId}
+                avatar={hostProfile?.avatar}
                 variant="plain"
-                className="text-sm font-bold text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary"
+                className="py-1"
               />
             </div>
             {hasEnded && (

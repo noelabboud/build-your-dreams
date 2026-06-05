@@ -251,6 +251,7 @@ export const openToJoinItems: OpenToJoinItem[] = [
 
 export const episodes = [
   {
+    conceptId: "courtroom",
     n: 1,
     title: "The Accusation",
     status: "completed",
@@ -259,6 +260,7 @@ export const episodes = [
     rating: 4.7,
   },
   {
+    conceptId: "courtroom",
     n: 2,
     title: "The Evidence",
     status: "completed",
@@ -267,6 +269,7 @@ export const episodes = [
     rating: 4.8,
   },
   {
+    conceptId: "courtroom",
     n: 3,
     title: "The Missing Witness",
     status: "live",
@@ -274,9 +277,9 @@ export const episodes = [
     percentile: "Top 5%",
     rating: 4.8,
   },
-  { n: 4, title: "The Final Argument", status: "upcoming", rating: null },
-  { n: 5, title: "The Verdict", status: "locked", rating: null },
-  { n: 6, title: "Aftermath", status: "locked", rating: null },
+  { conceptId: "courtroom", n: 4, title: "The Final Argument", status: "upcoming", rating: null },
+  { conceptId: "courtroom", n: 5, title: "The Verdict", status: "locked", rating: null },
+  { conceptId: "courtroom", n: 6, title: "Aftermath", status: "locked", rating: null },
 ];
 
 export const categories = [

@@ -1,9 +1,17 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { BadgeCheck, ExternalLink, Instagram, Music2, Twitch, Youtube } from "lucide-react";
+import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
+import {
+  ArrowLeft,
+  BadgeCheck,
+  ExternalLink,
+  Instagram,
+  MoreHorizontal,
+  Music2,
+  Twitch,
+  Youtube,
+} from "lucide-react";
 import { useRef, useState } from "react";
 import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
 import { MobileShell } from "@/components/MobileShell";
-import { TopBar } from "@/components/TopBar";
 import { concepts, episodes, topHosts, type Concept, type ConceptType } from "@/data/mock";
 import { isConceptEnded } from "@/lib/concept-status";
 import { cn } from "@/lib/utils";
@@ -86,6 +94,7 @@ const hostLayers: { id: HostLayer; label: string }[] = [
 
 function HostPage() {
   const host = Route.useLoaderData();
+  const router = useRouter();
   const [activeLayer, setActiveLayer] = useState<HostLayer>("highlights");
   const layerScrollRef = useRef<HTMLDivElement>(null);
   const hostConcepts = concepts.filter((concept) => concept.hostId === host.id);
@@ -126,43 +135,67 @@ function HostPage() {
 
   return (
     <MobileShell>
-      <div className="bg-gradient-to-b from-primary/10 via-background to-background">
-        <TopBar back actions="more" title={null} />
-        <section className="px-4 pb-4 pt-2">
-          <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-            <div className="flex items-start gap-3">
-              <img
-                src={host.avatar}
-                alt={host.name}
-                width={80}
-                height={80}
-                className="h-20 w-20 shrink-0 rounded-full border-4 border-background object-cover shadow-sm"
-              />
-              <div className="min-w-0 flex-1 pt-1">
-                <div className="flex items-center gap-1.5 text-2xl font-bold">
-                  <span className="truncate">{host.name}</span>
-                  {host.verified && <BadgeCheck className="h-5 w-5 shrink-0 text-primary" />}
-                </div>
-                <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
-                  {host.bio}
-                </p>
+      <section className="relative overflow-hidden bg-[#0B1018] text-white">
+        <img
+          src={host.coverImage}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-36 w-full object-cover opacity-65"
+        />
+        <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/55 via-black/30 to-[#0B1018]" />
+        <div className="relative z-10 flex h-12 items-center justify-between px-4">
+          <button
+            type="button"
+            onClick={() => router.history.back()}
+            aria-label="Back"
+            className="grid h-9 w-9 place-items-center text-white transition hover:text-white/70"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </button>
+          <button
+            type="button"
+            aria-label="More actions"
+            className="grid h-9 w-9 place-items-center text-white transition hover:text-white/70"
+          >
+            <MoreHorizontal className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="relative z-10 px-5 pb-5 pt-8">
+          <div className="flex items-center gap-3.5">
+            <img
+              src={host.avatar}
+              alt={host.name}
+              width={76}
+              height={76}
+              className="h-[76px] w-[76px] shrink-0 rounded-full border-[3px] border-[#0B1018] object-cover shadow-lg shadow-black/25"
+            />
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 text-[2rem] font-black leading-none">
+                <span className="truncate">{host.name}</span>
+                {host.verified && <BadgeCheck className="h-6 w-6 shrink-0 text-primary" />}
+              </div>
+              <div className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-white/55">
+                Host portfolio
               </div>
             </div>
           </div>
-        </section>
-      </div>
 
-      <SocialLinks socials={host.socials} />
+          <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/76">{host.bio}</p>
 
-      <section className="grid grid-cols-4 gap-2 px-4 pt-4">
-        <Stat label="Participants" value={formatCompact(totalParticipants)} />
-        <Stat label="Concepts" value={String(hostConcepts.length)} />
-        <Stat label="Avg. Rating" value={averageRating} />
-        <Stat label="Episodes" value={String(host.completedEpisodes)} />
+          <SocialLinks socials={host.socials} />
+
+          <div className="mt-4 grid grid-cols-4 gap-2 border-t border-white/10 pt-3">
+            <Stat label="Participants" value={formatCompact(totalParticipants)} />
+            <Stat label="Concepts" value={String(hostConcepts.length)} />
+            <Stat label="Avg. Rating" value={averageRating} />
+            <Stat label="Episodes" value={String(host.completedEpisodes)} />
+          </div>
+        </div>
       </section>
 
-      <section className="pb-6 pt-5">
-        <div className="no-scrollbar flex gap-6 overflow-x-auto border-b border-border px-4">
+      <section className="pb-6">
+        <div className="no-scrollbar flex gap-6 overflow-x-auto border-b border-border bg-background px-4 pt-4">
           {hostLayers.map((layer) => (
             <LayerButton
               key={layer.id}
@@ -290,7 +323,7 @@ function SocialLinks({ socials }: { socials: Partial<Record<keyof typeof socialM
   if (entries.length === 0) return null;
 
   return (
-    <section className="no-scrollbar flex gap-2 overflow-x-auto px-4">
+    <section className="mt-3 flex flex-wrap gap-2">
       {entries.map(([key, href]) => {
         const meta = socialMeta[key as keyof typeof socialMeta];
         const Icon = meta.Icon;
@@ -301,7 +334,7 @@ function SocialLinks({ socials }: { socials: Partial<Record<keyof typeof socialM
             href={href}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/15 bg-white/95 px-2.5 py-1.5 text-xs font-semibold text-foreground shadow-sm"
           >
             <Icon className="h-3.5 w-3.5" />
             {meta.label}
@@ -373,9 +406,9 @@ function PortfolioItem({ concept, showEpisodes }: { concept: Concept; showEpisod
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-border bg-card px-2 py-2 text-center">
-      <div className="text-sm font-bold">{value}</div>
-      <div className="mt-0.5 text-[9px] font-semibold uppercase leading-tight text-muted-foreground">
+    <div className="min-w-0 rounded-xl border border-white/10 bg-white/[0.06] px-1.5 py-2 text-center">
+      <div className="truncate text-sm font-bold text-white">{value}</div>
+      <div className="mt-0.5 truncate text-[8px] font-semibold uppercase leading-tight text-white/55">
         {label}
       </div>
     </div>
@@ -395,9 +428,11 @@ function getHighlights(hostConcepts: Concept[], completedEpisodes: number) {
     [...hostConcepts].sort(
       (a, b) => parseParticipantCount(b.participants) - parseParticipantCount(a.participants),
     )[0] ?? hostConcepts[0];
+  const hostConceptIds = new Set(hostConcepts.map((concept) => concept.id));
   const bestEpisode = episodes
-    .filter((episode) => episode.rating)
-    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))[0];
+    .filter((episode) => episode.score && hostConceptIds.has(episode.conceptId))
+    .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))[0];
+  const bestEpisodeConcept = hostConcepts.find((concept) => concept.id === bestEpisode?.conceptId);
   const firstActiveConcept = hostConcepts.find((concept) => !isConceptEnded(concept.status));
   const activeCount = hostConcepts.filter((concept) => !isConceptEnded(concept.status)).length;
 
@@ -418,8 +453,10 @@ function getHighlights(hostConcepts: Concept[], completedEpisodes: number) {
     },
     bestEpisode && {
       label: "Top episode score",
-      title: bestEpisode.title,
-      value: `${bestEpisode.rating}`,
+      title: `${bestEpisode.title}${
+        bestEpisodeConcept ? ` (${bestEpisodeConcept.title}, Episode ${bestEpisode.n})` : ""
+      }`,
+      value: `${bestEpisode.score}`,
       to: "/episode/$id" as const,
       params: { id: String(bestEpisode.n) },
     },

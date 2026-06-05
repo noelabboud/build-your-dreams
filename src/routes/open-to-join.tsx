@@ -68,8 +68,8 @@ function OpenToJoinPage() {
       </div>
 
       <div className="space-y-3 px-4 pb-6 pt-2">
-        {filteredItems.map((item) => (
-          <OpenToJoinCard key={item.id} item={item} variant="compact" />
+        {filteredItems.map((item, index) => (
+          <OpenToJoinCard key={item.id} item={item} variant="compact" index={index} />
         ))}
       </div>
     </MobileShell>
