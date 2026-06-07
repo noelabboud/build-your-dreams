@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Bell, Play, Star } from "lucide-react";
 import { useRef, useState } from "react";
 import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
+import { ConceptImage } from "@/components/ConceptImage";
 import { HostLink } from "@/components/HostLink";
 import { MobileShell } from "@/components/MobileShell";
 import { OpenToJoinCard } from "@/components/OpenToJoinCard";
@@ -120,13 +121,7 @@ function Home() {
           <div key={concept.id} className="block basis-[88%] shrink-0 snap-start scroll-ml-4">
             <div className="relative overflow-hidden rounded-2xl">
               <Link to="/concept/$id" params={{ id: concept.id }} className="block">
-                <img
-                  src={concept.image}
-                  alt={concept.title}
-                  width={1024}
-                  height={1024}
-                  className="h-52 w-full object-cover"
-                />
+                <ConceptImage src={concept.image} alt={concept.title} className="h-52 w-full" />
               </Link>
               <ConceptFormatBadge type={concept.type} className="h-6 w-3.5" />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
@@ -217,14 +212,7 @@ function Home() {
           <div key={c.id} className="w-32 shrink-0">
             <Link to="/concept/$id" params={{ id: c.id }} className="block">
               <div className="relative h-40 overflow-hidden rounded-2xl">
-                <img
-                  src={c.image}
-                  alt={c.title}
-                  width={400}
-                  height={500}
-                  loading="lazy"
-                  className="h-full w-full object-cover"
-                />
+                <ConceptImage src={c.image} alt={c.title} className="h-full w-full" />
                 <ConceptFormatBadge type={c.type} className="h-6 w-3.5" />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               </div>

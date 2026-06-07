@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bell, Hourglass, Send, Vote } from "lucide-react";
 import { useState } from "react";
 import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
+import { ConceptImage } from "@/components/ConceptImage";
 import { HostLink } from "@/components/HostLink";
 import { MobileShell } from "@/components/MobileShell";
 import {
@@ -132,14 +133,7 @@ function Row({ concept, item }: { concept: Concept; item: ActiveMyConceptItem })
           params={{ id: concept.id }}
           className="relative shrink-0 overflow-hidden rounded-lg"
         >
-          <img
-            src={concept.image}
-            alt={concept.title}
-            width={48}
-            height={48}
-            loading="lazy"
-            className="h-12 w-12 rounded-lg object-cover"
-          />
+          <ConceptImage src={concept.image} alt={concept.title} className="h-12 w-12 rounded-lg" />
           <ConceptFormatBadge type={concept.type} className="right-2 h-4 w-2.5" />
         </Link>
         <div className="min-w-0 flex-1">

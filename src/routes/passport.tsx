@@ -10,6 +10,7 @@ import {
   Trophy,
 } from "lucide-react";
 import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
+import { ConceptImage } from "@/components/ConceptImage";
 import { MobileShell } from "@/components/MobileShell";
 import { concepts, me } from "@/data/mock";
 
@@ -40,11 +41,10 @@ function Passport() {
   return (
     <MobileShell>
       <section className="relative overflow-hidden bg-[#10131A] px-4 pb-5 pt-4 text-white">
-        <img
+        <ConceptImage
           src={concepts[0].image}
           alt=""
-          aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-44 w-full object-cover opacity-35"
+          className="absolute inset-x-0 top-0 h-44 w-full opacity-35"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-[#10131A]/88 to-[#10131A]" />
 
@@ -66,12 +66,10 @@ function Passport() {
 
         <div className="relative z-10 mt-5 overflow-hidden rounded-2xl border border-white/12 bg-white/[0.07] p-4 shadow-2xl shadow-black/20">
           <div className="flex items-center gap-3.5">
-            <img
+            <ConceptImage
               src={me.avatar}
               alt={me.name}
-              width={76}
-              height={76}
-              className="h-[76px] w-[76px] rounded-2xl object-cover ring-2 ring-white/25"
+              className="h-[76px] w-[76px] shrink-0 rounded-2xl ring-2 ring-white/25"
             />
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5 text-[1.65rem] font-black leading-none">
@@ -135,13 +133,11 @@ function Passport() {
               className="group relative flex min-h-28 overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:bg-muted/40"
             >
               <div className="relative w-28 shrink-0 overflow-hidden">
-                <img
+                <ConceptImage
                   src={concept.image}
                   alt={concept.title}
-                  width={224}
-                  height={224}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                  className="h-full w-full"
+                  imageClassName="transition duration-300 group-hover:scale-105"
                 />
                 <ConceptFormatBadge type={concept.type} className="right-2 h-5 w-3" />
               </div>

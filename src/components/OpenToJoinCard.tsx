@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Star, UserRound } from "lucide-react";
 import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
+import { ConceptImage } from "@/components/ConceptImage";
 import type { ConceptType, OpenToJoinItem } from "@/data/mock";
 import { cn } from "@/lib/utils";
 
@@ -71,13 +72,11 @@ export function OpenToJoinCard({
           params={{ id: item.conceptId }}
           className="group relative w-28 shrink-0 overflow-hidden"
         >
-          <img
+          <ConceptImage
             src={item.image}
             alt={item.title}
-            width={224}
-            height={224}
-            loading="lazy"
-            className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+            className="h-full w-full"
+            imageClassName="transition duration-300 group-hover:scale-105"
           />
           <ConceptFormatBadge type={item.type} className="right-2 h-5 w-3" />
         </Link>
@@ -129,14 +128,7 @@ export function OpenToJoinCard({
         params={{ id: item.conceptId }}
         className="relative h-28 overflow-hidden"
       >
-        <img
-          src={item.image}
-          alt={item.title}
-          width={400}
-          height={500}
-          loading="lazy"
-          className="h-full w-full object-cover"
-        />
+        <ConceptImage src={item.image} alt={item.title} className="h-full w-full" />
         <ConceptFormatBadge type={item.type} className="h-6 w-3.5" />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
       </Link>

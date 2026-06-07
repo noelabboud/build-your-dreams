@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Search, SlidersHorizontal, Star, BadgeCheck } from "lucide-react";
 import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
+import { ConceptImage } from "@/components/ConceptImage";
 import { HostLink } from "@/components/HostLink";
 import { MobileShell } from "@/components/MobileShell";
 import { SectionHeader } from "@/components/TopBar";
@@ -48,14 +49,7 @@ function Explore() {
                 params={{ id: c.id }}
                 className="relative shrink-0 overflow-hidden rounded-lg"
               >
-                <img
-                  src={c.image}
-                  alt={c.title}
-                  width={48}
-                  height={48}
-                  loading="lazy"
-                  className="h-12 w-12 rounded-lg object-cover"
-                />
+                <ConceptImage src={c.image} alt={c.title} className="h-12 w-12 rounded-lg" />
                 <ConceptFormatBadge type={c.type} className="right-2 h-4 w-2.5" />
               </Link>
               <div className="flex-1 min-w-0">
@@ -114,13 +108,10 @@ function Explore() {
               params={{ id: h.id }}
               className="flex items-center gap-3 rounded-xl border border-border bg-card p-2.5"
             >
-              <img
+              <ConceptImage
                 src={h.avatar}
                 alt={h.name}
-                width={44}
-                height={44}
-                loading="lazy"
-                className="h-11 w-11 rounded-full object-cover"
+                className="h-11 w-11 shrink-0 rounded-full"
               />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1 font-semibold">

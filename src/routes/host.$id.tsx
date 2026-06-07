@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useRef, useState } from "react";
 import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
+import { ConceptImage } from "@/components/ConceptImage";
 import { MobileShell } from "@/components/MobileShell";
 import { concepts, episodes, topHosts, type Concept, type ConceptType } from "@/data/mock";
 import { isConceptEnded } from "@/lib/concept-status";
@@ -136,11 +137,10 @@ function HostPage() {
   return (
     <MobileShell>
       <section className="relative overflow-hidden bg-[#0B1018] text-white">
-        <img
+        <ConceptImage
           src={host.coverImage}
           alt=""
-          aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-36 w-full object-cover opacity-65"
+          className="absolute inset-x-0 top-0 h-36 w-full opacity-65"
         />
         <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/55 via-black/30 to-[#0B1018]" />
         <div className="relative z-10 flex h-12 items-center justify-between px-4">
@@ -163,12 +163,10 @@ function HostPage() {
 
         <div className="relative z-10 px-5 pb-5 pt-8">
           <div className="flex items-center gap-3.5">
-            <img
+            <ConceptImage
               src={host.avatar}
               alt={host.name}
-              width={76}
-              height={76}
-              className="h-[76px] w-[76px] shrink-0 rounded-full border-[3px] border-[#0B1018] object-cover shadow-lg shadow-black/25"
+              className="h-[76px] w-[76px] shrink-0 rounded-full border-[3px] border-[#0B1018] shadow-lg shadow-black/25"
             />
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 text-[2rem] font-black leading-none">
@@ -290,14 +288,7 @@ function ActiveConceptCard({ concept }: { concept: Concept }) {
       className="flex overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:bg-muted/40"
     >
       <div className="relative h-28 w-28 shrink-0 overflow-hidden">
-        <img
-          src={concept.image}
-          alt={concept.title}
-          width={224}
-          height={224}
-          loading="lazy"
-          className="h-full w-full object-cover"
-        />
+        <ConceptImage src={concept.image} alt={concept.title} className="h-full w-full" />
         <ConceptFormatBadge type={concept.type} className="right-2 h-5 w-3" />
       </div>
       <div className="min-w-0 flex-1 p-3">
@@ -384,14 +375,7 @@ function PortfolioItem({ concept, showEpisodes }: { concept: Concept; showEpisod
       className="flex items-center gap-2 rounded-xl border border-border bg-card p-2 transition hover:bg-muted/40"
     >
       <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg">
-        <img
-          src={concept.image}
-          alt={concept.title}
-          width={96}
-          height={96}
-          loading="lazy"
-          className="h-full w-full object-cover"
-        />
+        <ConceptImage src={concept.image} alt={concept.title} className="h-full w-full" />
         <ConceptFormatBadge type={concept.type} className="right-1.5 h-4 w-2.5" />
       </div>
       <div className="min-w-0 flex-1">

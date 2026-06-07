@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { UserRound } from "lucide-react";
+import { ConceptImage } from "@/components/ConceptImage";
 import { cn } from "@/lib/utils";
 
 export function HostLink({
@@ -40,15 +41,12 @@ export function HostLink({
       )}
     >
       {avatar ? (
-        <img
+        <ConceptImage
           src={avatar}
           alt=""
-          aria-hidden="true"
           className={cn(
-            "shrink-0 rounded-full object-cover",
-            isPlain
-              ? "h-7 w-7 bg-muted"
-              : "h-4 w-4 ring-1 ring-current/15",
+            "shrink-0 rounded-full",
+            isPlain ? "h-7 w-7 bg-muted" : "h-4 w-4 ring-1 ring-current/15",
           )}
         />
       ) : (

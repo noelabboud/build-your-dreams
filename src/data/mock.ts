@@ -27,6 +27,23 @@ export type Concept = {
   image: string;
   tags: string[];
   status?: "live" | "ended" | "upcoming";
+  participation?: {
+    ctaLabel?: string;
+    closedLabel?: string;
+    allowLateEntry?: boolean;
+    priceLabel?: string;
+    availability?:
+      | {
+          kind: "capped";
+          joinedSpots: number;
+          totalSpots: number;
+        }
+      | {
+          kind: "uncapped";
+          ticketingClosesAt: string;
+          startsAt: string;
+        };
+  };
 };
 
 export const concepts: Concept[] = [
@@ -41,6 +58,9 @@ export const concepts: Concept[] = [
     image: courtroom,
     tags: ["Story", "Audience-Driven", "Weekly"],
     status: "live",
+    participation: {
+      priceLabel: "$4.99",
+    },
   },
   {
     id: "escape-beirut",
@@ -52,6 +72,13 @@ export const concepts: Concept[] = [
     participants: "740",
     image: beirut,
     tags: ["Adventure", "Recurring"],
+    participation: {
+      availability: {
+        kind: "capped",
+        joinedSpots: 56,
+        totalSpots: 80,
+      },
+    },
   },
   {
     id: "survivor",
@@ -63,6 +90,13 @@ export const concepts: Concept[] = [
     participants: "2.1K",
     image: survivor,
     tags: ["Elimination", "Tournament"],
+    participation: {
+      availability: {
+        kind: "capped",
+        joinedSpots: 45,
+        totalSpots: 60,
+      },
+    },
   },
   {
     id: "excuse-champ",
@@ -74,6 +108,13 @@ export const concepts: Concept[] = [
     participants: "2.4K",
     image: excuse,
     tags: ["Comedy", "Standalone"],
+    participation: {
+      availability: {
+        kind: "capped",
+        joinedSpots: 37,
+        totalSpots: 40,
+      },
+    },
   },
   {
     id: "voice-roulette",
@@ -86,6 +127,13 @@ export const concepts: Concept[] = [
     image: voicenote,
     tags: ["Voice", "One Shot"],
     status: "upcoming",
+    participation: {
+      availability: {
+        kind: "uncapped",
+        ticketingClosesAt: "2026-06-08T18:00:00+03:00",
+        startsAt: "2026-06-08T20:00:00+03:00",
+      },
+    },
   },
   {
     id: "chifomi-duel",
@@ -98,6 +146,13 @@ export const concepts: Concept[] = [
     image: impostor,
     tags: ["Real-Time", "Duel", "Elimination"],
     status: "upcoming",
+    participation: {
+      availability: {
+        kind: "capped",
+        joinedSpots: 93,
+        totalSpots: 120,
+      },
+    },
   },
   {
     id: "impostor",
@@ -109,6 +164,13 @@ export const concepts: Concept[] = [
     participants: "1.3K",
     image: impostor,
     tags: ["Mystery", "Elimination"],
+    participation: {
+      availability: {
+        kind: "capped",
+        joinedSpots: 52,
+        totalSpots: 64,
+      },
+    },
   },
 ];
 

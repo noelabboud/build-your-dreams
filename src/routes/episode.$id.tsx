@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { ConceptImage } from "@/components/ConceptImage";
 import { MobileShell } from "@/components/MobileShell";
 import { TopBar } from "@/components/TopBar";
 import { CheckCircle2, ChevronRight, Clock, Lock, Trophy } from "lucide-react";
@@ -97,13 +98,10 @@ function EpisodePage() {
                 <MiniStat label="Reward" value="Top 10%" />
               </div>
             </div>
-            <img
+            <ConceptImage
               src={images.courtroom}
               alt="Courtroom"
-              width={1024}
-              height={1024}
-              loading="lazy"
-              className="mt-4 h-44 w-full rounded-2xl object-cover"
+              className="mt-4 h-44 w-full rounded-2xl"
             />
             <div className="mt-5">
               <div className="text-sm font-semibold">How to participate</div>

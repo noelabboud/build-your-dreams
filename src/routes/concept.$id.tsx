@@ -1,6 +1,20 @@
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
-import { ArrowLeft, Bookmark, Share2, Star, CheckCircle2, Lock, Trophy, Scale } from "lucide-react";
-import { useState } from "react";
+import {
+  ArrowLeft,
+  Bookmark,
+  CalendarClock,
+  CheckCircle2,
+  Clock,
+  Lock,
+  Scale,
+  Share2,
+  Star,
+  Trophy,
+  Users,
+} from "lucide-react";
+import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
+import { ConceptImage } from "@/components/ConceptImage";
 import { HostLink } from "@/components/HostLink";
 import { MobileShell } from "@/components/MobileShell";
 import { concepts, episodes, topHosts } from "@/data/mock";
@@ -55,17 +69,14 @@ function ConceptPage() {
   const brief = conceptBriefs[c.type];
   const hasEnded = isConceptEnded(c.status);
   const hostProfile = topHosts.find((host) => host.id === c.hostId);
+  const primaryCta = getPrimaryCta(c);
+  const now = useMinuteNow();
+  const access = getAccessInfo(c, now);
 
   return (
     <MobileShell>
       <div className="relative overflow-hidden">
-        <img
-          src={c.image}
-          alt={c.title}
-          width={1024}
-          height={1024}
-          className="h-72 w-full object-cover"
-        />
+        <ConceptImage src={c.image} alt={c.title} className="h-56 w-full" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/35" />
         <div className="absolute inset-x-0 top-0 flex items-center justify-between px-4 pt-4">
           <button
@@ -93,11 +104,11 @@ function ConceptPage() {
             </button>
           </div>
         </div>
-        <div className="absolute inset-x-0 bottom-5 px-5 text-center text-white">
+        <div className="absolute inset-x-0 bottom-4 px-5 text-center text-white">
           <div className="text-[11px] font-semibold uppercase tracking-[0.26em] text-white/80">
             {c.type}
           </div>
-          <div className="mx-auto mt-2 max-w-sm font-display text-[2rem] font-black leading-none tracking-wide drop-shadow">
+          <div className="mx-auto mt-2 max-w-sm font-display text-[1.8rem] font-black leading-none tracking-wide drop-shadow">
             {c.title.toUpperCase()}
           </div>
         </div>
@@ -157,6 +168,39 @@ function ConceptPage() {
           </div>
         </section>
       </div>
+
+      {access && (
+        <div className="px-4 pt-3">
+          <section className="rounded-2xl border border-border bg-card p-3">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-primary">
+              {access.kind === "capped" ? (
+                <Users className="h-4 w-4" />
+              ) : (
+                <Clock className="h-4 w-4" />
+              )}
+              {access.title}
+            </div>
+            {access.kind === "capped" ? (
+              <CappedAccessProgress access={access} />
+            ) : (
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                <AccessTile
+                  icon={<Clock className="h-4 w-4" />}
+                  label="Ticketing closes"
+                  value={access.ticketingCountdown}
+                  detail={access.ticketingLabel}
+                />
+                <AccessTile
+                  icon={<CalendarClock className="h-4 w-4" />}
+                  label="Starts"
+                  value={access.startCountdown}
+                  detail={access.startLabel}
+                />
+              </div>
+            )}
+          </section>
+        </div>
+      )}
 
       <div className="no-scrollbar mt-5 flex gap-6 overflow-x-auto border-b border-border px-4">
         {conceptTabs.map((tab) => {
@@ -306,20 +350,215 @@ function ConceptPage() {
       </div>
 
       <div className="space-y-2 px-4 py-5">
-        <button className="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:opacity-95">
-          {c.type === "Minigame"
-            ? "Play Now"
-            : c.type === "One Shot Event"
-              ? "Enter Event"
-              : "Join Series"}
+        <button
+          type="button"
+          disabled={primaryCta.disabled}
+          className={`w-full rounded-xl py-3 text-sm font-semibold shadow-sm transition ${
+            primaryCta.disabled
+              ? "cursor-not-allowed bg-muted text-muted-foreground"
+              : "bg-primary text-primary-foreground hover:opacity-95"
+          }`}
+        >
+          {primaryCta.label}
         </button>
-        {isSeries && (
-          <button className="w-full rounded-xl border border-border bg-card py-3 text-sm font-semibold text-primary">
-            Buy Full Series — $4.99
-          </button>
-        )}
       </div>
     </MobileShell>
+  );
+}
+
+function useMinuteNow() {
+  const [now, setNow] = useState(() => new Date());
+
+  useEffect(() => {
+    const interval = window.setInterval(() => setNow(new Date()), 60_000);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
+  return now;
+}
+
+function getAccessInfo(c: (typeof concepts)[number], now: Date) {
+  const availability = c.participation?.availability;
+
+  if (!availability) {
+    return null;
+  }
+
+  if (availability.kind === "capped") {
+    const percent = Math.min(
+      100,
+      Math.round((availability.joinedSpots / availability.totalSpots) * 100),
+    );
+
+    return {
+      kind: "capped" as const,
+      title: "Capped access",
+      milestone: `${availability.joinedSpots}/${availability.totalSpots}`,
+      spotsLeft: availability.totalSpots - availability.joinedSpots,
+      percent,
+    };
+  }
+
+  const ticketingClosesAt = new Date(availability.ticketingClosesAt);
+  const startsAt = new Date(availability.startsAt);
+
+  return {
+    kind: "uncapped" as const,
+    title: "Uncapped access",
+    ticketingCountdown: formatCountdown(ticketingClosesAt, now, "Closed"),
+    ticketingLabel: formatEventDate(ticketingClosesAt),
+    startCountdown: formatCountdown(startsAt, now, "Started"),
+    startLabel: formatEventDate(startsAt),
+  };
+}
+
+function formatCountdown(target: Date, now: Date, elapsedLabel: string) {
+  const diff = target.getTime() - now.getTime();
+
+  if (diff <= 0) {
+    return elapsedLabel;
+  }
+
+  const totalMinutes = Math.ceil(diff / 60_000);
+  const days = Math.floor(totalMinutes / 1_440);
+  const hours = Math.floor((totalMinutes % 1_440) / 60);
+  const minutes = totalMinutes % 60;
+
+  if (days > 0) {
+    return `${days}d ${hours}h`;
+  }
+
+  if (hours > 0) {
+    return `${hours}h ${minutes}m`;
+  }
+
+  return `${minutes}m`;
+}
+
+function formatEventDate(date: Date) {
+  return new Intl.DateTimeFormat("en", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
+}
+
+function getPrimaryCta(c: (typeof concepts)[number]) {
+  const hasEnded = isConceptEnded(c.status);
+  const inProgress = c.status === "live";
+  const allowLateEntry = c.participation?.allowLateEntry;
+  const price = c.participation?.priceLabel ? ` — ${c.participation.priceLabel}` : "";
+
+  if (hasEnded) {
+    return { label: getEndedCtaLabel(c.type), disabled: true };
+  }
+
+  if (c.type === "Narrative Series") {
+    if (inProgress && !allowLateEntry) {
+      return {
+        label: c.participation?.closedLabel ?? "Series In Progress",
+        disabled: true,
+      };
+    }
+
+    return {
+      label: c.participation?.ctaLabel ?? `Buy Full Series${price}`,
+      disabled: false,
+    };
+  }
+
+  if (c.type === "Competitive Series") {
+    if (inProgress && !allowLateEntry) {
+      return {
+        label: c.participation?.closedLabel ?? "Competition In Progress",
+        disabled: true,
+      };
+    }
+
+    return {
+      label: c.participation?.ctaLabel ?? "Join Competition",
+      disabled: false,
+    };
+  }
+
+  if (c.type === "Episodic Series") {
+    return {
+      label: c.participation?.ctaLabel ?? "Join Episode",
+      disabled: false,
+    };
+  }
+
+  if (c.type === "One Shot Event") {
+    return {
+      label: c.participation?.ctaLabel ?? "Join Event",
+      disabled: false,
+    };
+  }
+
+  return {
+    label: c.participation?.ctaLabel ?? "Play Now",
+    disabled: false,
+  };
+}
+
+function getEndedCtaLabel(type: (typeof concepts)[number]["type"]) {
+  if (type === "Competitive Series") return "Competition Ended";
+  if (type === "Narrative Series" || type === "Episodic Series") return "Series Ended";
+  if (type === "Minigame") return "Game Ended";
+  return "Event Ended";
+}
+
+function CappedAccessProgress({
+  access,
+}: {
+  access: Extract<NonNullable<ReturnType<typeof getAccessInfo>>, { kind: "capped" }>;
+}) {
+  return (
+    <div className="mt-3 rounded-xl bg-muted px-3 py-3">
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+            <Users className="h-4 w-4" />
+            <span className="truncate">Participation cap</span>
+          </div>
+          <div className="mt-1 text-2xl font-black leading-tight">{access.milestone}</div>
+        </div>
+        <div className="shrink-0 text-right">
+          <div className="text-lg font-black leading-tight">{access.percent}%</div>
+          <div className="text-[11px] font-medium text-muted-foreground">
+            {access.spotsLeft} spots left
+          </div>
+        </div>
+      </div>
+      <div className="mt-3 h-2 overflow-hidden rounded-full bg-background">
+        <div className="h-full rounded-full bg-primary" style={{ width: `${access.percent}%` }} />
+      </div>
+    </div>
+  );
+}
+
+function AccessTile({
+  icon,
+  label,
+  value,
+  detail,
+}: {
+  icon: ReactNode;
+  label: string;
+  value: string;
+  detail: string;
+}) {
+  return (
+    <div className="min-w-0 rounded-xl bg-muted px-3 py-2.5">
+      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+        {icon}
+        <span className="truncate">{label}</span>
+      </div>
+      <div className="mt-1 text-lg font-black leading-tight">{value}</div>
+      <div className="mt-0.5 truncate text-[11px] font-medium text-muted-foreground">{detail}</div>
+    </div>
   );
 }
 

@@ -1,7 +1,12 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { Home, Compass, LayoutGrid, BookUser } from "lucide-react";
 
-type Tab = { to: "/" | "/explore" | "/my-concepts" | "/passport"; label: string; icon: typeof Home; exact?: boolean };
+type Tab = {
+  to: "/" | "/explore" | "/my-concepts" | "/passport";
+  label: string;
+  icon: typeof Home;
+  exact?: boolean;
+};
 const tabs: Tab[] = [
   { to: "/", label: "Home", icon: Home, exact: true },
   { to: "/explore", label: "Explore", icon: Compass },
