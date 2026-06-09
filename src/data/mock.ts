@@ -419,3 +419,214 @@ export const me = {
   stats: { joined: 14, played: 87, wins: 12, top10: 25 },
   traits: { Humor: 8.7, Creativity: 9.0, Storytelling: 7.8, Originality: 8.4, Persuasion: 8.2 },
 };
+
+export type PassportFormat = "Narrative" | "Episodic" | "Competitive" | "One Shot" | "Minigames";
+
+export type PassportHistoryItem = {
+  id: string;
+  format: PassportFormat;
+  conceptTitle: string;
+  episodeLabel?: string;
+  status: "Completed" | "Submitted" | "Qualified" | "Played";
+  date: string;
+  result?: string;
+  xp: number;
+  badges: string[];
+  submission: {
+    kind: "Text" | "Image" | "Video" | "Live Action";
+    preview: string;
+  };
+  score?: number;
+  averageScore?: number;
+  rank?: string;
+  hostFeedback?: string;
+  communityRating?: number;
+};
+
+export const passportProfile = {
+  progress: {
+    level: 6,
+    label: "Level 6 Creator",
+    currentXp: 1240,
+    nextLevelXp: 1500,
+    nextLevel: 7,
+  },
+  coreStats: [
+    { label: "Concepts joined", value: "14" },
+    { label: "Episodes completed", value: "37" },
+    { label: "Submissions made", value: "42" },
+    { label: "Completion rate", value: "91%" },
+  ],
+  reliability: [
+    { label: "On-time submissions", value: "94%" },
+    { label: "Voting completion", value: "88%" },
+    { label: "Dropout rate", value: "4%" },
+  ],
+  recognition: [
+    { label: "Wins", value: "12" },
+    { label: "Top placements", value: "25" },
+    { label: "Featured entries", value: "7" },
+    { label: "Average rating", value: "4.8" },
+  ],
+  badges: [
+    {
+      id: "first-place",
+      name: "First Place",
+      count: 3,
+      description: "Finished at the top of ranked concepts.",
+    },
+    {
+      id: "top-10",
+      name: "Top 10%",
+      count: 9,
+      description: "Placed in the top tier across judged episodes.",
+    },
+    {
+      id: "featured-host",
+      name: "Featured by Host",
+      count: 4,
+      description: "Selected by a host for standout contribution.",
+    },
+    {
+      id: "fast-finisher",
+      name: "Fast Finisher",
+      count: 5,
+      description: "Submitted high-quality work early.",
+    },
+    {
+      id: "reliable",
+      name: "Reliable Participant",
+      count: 12,
+      description: "Consistently completed entries and votes.",
+    },
+    {
+      id: "community-favorite",
+      name: "Community Favorite",
+      count: 2,
+      description: "Earned strong audience support.",
+    },
+  ],
+  history: [
+    {
+      id: "courtroom-ep3",
+      format: "Narrative",
+      conceptTitle: "The Courtroom",
+      episodeLabel: "Episode 3 - The Missing Witness",
+      status: "Completed",
+      date: "May 28, 2026",
+      result: "Top 5%",
+      xp: 180,
+      badges: ["Top 10%", "Featured by Host"],
+      submission: {
+        kind: "Text",
+        preview:
+          "The witness did not disappear after the argument. The voice note proves he was still near the courthouse at 9:42 PM, which breaks the prosecution timeline.",
+      },
+      score: 8.9,
+      averageScore: 7.1,
+      rank: "18 / 438",
+      hostFeedback: "Strong timeline logic with a clean final argument.",
+      communityRating: 4.8,
+    },
+    {
+      id: "courtroom-ep2",
+      format: "Narrative",
+      conceptTitle: "The Courtroom",
+      episodeLabel: "Episode 2 - The Evidence",
+      status: "Completed",
+      date: "May 21, 2026",
+      result: "Top 10%",
+      xp: 140,
+      badges: ["Top 10%"],
+      submission: {
+        kind: "Text",
+        preview:
+          "The missing evidence label matters because the room log and the witness statement disagree by eleven minutes.",
+      },
+      score: 8.6,
+      averageScore: 7.0,
+      rank: "31 / 421",
+      hostFeedback: "Persuasive and easy for voters to follow.",
+      communityRating: 4.7,
+    },
+    {
+      id: "escape-ep2",
+      format: "Episodic",
+      conceptTitle: "Escape Beirut",
+      episodeLabel: "Episode 2 - Rooftop Route",
+      status: "Submitted",
+      date: "June 2, 2026",
+      result: "Completed",
+      xp: 90,
+      badges: ["Reliable Participant"],
+      submission: {
+        kind: "Image",
+        preview: "Mock image submission: annotated rooftop route with three escape checkpoints.",
+      },
+      score: 7.8,
+      averageScore: 7.3,
+      hostFeedback: "Practical idea with a memorable visual hook.",
+      communityRating: 4.4,
+    },
+    {
+      id: "impostor-r3",
+      format: "Competitive",
+      conceptTitle: "Impostor League",
+      episodeLabel: "Round 3 - Voting",
+      status: "Qualified",
+      date: "June 4, 2026",
+      result: "Qualified",
+      xp: 160,
+      badges: ["Fast Finisher"],
+      submission: {
+        kind: "Text",
+        preview:
+          "Basit’s round-three pattern points to a late alliance shift: the safest player voted second, not last.",
+      },
+      score: 8.1,
+      averageScore: 7.4,
+      rank: "22 / 128",
+      hostFeedback: "Smart strategy, especially the timing callout.",
+      communityRating: 4.5,
+    },
+    {
+      id: "excuse-final",
+      format: "One Shot",
+      conceptTitle: "Worst Excuse Championship",
+      status: "Completed",
+      date: "May 4, 2026",
+      result: "Top 5%",
+      xp: 130,
+      badges: ["Community Favorite"],
+      submission: {
+        kind: "Video",
+        preview:
+          "Mock video submission: 34-second comedy clip explaining three impossible family emergencies.",
+      },
+      score: 8.4,
+      averageScore: 6.9,
+      rank: "9 / 220",
+      hostFeedback: "Funny, specific, and instantly readable.",
+      communityRating: 4.9,
+    },
+    {
+      id: "chifomi-live",
+      format: "Minigames",
+      conceptTitle: "Chifomi Duel",
+      episodeLabel: "Live Room 12",
+      status: "Played",
+      date: "June 6, 2026",
+      result: "Final 16",
+      xp: 55,
+      badges: ["Fast Finisher"],
+      submission: {
+        kind: "Live Action",
+        preview: "Live game log: rock, paper, paper, scissors, rock, rock, scissors.",
+      },
+      score: 7.2,
+      averageScore: 6.8,
+      rank: "14 / 120",
+      communityRating: 4.2,
+    },
+  ] satisfies PassportHistoryItem[],
+};

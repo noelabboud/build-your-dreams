@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Bell, Play, Star } from "lucide-react";
+import { ArrowRight, Bell, Play } from "lucide-react";
 import { useRef, useState } from "react";
 import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
 import { ConceptImage } from "@/components/ConceptImage";
@@ -8,7 +8,6 @@ import { MobileShell } from "@/components/MobileShell";
 import { OpenToJoinCard } from "@/components/OpenToJoinCard";
 import { SectionHeader } from "@/components/TopBar";
 import { concepts, openToJoinItems } from "@/data/mock";
-import { getConceptStatusLabel, isConceptEnded } from "@/lib/concept-status";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,7 +36,6 @@ function Home() {
     { concept: survivor, detail: "Round 3 - Voting closes tonight", progress: 55 },
     { concept: chifomi, detail: "Live room opens soon", progress: 35 },
   ];
-  const trending = concepts.slice(2, 5);
 
   const handleContinueScroll = () => {
     const container = continueScrollRef.current;
@@ -46,7 +44,7 @@ function Home() {
       return;
     }
 
-    const activeIndex = Math.round(container.scrollLeft / container.clientWidth);
+    const activeIndex = getClosestCardIndex(container);
     setActiveContinueIndex(Math.min(activeIndex, continuingEvents.length - 1));
   };
 
@@ -54,11 +52,7 @@ function Home() {
     const container = continueScrollRef.current;
     const card = container?.children[index] as HTMLElement | undefined;
 
-    card?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: "start",
-    });
+    scrollCardIntoView(container, card);
   };
 
   const handleOpenJoinScroll = () => {
@@ -68,27 +62,14 @@ function Home() {
       return;
     }
 
-    const cards = Array.from(container.children) as HTMLElement[];
-    const activeIndex = cards.reduce((closestIndex, card, index) => {
-      const closestCard = cards[closestIndex];
-      const cardDistance = Math.abs(card.offsetLeft - container.scrollLeft);
-      const closestDistance = Math.abs(closestCard.offsetLeft - container.scrollLeft);
-
-      return cardDistance < closestDistance ? index : closestIndex;
-    }, 0);
-
-    setActiveOpenJoinIndex(activeIndex);
+    setActiveOpenJoinIndex(getClosestCardIndex(container));
   };
 
   const scrollToOpenJoinItem = (index: number) => {
     const container = openJoinScrollRef.current;
     const card = container?.children[index] as HTMLElement | undefined;
 
-    card?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: "start",
-    });
+    scrollCardIntoView(container, card);
   };
 
   return (
@@ -191,7 +172,7 @@ function Home() {
           />
         ))}
       </div>
-      <div className="mt-3 flex justify-center gap-1.5">
+      <div className="mb-6 mt-5 flex justify-center gap-1.5">
         {openToJoinItems.map((item, index) => (
           <button
             key={item.id}
@@ -205,35 +186,32 @@ function Home() {
           />
         ))}
       </div>
-
-      <SectionHeader title="Trending Concepts" to="/explore" />
-      <div className="no-scrollbar flex gap-3 overflow-x-auto px-4 pb-6">
-        {trending.map((c) => (
-          <div key={c.id} className="w-32 shrink-0">
-            <Link to="/concept/$id" params={{ id: c.id }} className="block">
-              <div className="relative h-40 overflow-hidden rounded-2xl">
-                <ConceptImage src={c.image} alt={c.title} className="h-full w-full" />
-                <ConceptFormatBadge type={c.type} className="h-6 w-3.5" />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              </div>
-              <div className="mt-2 text-sm font-semibold leading-tight">{c.title}</div>
-            </Link>
-            <HostLink host={c.host} hostId={c.hostId} className="mt-1.5" />
-            <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
-              {isConceptEnded(c.status) ? (
-                <>
-                  <Star className="h-3 w-3 fill-warning text-warning" /> {c.rating}
-                </>
-              ) : (
-                <>
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                  {getConceptStatusLabel(c.status)}
-                </>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
     </MobileShell>
   );
+}
+
+function getClosestCardIndex(container: HTMLElement) {
+  const cards = Array.from(container.children) as HTMLElement[];
+  const viewportCenter = container.scrollLeft + container.clientWidth / 2;
+
+  return cards.reduce((closestIndex, card, index) => {
+    const closestCard = cards[closestIndex];
+    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+    const closestCenter = closestCard.offsetLeft + closestCard.offsetWidth / 2;
+
+    return Math.abs(cardCenter - viewportCenter) < Math.abs(closestCenter - viewportCenter)
+      ? index
+      : closestIndex;
+  }, 0);
+}
+
+function scrollCardIntoView(container?: HTMLElement | null, card?: HTMLElement) {
+  if (!container || !card) {
+    return;
+  }
+
+  container.scrollTo({
+    left: card.offsetLeft - (container.clientWidth - card.clientWidth) / 2,
+    behavior: "smooth",
+  });
 }

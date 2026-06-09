@@ -1,18 +1,27 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import {
+  Award,
   BadgeCheck,
   ChevronRight,
-  Flame,
+  Clock3,
   Medal,
   Settings,
+  ShieldCheck,
   Sparkles,
   Star,
   Trophy,
 } from "lucide-react";
-import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
+import type { ReactNode } from "react";
+import { useState } from "react";
 import { ConceptImage } from "@/components/ConceptImage";
 import { MobileShell } from "@/components/MobileShell";
-import { concepts, me } from "@/data/mock";
+import {
+  concepts,
+  me,
+  passportProfile,
+  type PassportFormat,
+  type PassportHistoryItem,
+} from "@/data/mock";
 
 export const Route = createFileRoute("/passport")({
   head: () => ({
@@ -24,23 +33,91 @@ export const Route = createFileRoute("/passport")({
   component: Passport,
 });
 
-const statCards = [
-  { key: "joined", label: "Joined", Icon: Sparkles },
-  { key: "played", label: "Played", Icon: Flame },
-  { key: "wins", label: "Wins", Icon: Trophy },
-  { key: "top10", label: "Top 10%", Icon: Medal },
-] as const;
+type PassportTab = "highlights" | "badges" | "history";
+type HistoryFilter = "All" | PassportFormat;
+
+const tabs: { id: PassportTab; label: string }[] = [
+  { id: "highlights", label: "Highlights" },
+  { id: "badges", label: "Badges" },
+  { id: "history", label: "History" },
+];
+
+const formats: HistoryFilter[] = [
+  "All",
+  "Narrative",
+  "Episodic",
+  "Competitive",
+  "One Shot",
+  "Minigames",
+];
+
+const badgeIcons = [Trophy, Medal, Star, Clock3, ShieldCheck, Award];
+
+function groupHistoryByConcept(items: PassportHistoryItem[]) {
+  const groups = new Map<string, PassportHistoryItem[]>();
+
+  items.forEach((item) => {
+    groups.set(item.conceptTitle, [...(groups.get(item.conceptTitle) ?? []), item]);
+  });
+
+  return Array.from(groups, ([conceptTitle, groupItems]) => ({ conceptTitle, items: groupItems }));
+}
+
+function getBestHistoryResult(items: PassportHistoryItem[]) {
+  const priority = ["Winner", "First", "Top 5%", "Top 10%", "Final", "Qualified", "Completed"];
+  const results = items.flatMap((item) => (item.result ? [item.result] : []));
+
+  return (
+    results.sort((a, b) => {
+      const aIndex = priority.findIndex((label) => a.includes(label));
+      const bIndex = priority.findIndex((label) => b.includes(label));
+
+      return (
+        (aIndex === -1 ? priority.length : aIndex) - (bIndex === -1 ? priority.length : bIndex)
+      );
+    })[0] ?? "Recorded"
+  );
+}
+
+function getBadgeSummary(items: PassportHistoryItem[]) {
+  return getBadgeCounts(items)
+    .map(([badge, count]) => `${badge} x${count}`)
+    .join(" | ");
+}
+
+function getBadgeCounts(items: PassportHistoryItem[]) {
+  const counts = new Map<string, number>();
+
+  items
+    .flatMap((item) => item.badges)
+    .forEach((badge) => {
+      counts.set(badge, (counts.get(badge) ?? 0) + 1);
+    });
+
+  return Array.from(counts);
+}
+
+function getCompletedLabel(format: PassportFormat) {
+  return format === "Narrative" || format === "Episodic" ? "episodes" : "entries";
+}
 
 function Passport() {
-  const traits = Object.entries(me.traits).sort(([, a], [, b]) => b - a);
-  const featuredConcepts = concepts.slice(0, 4);
-  const strongestTrait = traits[0];
-  const averageTrait =
-    traits.reduce((total, [, value]) => total + value, 0) / Math.max(traits.length, 1);
+  const [activeTab, setActiveTab] = useState<PassportTab>("highlights");
+  const [activeFormat, setActiveFormat] = useState<HistoryFilter>("All");
+  const [selectedConceptTitle, setSelectedConceptTitle] = useState<string | null>(null);
+  const [selectedEpisodeId, setSelectedEpisodeId] = useState<string | null>(null);
+  const progressPercent = Math.round(
+    (passportProfile.progress.currentXp / passportProfile.progress.nextLevelXp) * 100,
+  );
+  const visibleHistory =
+    activeFormat === "All"
+      ? passportProfile.history
+      : passportProfile.history.filter((item) => item.format === activeFormat);
+  const visibleHistoryGroups = groupHistoryByConcept(visibleHistory);
 
   return (
     <MobileShell>
-      <section className="relative overflow-hidden bg-[#10131A] px-4 pb-5 pt-4 text-white">
+      <section className="relative overflow-hidden bg-[#10131A] px-4 pb-4 pt-4 text-white">
         <ConceptImage
           src={concepts[0].image}
           alt=""
@@ -51,9 +128,9 @@ function Passport() {
         <div className="relative z-10 flex items-center justify-between">
           <div>
             <div className="text-[11px] font-bold uppercase tracking-wide text-white/55">
-              Wave Passport
+              MIDAN Passport
             </div>
-            <h1 className="text-2xl font-black leading-tight">Player Identity</h1>
+            <h1 className="text-2xl font-black leading-tight">Profile</h1>
           </div>
           <button
             type="button"
@@ -64,7 +141,7 @@ function Passport() {
           </button>
         </div>
 
-        <div className="relative z-10 mt-5 overflow-hidden rounded-2xl border border-white/12 bg-white/[0.07] p-4 shadow-2xl shadow-black/20">
+        <div className="relative z-10 mt-5 rounded-2xl border border-white/12 bg-white/[0.07] p-4 shadow-2xl shadow-black/20">
           <div className="flex items-center gap-3.5">
             <ConceptImage
               src={me.avatar}
@@ -83,129 +160,649 @@ function Passport() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-            <CredentialMetric label="Played" value={String(me.stats.played)} />
-            <CredentialMetric label="Wins" value={String(me.stats.wins)} />
-            <CredentialMetric label="Top 10%" value={String(me.stats.top10)} />
+      <div className="border-b border-border bg-background px-4 pt-3">
+        <div className="no-scrollbar flex gap-6 overflow-x-auto">
+          {tabs.map((tab) => {
+            const active = activeTab === tab.id;
+
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+                className={`relative shrink-0 pb-2.5 text-sm font-bold transition ${
+                  active ? "text-primary" : "text-muted-foreground"
+                }`}
+              >
+                {tab.label}
+                {active && (
+                  <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="px-4 py-4">
+        {activeTab === "highlights" && <Highlights progressPercent={progressPercent} />}
+        {activeTab === "badges" && <Badges />}
+        {activeTab === "history" && (
+          <History
+            activeFormat={activeFormat}
+            setActiveFormat={setActiveFormat}
+            visibleHistoryGroups={visibleHistoryGroups}
+            selectedConceptTitle={selectedConceptTitle}
+            setSelectedConceptTitle={setSelectedConceptTitle}
+            selectedEpisodeId={selectedEpisodeId}
+            setSelectedEpisodeId={setSelectedEpisodeId}
+          />
+        )}
+      </div>
+    </MobileShell>
+  );
+}
+
+function Highlights({ progressPercent }: { progressPercent: number }) {
+  const progress = passportProfile.progress;
+  const [conceptsJoined, episodesCompleted, submissionsMade, completionRate] =
+    passportProfile.coreStats;
+  const [onTime, voting, dropout] = passportProfile.reliability;
+  const [wins, topPlacements, featuredEntries, averageRating] = passportProfile.recognition;
+
+  return (
+    <div className="space-y-4 pb-6">
+      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+        <div className="flex items-start gap-3">
+          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
+            <Sparkles className="h-5 w-5" />
           </div>
-
-          <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-            <CredentialDetail label="Signature Trait" value={strongestTrait[0]} />
-            <CredentialDetail label="Trait Avg." value={averageTrait.toFixed(1)} />
+          <div className="min-w-0 flex-1">
+            <div className="text-xl font-black leading-tight">{progress.label}</div>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+              XP is earned from verified participation: completed episodes, submitted entries,
+              voting, and host-recognized contributions.
+            </p>
+          </div>
+        </div>
+        <div className="mt-4">
+          <div className="flex items-center justify-between gap-3 text-sm">
+            <span className="font-bold">Progress to Level {progress.nextLevel}</span>
+            <span className="font-black text-primary">
+              {progress.currentXp.toLocaleString()} / {progress.nextLevelXp.toLocaleString()} XP
+            </span>
+          </div>
+          <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full rounded-full bg-primary"
+              style={{ width: `${progressPercent}%` }}
+            />
           </div>
         </div>
       </section>
 
-      <section className="px-4 pt-4">
-        <div className="grid grid-cols-4 gap-2">
-          {statCards.map(({ key, label, Icon }) => (
-            <div key={key} className="rounded-xl border border-border bg-card p-2.5 text-center">
-              <Icon className="mx-auto h-4 w-4 text-primary" />
-              <div className="mt-1 text-lg font-black leading-none">{me.stats[key]}</div>
-              <div className="mt-1 truncate text-[9px] font-bold uppercase text-muted-foreground">
-                {label}
+      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+        <SectionTitle icon={<Sparkles className="h-4 w-4" />} title="Activity" />
+        <div className="mt-3 space-y-2">
+          <InsightRow
+            label={conceptsJoined.label}
+            value={conceptsJoined.value}
+            description="Distinct concepts entered. A 7-episode series still counts as one concept."
+          />
+          <InsightRow
+            label={episodesCompleted.label}
+            value={episodesCompleted.value}
+            description="Individual episodes, rounds, events, or rooms finished."
+          />
+          <InsightRow
+            label={submissionsMade.label}
+            value={submissionsMade.value}
+            description="Verified text, image, video, voice, or live-action contributions."
+          />
+          <InsightRow
+            label={completionRate.label}
+            value={completionRate.value}
+            description="Share of joined commitments that were completed."
+          />
+        </div>
+      </section>
+
+      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+        <SectionTitle icon={<ShieldCheck className="h-4 w-4" />} title="Trust Signals" />
+        <div className="mt-3 space-y-2">
+          <InsightRow
+            label={onTime.label}
+            value={onTime.value}
+            description="Entries submitted before their deadline."
+          />
+          <InsightRow
+            label={voting.label}
+            value={voting.value}
+            description="Voting rounds completed after joining."
+          />
+          <InsightRow
+            label={dropout.label}
+            value={dropout.value}
+            description="Joined experiences left unfinished."
+            subtle
+          />
+        </div>
+      </section>
+
+      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+        <SectionTitle icon={<Trophy className="h-4 w-4" />} title="Quality Signals" />
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          {[
+            { ...wins, description: "First-place finishes where the format had a winner." },
+            {
+              ...topPlacements,
+              description: "High finishes across competitive and judged formats.",
+            },
+            { ...featuredEntries, description: "Entries highlighted by hosts." },
+            { ...averageRating, description: "Average rating from completed public records." },
+          ].map((item) => (
+            <div key={item.label} className="rounded-xl bg-muted p-3">
+              <div className="text-lg font-black leading-tight text-primary">{item.value}</div>
+              <div className="mt-1 text-xs font-black leading-tight">{item.label}</div>
+              <div className="mt-1 text-[11px] leading-snug text-muted-foreground">
+                {item.description}
               </div>
             </div>
           ))}
         </div>
       </section>
+    </div>
+  );
+}
 
-      <section className="px-4 pt-5">
-        <SectionTitle kicker="Performance" title="Trait Map" />
-        <div className="mt-3 rounded-2xl border border-border bg-card p-4 shadow-sm">
-          <div className="grid grid-cols-2 gap-3">
-            {traits.map(([name, value]) => (
-              <TraitMeter key={name} name={name} value={value} />
-            ))}
+function Badges() {
+  return (
+    <div className="space-y-3 pb-6">
+      {passportProfile.badges.map((badge, index) => {
+        const Icon = badgeIcons[index % badgeIcons.length];
+
+        return (
+          <div key={badge.id} className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+            <div className="flex items-start gap-3">
+              <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
+                <Icon className="h-5 w-5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="truncate text-base font-black">{badge.name}</div>
+                  <span className="shrink-0 rounded-full bg-muted px-2.5 py-1 text-xs font-black text-primary">
+                    x{badge.count}
+                  </span>
+                </div>
+                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                  {badge.description}
+                </p>
+              </div>
+            </div>
           </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function History({
+  activeFormat,
+  setActiveFormat,
+  visibleHistoryGroups,
+  selectedConceptTitle,
+  setSelectedConceptTitle,
+  selectedEpisodeId,
+  setSelectedEpisodeId,
+}: {
+  activeFormat: HistoryFilter;
+  setActiveFormat: (format: HistoryFilter) => void;
+  visibleHistoryGroups: { conceptTitle: string; items: PassportHistoryItem[] }[];
+  selectedConceptTitle: string | null;
+  setSelectedConceptTitle: (title: string | null) => void;
+  selectedEpisodeId: string | null;
+  setSelectedEpisodeId: (id: string | null) => void;
+}) {
+  const selectedGroup = selectedConceptTitle
+    ? visibleHistoryGroups.find((group) => group.conceptTitle === selectedConceptTitle)
+    : undefined;
+  const selectedEpisode = selectedEpisodeId
+    ? selectedGroup?.items.find((item) => item.id === selectedEpisodeId)
+    : undefined;
+
+  if (selectedGroup && selectedEpisode) {
+    return (
+      <EpisodeDetailView
+        item={selectedEpisode}
+        onHistory={() => {
+          setSelectedConceptTitle(null);
+          setSelectedEpisodeId(null);
+        }}
+        onConcept={() => setSelectedEpisodeId(null)}
+      />
+    );
+  }
+
+  if (selectedGroup) {
+    return (
+      <ConceptRecordView
+        group={selectedGroup}
+        onHistory={() => {
+          setSelectedConceptTitle(null);
+          setSelectedEpisodeId(null);
+        }}
+        onSelectEpisode={(id) => setSelectedEpisodeId(id)}
+      />
+    );
+  }
+
+  return (
+    <div className="pb-6">
+      <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-3">
+        {formats.map((format) => {
+          const active = activeFormat === format;
+
+          return (
+            <button
+              key={format}
+              type="button"
+              onClick={() => {
+                setActiveFormat(format);
+                setSelectedConceptTitle(null);
+                setSelectedEpisodeId(null);
+              }}
+              className={`shrink-0 rounded-full border px-3 py-2 text-xs font-bold transition ${
+                active
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-card text-muted-foreground"
+              }`}
+            >
+              {format}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="space-y-3">
+        {visibleHistoryGroups.map((group) => (
+          <HistoryConceptCard
+            key={group.conceptTitle}
+            group={group}
+            onView={() => setSelectedConceptTitle(group.conceptTitle)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function HistoryConceptCard({
+  group,
+  onView,
+}: {
+  group: { conceptTitle: string; items: PassportHistoryItem[] };
+  onView: () => void;
+}) {
+  const format = group.items[0]?.format ?? "Narrative";
+  const totalXp = group.items.reduce((total, item) => total + item.xp, 0);
+  const latest = group.items[0];
+  const best = getBestHistoryResult(group.items);
+  const badgeSummary = getBadgeSummary(group.items);
+  const completedLabel = getCompletedLabel(format);
+
+  return (
+    <button
+      type="button"
+      onClick={onView}
+      className="w-full rounded-2xl border border-border bg-card p-4 text-left shadow-sm transition hover:bg-muted/35"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="min-w-0 truncate text-base font-black leading-tight">
+              {group.conceptTitle}
+            </div>
+            <span className="rounded-full bg-primary/10 px-2 py-1 text-[10px] font-black text-primary">
+              {format}
+            </span>
+          </div>
+          <div className="mt-1 text-xs font-bold text-muted-foreground">
+            {group.items.length} {completedLabel} completed
+          </div>
+        </div>
+        <ChevronRight className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" />
+      </div>
+
+      <div className="mt-3 space-y-2 rounded-xl bg-muted px-3 py-2.5">
+        <HistoryFact label="Best" value={best} />
+        <HistoryFact label="Latest" value={latest?.date ?? "Recorded"} />
+      </div>
+
+      <div className="mt-3 flex items-end justify-between gap-3">
+        <div className="min-w-0 text-xs font-semibold text-muted-foreground">
+          {badgeSummary ? (
+            <span className="line-clamp-1">{badgeSummary}</span>
+          ) : (
+            <span>No badge preview yet</span>
+          )}
+        </div>
+        <div className="shrink-0 text-right">
+          <div className="text-sm font-black text-primary">+{totalXp} XP</div>
+          <div className="mt-0.5 text-xs font-black text-primary">View record</div>
+        </div>
+      </div>
+    </button>
+  );
+}
+
+function ConceptRecordView({
+  group,
+  onHistory,
+  onSelectEpisode,
+}: {
+  group: { conceptTitle: string; items: PassportHistoryItem[] };
+  onHistory: () => void;
+  onSelectEpisode: (id: string) => void;
+}) {
+  const format = group.items[0]?.format ?? "Narrative";
+  const totalXp = group.items.reduce((total, item) => total + item.xp, 0);
+  const latest = group.items[0];
+  const best = getBestHistoryResult(group.items);
+  const badgeCounts = getBadgeCounts(group.items);
+  const completedLabel = getCompletedLabel(format);
+  const recordsTitle = completedLabel === "episodes" ? "Completed Episodes" : "Completed Entries";
+
+  return (
+    <div className="space-y-4 pb-6">
+      <HistoryBreadcrumb
+        items={[{ label: "History", onClick: onHistory }, { label: group.conceptTitle }]}
+      />
+
+      <section className="space-y-3">
+        <div>
+          <div className="text-[11px] font-black uppercase tracking-wide text-primary">
+            Concept Record
+          </div>
+          <div className="mt-1 flex items-start justify-between gap-3">
+            <h2 className="min-w-0 text-2xl font-black leading-tight">{group.conceptTitle}</h2>
+            <span className="mt-1 shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-black text-primary">
+              {format}
+            </span>
+          </div>
+        </div>
+
+        <div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
+          <ConceptSummaryChip value={`${group.items.length} ${completedLabel} completed`} />
+          <ConceptSummaryChip value={`${best} best result`} />
+          <ConceptSummaryChip value={`+${totalXp} XP earned`} />
+          <ConceptSummaryChip value={`Latest ${latest?.date ?? "Recorded"}`} />
         </div>
       </section>
 
-      <section className="px-4 pt-5">
-        <SectionTitle kicker="Recent play" title="Concept History" />
-        <div className="mt-3 space-y-3 pb-6">
-          {featuredConcepts.map((concept, index) => (
-            <Link
-              key={concept.id}
-              to="/concept/$id"
-              params={{ id: concept.id }}
-              className="group relative flex min-h-28 overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:bg-muted/40"
-            >
-              <div className="relative w-28 shrink-0 overflow-hidden">
-                <ConceptImage
-                  src={concept.image}
-                  alt={concept.title}
-                  className="h-full w-full"
-                  imageClassName="transition duration-300 group-hover:scale-105"
-                />
-                <ConceptFormatBadge type={concept.type} className="right-2 h-5 w-3" />
-              </div>
-              <div className="min-w-0 flex-1 p-3">
-                <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-primary">
-                  <Star className="h-3.5 w-3.5 fill-primary" />
-                  Entry #{index + 1}
-                </div>
-                <div className="mt-1 line-clamp-2 text-base font-black leading-tight">
-                  {concept.title}
-                </div>
-                <div className="mt-1 truncate text-xs font-medium text-muted-foreground">
-                  Hosted by {concept.host}
-                </div>
-                <div className="mt-2 flex items-center justify-between gap-2 text-xs font-semibold text-muted-foreground">
-                  <span>{concept.rating.toFixed(1)} rating</span>
-                  <ChevronRight className="h-4 w-4 shrink-0 transition group-hover:translate-x-0.5" />
-                </div>
-              </div>
-            </Link>
+      <section>
+        <div className="mb-2.5">
+          <div className="text-sm font-black">{recordsTitle}</div>
+          {badgeCounts.length > 0 && (
+            <div className="mt-1 truncate text-xs font-semibold text-muted-foreground">
+              {getBadgeSummary(group.items)}
+            </div>
+          )}
+        </div>
+        <div className="space-y-2.5">
+          {group.items.map((item) => (
+            <EpisodeRecordRow key={item.id} item={item} onView={() => onSelectEpisode(item.id)} />
           ))}
         </div>
       </section>
-    </MobileShell>
-  );
-}
-
-function CredentialDetail({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
-      <div className="text-[9px] font-bold uppercase tracking-wide text-white/45">{label}</div>
-      <div className="mt-0.5 truncate text-sm font-black">{value}</div>
     </div>
   );
 }
 
-function CredentialMetric({ label, value }: { label: string; value: string }) {
+function ConceptSummaryChip({ value }: { value: string }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.06] px-2 py-2">
-      <div className="text-lg font-black leading-none">{value}</div>
-      <div className="mt-1 truncate text-[9px] font-bold uppercase tracking-wide text-white/45">
-        {label}
+    <span className="shrink-0 rounded-full border border-border bg-background px-3 py-2 text-xs font-black text-foreground shadow-[0_1px_0_rgba(15,23,42,0.03)]">
+      {value}
+    </span>
+  );
+}
+
+function EpisodeRecordRow({ item, onView }: { item: PassportHistoryItem; onView: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onView}
+      className="w-full rounded-2xl border border-border bg-card px-3.5 py-3 text-left shadow-sm transition hover:border-primary/35 hover:bg-primary/[0.03]"
+    >
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <div className="truncate text-sm font-black leading-tight">
+            {item.episodeLabel ?? item.conceptTitle}
+          </div>
+          <div className="mt-1 text-[11px] font-semibold text-muted-foreground">
+            {item.status} - {item.date}
+          </div>
+          {item.result && (
+            <div className="mt-1 text-xs font-bold text-foreground">{item.result}</div>
+          )}
+        </div>
+        <div className="flex shrink-0 items-center gap-1.5">
+          <span className="rounded-full bg-primary/10 px-2 py-1 text-xs font-black text-primary">
+            +{item.xp} XP
+          </span>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        </div>
+      </div>
+      <div className="mt-2 border-t border-border/70 pt-2 text-xs font-black text-primary">
+        View submission
+      </div>
+    </button>
+  );
+}
+
+type HistoryBreadcrumbItem = {
+  label: string;
+  onClick?: () => void;
+};
+
+function HistoryBreadcrumb({ items }: { items: HistoryBreadcrumbItem[] }) {
+  return (
+    <div className="flex min-w-0 items-center gap-1 text-[11px] font-bold text-muted-foreground">
+      {items.map((item, index) => (
+        <span key={`${item.label}-${index}`} className="flex min-w-0 items-center gap-1">
+          {index > 0 && <span className="text-muted-foreground/60">&rsaquo;</span>}
+          {item.onClick ? (
+            <button
+              type="button"
+              onClick={item.onClick}
+              className="shrink-0 text-primary transition hover:text-primary/80"
+            >
+              {item.label}
+            </button>
+          ) : (
+            <span className={index === items.length - 1 ? "truncate text-foreground" : "shrink-0"}>
+              {item.label}
+            </span>
+          )}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function HistoryFact({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between gap-3 border-b border-border/70 py-1.5 last:border-b-0">
+      <div className="text-xs font-bold text-muted-foreground">{label}</div>
+      <div className="min-w-0 truncate text-right text-xs font-black text-foreground">{value}</div>
+    </div>
+  );
+}
+
+function EpisodeDetailView({
+  item,
+  onHistory,
+  onConcept,
+}: {
+  item: PassportHistoryItem;
+  onHistory: () => void;
+  onConcept: () => void;
+}) {
+  return (
+    <div className="space-y-4 pb-6">
+      <HistoryBreadcrumb
+        items={[
+          { label: "History", onClick: onHistory },
+          { label: item.conceptTitle, onClick: onConcept },
+          { label: item.episodeLabel ?? item.conceptTitle },
+        ]}
+      />
+
+      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="text-[11px] font-black uppercase tracking-wide text-primary">
+              Submission detail
+            </div>
+            <h2 className="mt-1 text-xl font-black leading-tight">
+              {item.episodeLabel ?? item.conceptTitle}
+            </h2>
+            <div className="mt-1 text-sm font-semibold text-muted-foreground">
+              {item.status} - {item.date}
+              {item.result ? ` - ${item.result}` : ""}
+            </div>
+          </div>
+          <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-black text-primary">
+            +{item.xp} XP
+          </span>
+        </div>
+      </section>
+
+      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+        <SectionTitle icon={<Star className="h-4 w-4" />} title="Performance" />
+        <div className="mt-3 rounded-xl bg-muted px-3 py-2.5">
+          <HistoryFact label="User score" value={item.score ? String(item.score) : "N/A"} />
+          <HistoryFact
+            label="Average score"
+            value={item.averageScore ? String(item.averageScore) : "N/A"}
+          />
+          <HistoryFact label="Rank / position" value={item.rank ?? "N/A"} />
+          <HistoryFact
+            label="Community rating"
+            value={item.communityRating ? item.communityRating.toFixed(1) : "N/A"}
+          />
+        </div>
+      </section>
+
+      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+        <div className="flex items-center justify-between gap-3">
+          <div className="text-[11px] font-black uppercase tracking-wide text-primary">
+            Your submission
+          </div>
+          <span className="rounded-full bg-card px-2 py-1 text-[10px] font-black text-primary">
+            {item.submission.kind}
+          </span>
+        </div>
+        <SubmissionPreview item={item} />
+      </section>
+
+      {item.hostFeedback && (
+        <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+          <SectionTitle icon={<ShieldCheck className="h-4 w-4" />} title="Feedback" />
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.hostFeedback}</p>
+        </section>
+      )}
+
+      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+        <SectionTitle icon={<Trophy className="h-4 w-4" />} title="Badges earned" />
+        {item.badges.length > 0 ? (
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {item.badges.map((badge) => (
+              <span
+                key={badge}
+                className="rounded-full bg-primary/10 px-2.5 py-1.5 text-xs font-black text-primary"
+              >
+                {badge}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <p className="mt-2 text-sm font-semibold text-muted-foreground">
+            No badges earned for this record.
+          </p>
+        )}
+      </section>
+    </div>
+  );
+}
+
+function InsightRow({
+  label,
+  value,
+  description,
+  subtle,
+}: {
+  label: string;
+  value: string;
+  description: string;
+  subtle?: boolean;
+}) {
+  return (
+    <div className="rounded-xl bg-muted p-3">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="text-sm font-black">{label}</div>
+          <div className="mt-1 text-[11px] leading-snug text-muted-foreground">{description}</div>
+        </div>
+        <div
+          className={`shrink-0 rounded-full px-2.5 py-1 text-sm font-black ${
+            subtle ? "bg-background text-muted-foreground" : "bg-primary/10 text-primary"
+          }`}
+        >
+          {value}
+        </div>
       </div>
     </div>
   );
 }
 
-function SectionTitle({ kicker, title }: { kicker: string; title: string }) {
+function SubmissionPreview({ item }: { item: PassportHistoryItem }) {
+  if (item.submission.kind === "Image") {
+    return (
+      <div className="mt-3 overflow-hidden rounded-xl border border-border bg-muted">
+        <div className="grid h-28 place-items-center bg-primary/10 text-center text-xs font-bold text-primary">
+          Image preview placeholder
+        </div>
+        <div className="p-3 text-sm leading-relaxed text-foreground">{item.submission.preview}</div>
+      </div>
+    );
+  }
+
+  if (item.submission.kind === "Video") {
+    return (
+      <div className="mt-3 overflow-hidden rounded-xl border border-border bg-muted">
+        <div className="grid h-28 place-items-center bg-[#10131A] text-center text-xs font-bold text-white">
+          Video preview placeholder
+        </div>
+        <div className="p-3 text-sm leading-relaxed text-foreground">{item.submission.preview}</div>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <div className="text-[11px] font-bold uppercase tracking-wide text-primary">{kicker}</div>
-      <h2 className="text-xl font-black leading-tight">{title}</h2>
+    <div className="mt-3 rounded-xl bg-muted p-3 text-sm leading-relaxed text-foreground">
+      {item.submission.preview}
     </div>
   );
 }
 
-function TraitMeter({ name, value }: { name: string; value: number }) {
-  const percent = `${Math.round(value * 10)}%`;
-
+function SectionTitle({ icon, title }: { icon: ReactNode; title: string }) {
   return (
-    <div className="min-w-0 rounded-xl bg-muted p-3">
-      <div className="flex items-center justify-between gap-2">
-        <div className="truncate text-xs font-bold">{name}</div>
-        <div className="text-xs font-black text-primary">{value.toFixed(1)}</div>
-      </div>
-      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-background">
-        <div className="h-full rounded-full bg-primary" style={{ width: percent }} />
-      </div>
+    <div className="flex items-center gap-2 text-sm font-black">
+      <span className="text-primary">{icon}</span>
+      {title}
     </div>
   );
 }

@@ -22,6 +22,8 @@ export const Route = createFileRoute("/explore")({
 });
 
 function Explore() {
+  const trending = concepts.slice(2, 5);
+
   return (
     <MobileShell>
       <header className="px-4 pb-1 pt-5">
@@ -39,50 +41,34 @@ function Explore() {
         </div>
       </div>
 
-      <SectionHeader title="Popular Concepts" to="/explore" />
-      <ul className="space-y-2 px-4">
-        {concepts.slice(0, 3).map((c) => (
-          <li key={c.id}>
-            <div className="flex items-center gap-3 rounded-xl bg-card p-2.5 border border-border">
-              <Link
-                to="/concept/$id"
-                params={{ id: c.id }}
-                className="relative shrink-0 overflow-hidden rounded-lg"
-              >
-                <ConceptImage src={c.image} alt={c.title} className="h-12 w-12 rounded-lg" />
-                <ConceptFormatBadge type={c.type} className="right-2 h-4 w-2.5" />
-              </Link>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-2">
-                  <Link to="/concept/$id" params={{ id: c.id }} className="truncate font-semibold">
-                    {c.title}
-                  </Link>
-                  <span
-                    className={`flex shrink-0 items-center gap-1 text-xs font-medium ${
-                      isConceptEnded(c.status) ? "text-warning" : "text-muted-foreground"
-                    }`}
-                  >
-                    {isConceptEnded(c.status) ? (
-                      <>
-                        <Star className="h-3 w-3 fill-warning" /> {c.rating}
-                      </>
-                    ) : (
-                      <>
-                        <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                        {getConceptStatusLabel(c.status)}
-                      </>
-                    )}
-                  </span>
-                </div>
-                <div className="mt-0.5 flex items-center justify-between text-xs text-muted-foreground">
-                  <HostLink host={c.host} hostId={c.hostId} className="px-2 py-0.5 text-[10px]" />
-                  <span>{c.participants} participants</span>
-                </div>
+      <SectionHeader title="Trending Concepts" to="/explore" />
+      <div className="no-scrollbar flex gap-3 overflow-x-auto px-4">
+        {trending.map((c) => (
+          <div key={c.id} className="w-32 shrink-0">
+            <Link to="/concept/$id" params={{ id: c.id }} className="block">
+              <div className="relative h-40 overflow-hidden rounded-2xl">
+                <ConceptImage src={c.image} alt={c.title} className="h-full w-full" />
+                <ConceptFormatBadge type={c.type} className="h-6 w-3.5" />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               </div>
+              <div className="mt-2 text-sm font-semibold leading-tight">{c.title}</div>
+            </Link>
+            <HostLink host={c.host} hostId={c.hostId} className="mt-1.5" />
+            <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
+              {isConceptEnded(c.status) ? (
+                <>
+                  <Star className="h-3 w-3 fill-warning text-warning" /> {c.rating}
+                </>
+              ) : (
+                <>
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  {getConceptStatusLabel(c.status)}
+                </>
+              )}
             </div>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
 
       <SectionHeader title="Categories" to="/explore" />
       <div className="grid grid-cols-4 gap-3 px-4">
