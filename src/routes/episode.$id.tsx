@@ -26,39 +26,39 @@ function EpisodePage() {
 
   return (
     <MobileShell>
-      <div className="px-4 pt-8">
-        <div className="grid grid-cols-[2.5rem_1fr] items-start gap-4">
-          <button
-            type="button"
-            onClick={() => router.history.back()}
-            aria-label="Back"
-            className="-ml-1 grid h-10 w-10 place-items-center rounded-full text-foreground transition hover:bg-muted"
-          >
-            <ArrowLeft className="h-6 w-6" />
-          </button>
-          <div>
-            <div className="text-sm font-medium text-muted-foreground">Episode {id}</div>
-            <h1 className="text-2xl font-black leading-tight tracking-tight">{episode.title}</h1>
-          </div>
-        </div>
-
-        <div className="mt-7 grid grid-cols-4 border-b border-border">
-          {tabs.map((t) => (
+      <div className="px-4 pt-[calc(2rem+env(safe-area-inset-top))]">
+          <div className="grid grid-cols-[2.5rem_1fr] items-start gap-4">
             <button
-              key={t}
               type="button"
-              onClick={() => setTab(t)}
-              className={`relative min-w-0 px-2 pb-3 text-center text-sm font-semibold ${
-                tab === t ? "text-primary" : "text-muted-foreground"
-              }`}
+              onClick={() => router.history.back()}
+              aria-label="Back"
+              className="-ml-1 grid h-10 w-10 place-items-center rounded-full text-foreground transition hover:bg-muted"
             >
-              {t}
-              {tab === t && (
-                <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
-              )}
+              <ArrowLeft className="h-6 w-6" />
             </button>
-          ))}
-        </div>
+            <div>
+              <div className="text-sm font-medium text-muted-foreground">Episode {id}</div>
+              <h1 className="text-2xl font-black leading-tight tracking-tight">{episode.title}</h1>
+            </div>
+          </div>
+
+          <div className="mt-7 grid grid-cols-4 border-b border-border">
+            {tabs.map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setTab(t)}
+                className={`relative min-w-0 px-2 pb-3 text-center text-sm font-semibold ${
+                  tab === t ? "text-primary" : "text-muted-foreground"
+                }`}
+              >
+                {t}
+                {tab === t && (
+                  <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
+                )}
+              </button>
+            ))}
+          </div>
 
         {tab === "Story" && (
           <div className="pt-4">

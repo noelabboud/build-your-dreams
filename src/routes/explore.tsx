@@ -25,22 +25,26 @@ function Explore() {
   const trending = concepts.slice(2, 5);
 
   return (
-    <MobileShell>
-      <header className="px-4 pb-1 pt-5">
-        <h1 className="text-2xl font-bold tracking-tight">Explore</h1>
-      </header>
+    <MobileShell
+      header={
+        <>
+          <header className="px-4 pb-1 pt-[calc(1.25rem+env(safe-area-inset-top))]">
+            <h1 className="text-2xl font-bold tracking-tight">Explore</h1>
+          </header>
 
-      <div className="px-4 pt-3">
-        <div className="flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2.5">
-          <Search className="h-4 w-4 text-muted-foreground" />
-          <input
-            placeholder="Search concepts, hosts, categories…"
-            className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-          />
-          <SlidersHorizontal className="h-4 w-4 text-muted-foreground" />
-        </div>
-      </div>
-
+          <div className="px-4 pt-3">
+            <div className="flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2.5">
+              <Search className="h-4 w-4 text-muted-foreground" />
+              <input
+                placeholder="Search concepts, hosts, categories…"
+                className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+              />
+              <SlidersHorizontal className="h-4 w-4 text-muted-foreground" />
+            </div>
+          </div>
+        </>
+      }
+    >
       <SectionHeader title="Trending Concepts" to="/explore" />
       <div className="no-scrollbar flex gap-3 overflow-x-auto px-4">
         {trending.map((c) => (

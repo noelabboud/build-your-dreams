@@ -75,155 +75,154 @@ function ConceptPage() {
 
   return (
     <MobileShell>
-      <div className="relative overflow-hidden">
-        <ConceptImage src={c.image} alt={c.title} className="h-56 w-full" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/35" />
-        <div className="absolute inset-x-0 top-0 flex items-center justify-between px-4 pt-4">
-          <button
-            type="button"
-            onClick={() => router.history.back()}
-            aria-label="Back"
-            className="grid h-10 w-10 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </button>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              aria-label="Save concept"
-              className="grid h-10 w-10 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
-            >
-              <Bookmark className="h-5 w-5" />
-            </button>
-            <button
-              type="button"
-              aria-label="Share concept"
-              className="grid h-10 w-10 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
-            >
-              <Share2 className="h-5 w-5" />
-            </button>
-          </div>
-        </div>
-        <div className="absolute inset-x-0 bottom-4 px-5 text-center text-white">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.26em] text-white/80">
-            {c.type}
-          </div>
-          <div className="mx-auto mt-2 max-w-sm font-display text-[1.8rem] font-black leading-none tracking-wide drop-shadow">
-            {c.title.toUpperCase()}
-          </div>
-        </div>
-      </div>
-
-      <div className="px-4 pt-4">
-        <section className="rounded-2xl border border-border bg-card p-3">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              <HostLink
-                host={c.host}
-                hostId={c.hostId}
-                avatar={hostProfile?.avatar}
-                variant="plain"
-                className="py-1"
-              />
-            </div>
-            {hasEnded && (
-              <span className="flex shrink-0 items-center gap-1 rounded-full bg-warning/15 px-2 py-1 text-xs font-bold text-warning">
-                <Star className="h-3.5 w-3.5 fill-warning" /> {c.rating}
-              </span>
-            )}
-          </div>
-
-          <div className="mt-3 grid grid-cols-3 gap-2 border-t border-border pt-3 text-center">
-            {isSeries ? (
-              <>
-                <Stat label="Episodes" value="6" />
-                <Stat label="Participants" value="1,245" />
-                {hasEnded ? (
-                  <Stat label="Completion" value="84%" />
-                ) : (
-                  <Stat label="Status" value={getConceptStatusLabel(c.status)} />
-                )}
-              </>
-            ) : c.type === "Minigame" ? (
-              <>
-                <Stat label="Mode" value="Live" />
-                <Stat label="Players" value={c.participants} />
-                {hasEnded ? (
-                  <Stat label="Rating" value={String(c.rating)} />
-                ) : (
-                  <Stat label="Status" value={getConceptStatusLabel(c.status)} />
-                )}
-              </>
-            ) : (
-              <>
-                <Stat label="Format" value="Single" />
-                <Stat label="Entries" value={c.participants} />
-                {hasEnded ? (
-                  <Stat label="Rating" value={String(c.rating)} />
-                ) : (
-                  <Stat label="Status" value={getConceptStatusLabel(c.status)} />
-                )}
-              </>
-            )}
-          </div>
-        </section>
-      </div>
-
-      {access && (
-        <div className="px-4 pt-3">
-          <section className="rounded-2xl border border-border bg-card p-3">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-primary">
-              {access.kind === "capped" ? (
-                <Users className="h-4 w-4" />
-              ) : (
-                <Clock className="h-4 w-4" />
-              )}
-              {access.title}
-            </div>
-            {access.kind === "capped" ? (
-              <CappedAccessProgress access={access} />
-            ) : (
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                <AccessTile
-                  icon={<Clock className="h-4 w-4" />}
-                  label="Ticketing closes"
-                  value={access.ticketingCountdown}
-                  detail={access.ticketingLabel}
-                />
-                <AccessTile
-                  icon={<CalendarClock className="h-4 w-4" />}
-                  label="Starts"
-                  value={access.startCountdown}
-                  detail={access.startLabel}
-                />
+          <div className="relative overflow-hidden">
+            <ConceptImage src={c.image} alt={c.title} className="h-56 w-full" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/35" />
+            <div className="absolute inset-x-0 top-0 flex items-center justify-between px-4 pt-[calc(1rem+env(safe-area-inset-top))]">
+              <button
+                type="button"
+                onClick={() => router.history.back()}
+                aria-label="Back"
+                className="grid h-10 w-10 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  aria-label="Save concept"
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
+                >
+                  <Bookmark className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Share concept"
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
+                >
+                  <Share2 className="h-5 w-5" />
+                </button>
               </div>
-            )}
-          </section>
-        </div>
-      )}
+            </div>
+            <div className="absolute inset-x-0 bottom-4 px-5 text-center text-white">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.26em] text-white/80">
+                {c.type}
+              </div>
+              <div className="mx-auto mt-2 max-w-sm font-display text-[1.8rem] font-black leading-none tracking-wide drop-shadow">
+                {c.title.toUpperCase()}
+              </div>
+            </div>
+          </div>
 
-      <div className="no-scrollbar mt-5 flex gap-6 overflow-x-auto border-b border-border px-4">
-        {conceptTabs.map((tab) => {
-          const active = activeTab === tab.id;
+          <div className="px-4 pt-4">
+            <section className="rounded-2xl border border-border bg-card p-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <HostLink
+                    host={c.host}
+                    hostId={c.hostId}
+                    avatar={hostProfile?.avatar}
+                    variant="plain"
+                    className="py-1"
+                  />
+                </div>
+                {hasEnded && (
+                  <span className="flex shrink-0 items-center gap-1 rounded-full bg-warning/15 px-2 py-1 text-xs font-bold text-warning">
+                    <Star className="h-3.5 w-3.5 fill-warning" /> {c.rating}
+                  </span>
+                )}
+              </div>
 
-          return (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setActiveTab(tab.id)}
-              className={`relative shrink-0 pb-2.5 text-sm font-semibold transition ${
-                active ? "text-primary" : "text-muted-foreground"
-              }`}
-            >
-              {tab.label}
-              {active && (
-                <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
-              )}
-            </button>
-          );
-        })}
-      </div>
+              <div className="mt-3 grid grid-cols-3 gap-2 border-t border-border pt-3 text-center">
+                {isSeries ? (
+                  <>
+                    <Stat label="Episodes" value="6" />
+                    <Stat label="Participants" value="1,245" />
+                    {hasEnded ? (
+                      <Stat label="Completion" value="84%" />
+                    ) : (
+                      <Stat label="Status" value={getConceptStatusLabel(c.status)} />
+                    )}
+                  </>
+                ) : c.type === "Minigame" ? (
+                  <>
+                    <Stat label="Mode" value="Live" />
+                    <Stat label="Players" value={c.participants} />
+                    {hasEnded ? (
+                      <Stat label="Rating" value={String(c.rating)} />
+                    ) : (
+                      <Stat label="Status" value={getConceptStatusLabel(c.status)} />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <Stat label="Format" value="Single" />
+                    <Stat label="Entries" value={c.participants} />
+                    {hasEnded ? (
+                      <Stat label="Rating" value={String(c.rating)} />
+                    ) : (
+                      <Stat label="Status" value={getConceptStatusLabel(c.status)} />
+                    )}
+                  </>
+                )}
+              </div>
+            </section>
+          </div>
 
+          {access && (
+            <div className="px-4 pt-3">
+              <section className="rounded-2xl border border-border bg-card p-3">
+                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-primary">
+                  {access.kind === "capped" ? (
+                    <Users className="h-4 w-4" />
+                  ) : (
+                    <Clock className="h-4 w-4" />
+                  )}
+                  {access.title}
+                </div>
+                {access.kind === "capped" ? (
+                  <CappedAccessProgress access={access} />
+                ) : (
+                  <div className="mt-3 grid grid-cols-2 gap-2">
+                    <AccessTile
+                      icon={<Clock className="h-4 w-4" />}
+                      label="Ticketing closes"
+                      value={access.ticketingCountdown}
+                      detail={access.ticketingLabel}
+                    />
+                    <AccessTile
+                      icon={<CalendarClock className="h-4 w-4" />}
+                      label="Starts"
+                      value={access.startCountdown}
+                      detail={access.startLabel}
+                    />
+                  </div>
+                )}
+              </section>
+            </div>
+          )}
+
+          <div className="no-scrollbar mt-5 flex gap-6 overflow-x-auto border-b border-border px-4">
+            {conceptTabs.map((tab) => {
+              const active = activeTab === tab.id;
+
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`relative shrink-0 pb-2.5 text-sm font-semibold transition ${
+                    active ? "text-primary" : "text-muted-foreground"
+                  }`}
+                >
+                  {tab.label}
+                  {active && (
+                    <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
       <div className="px-4 pt-4">
         {activeTab === "overview" && (
           <div className="space-y-5">

@@ -78,25 +78,31 @@ function Home() {
   };
 
   return (
-    <MobileShell>
-      <header className="flex items-center justify-between px-4 pt-4">
-        <div className="text-lg font-extrabold tracking-[0.16em] text-primary">MIDAN</div>
-        <button
-          aria-label="Notifications"
-          className="relative grid h-10 w-10 place-items-center rounded-full hover:bg-muted"
-        >
-          <Bell className="h-5 w-5" />
-          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-destructive" />
-        </button>
-      </header>
+    <MobileShell
+      header={
+        <>
+          <header className="flex items-center justify-between px-4 pt-[calc(1rem+env(safe-area-inset-top))]">
+            <div className="text-lg font-extrabold tracking-[0.16em] text-primary">MIDAN</div>
+            <button
+              aria-label="Notifications"
+              className="relative grid h-10 w-10 place-items-center rounded-full hover:bg-muted"
+            >
+              <Bell className="h-5 w-5" />
+              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-destructive" />
+            </button>
+          </header>
 
-      <div className="px-4 pb-1 pt-2">
-        <h1 className="text-[22px] font-bold tracking-tight">
-          Good morning, Noel <span className="ml-1">👋</span>
-        </h1>
-        <p className="mt-1 text-sm text-muted-foreground">Ready to continue your next challenge?</p>
-      </div>
-
+          <div className="px-4 pb-1 pt-2">
+            <h1 className="text-[22px] font-bold tracking-tight">
+              Good morning, Noel <span className="ml-1">👋</span>
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Ready to continue your next challenge?
+            </p>
+          </div>
+        </>
+      }
+    >
       <SectionHeader title="Continue Playing" />
       <div
         ref={continueScrollRef}

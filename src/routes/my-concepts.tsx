@@ -71,41 +71,45 @@ function MyConcepts() {
     activeTab === "all" ? activeItems : activeItems.filter((item) => item.status === activeTab);
 
   return (
-    <MobileShell>
-      <header className="flex items-center justify-between px-4 pb-1 pt-5">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">My Concepts</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Your next actions, organized.</p>
-        </div>
-        <button
-          aria-label="Notifications"
-          className="grid h-10 w-10 place-items-center rounded-full hover:bg-muted"
-        >
-          <Bell className="h-5 w-5" />
-        </button>
-      </header>
-
-      <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 py-3">
-        {tabs.map((tab) => {
-          const active = activeTab === tab.value;
-
-          return (
+    <MobileShell
+      header={
+        <>
+          <header className="flex items-center justify-between px-4 pb-1 pt-[calc(1.25rem+env(safe-area-inset-top))]">
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight">My Concepts</h1>
+              <p className="mt-1 text-sm text-muted-foreground">Your next actions, organized.</p>
+            </div>
             <button
-              key={tab.value}
-              type="button"
-              onClick={() => setActiveTab(tab.value)}
-              className={`shrink-0 rounded-full px-3.5 py-2 text-xs font-bold transition ${
-                active
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "border border-border bg-card text-muted-foreground"
-              }`}
+              aria-label="Notifications"
+              className="grid h-10 w-10 place-items-center rounded-full hover:bg-muted"
             >
-              {tab.label}
+              <Bell className="h-5 w-5" />
             </button>
-          );
-        })}
-      </div>
+          </header>
 
+          <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 py-3">
+            {tabs.map((tab) => {
+              const active = activeTab === tab.value;
+
+              return (
+                <button
+                  key={tab.value}
+                  type="button"
+                  onClick={() => setActiveTab(tab.value)}
+                  className={`shrink-0 rounded-full px-3.5 py-2 text-xs font-bold transition ${
+                    active
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "border border-border bg-card text-muted-foreground"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+        </>
+      }
+    >
       <ul className="space-y-2 px-4 pb-6 pt-1">
         {visibleItems.map((item) => {
           const concept = conceptById(item.conceptId);

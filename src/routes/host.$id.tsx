@@ -135,82 +135,82 @@ function HostPage() {
 
   return (
     <MobileShell>
-      <section className="relative overflow-hidden bg-muted/30 pb-5">
-        <div className="relative h-72 overflow-hidden bg-muted">
-          <ConceptImage
-            src={host.coverImage}
-            alt=""
-            className="absolute inset-0 h-full w-full opacity-90"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-white/55 to-muted/30" />
-        </div>
-
-        <div className="absolute inset-x-0 top-0 z-20 flex h-14 items-center justify-between px-4">
-          <button
-            type="button"
-            onClick={() => router.history.back()}
-            aria-label="Back"
-            className="grid h-10 w-10 place-items-center rounded-full bg-white/80 text-foreground shadow-sm backdrop-blur transition hover:bg-white"
-          >
-            <ArrowLeft className="h-6 w-6" />
-          </button>
-          <button
-            type="button"
-            aria-label="More actions"
-            className="grid h-10 w-10 place-items-center rounded-full bg-white/80 text-foreground shadow-sm backdrop-blur transition hover:bg-white"
-          >
-            <MoreHorizontal className="h-6 w-6" />
-          </button>
-        </div>
-
-        <div className="relative z-10 -mt-48 px-5">
-          <div className="rounded-[1.75rem] border border-border/80 bg-card/95 p-4 shadow-[0_18px_45px_-28px_rgba(15,23,42,0.65)] backdrop-blur">
-            <div className="flex items-end gap-4">
+          <section className="relative overflow-hidden bg-muted/30 pb-5">
+            <div className="relative h-72 overflow-hidden bg-muted">
               <ConceptImage
-                src={host.avatar}
-                alt={host.name}
-                className="h-24 w-24 shrink-0 rounded-full border-4 border-card shadow-lg shadow-slate-900/15"
+                src={host.coverImage}
+                alt=""
+                className="absolute inset-0 h-full w-full opacity-90"
               />
-              <div className="min-w-0 flex-1 pb-2">
-                <div className="flex items-center gap-1.5 text-3xl font-black leading-none tracking-tight">
-                  <span className="truncate">{host.name}</span>
-                  {host.verified && <BadgeCheck className="h-6 w-6 shrink-0 text-primary" />}
+              <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-white/55 to-muted/30" />
+            </div>
+
+        <div className="absolute inset-x-0 top-0 z-20 flex h-[calc(3.5rem+env(safe-area-inset-top))] items-center justify-between px-4 pt-[env(safe-area-inset-top)]">
+              <button
+                type="button"
+                onClick={() => router.history.back()}
+                aria-label="Back"
+                className="grid h-10 w-10 place-items-center rounded-full bg-white/80 text-foreground shadow-sm backdrop-blur transition hover:bg-white"
+              >
+                <ArrowLeft className="h-6 w-6" />
+              </button>
+              <button
+                type="button"
+                aria-label="More actions"
+                className="grid h-10 w-10 place-items-center rounded-full bg-white/80 text-foreground shadow-sm backdrop-blur transition hover:bg-white"
+              >
+                <MoreHorizontal className="h-6 w-6" />
+              </button>
+            </div>
+
+            <div className="relative z-10 -mt-48 px-5">
+              <div className="rounded-[1.75rem] border border-border/80 bg-card/95 p-4 shadow-[0_18px_45px_-28px_rgba(15,23,42,0.65)] backdrop-blur">
+                <div className="flex items-end gap-4">
+                  <ConceptImage
+                    src={host.avatar}
+                    alt={host.name}
+                    className="h-24 w-24 shrink-0 rounded-full border-4 border-card shadow-lg shadow-slate-900/15"
+                  />
+                  <div className="min-w-0 flex-1 pb-2">
+                    <div className="flex items-center gap-1.5 text-3xl font-black leading-none tracking-tight">
+                      <span className="truncate">{host.name}</span>
+                      {host.verified && <BadgeCheck className="h-6 w-6 shrink-0 text-primary" />}
+                    </div>
+                    <div className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                      Host portfolio
+                    </div>
+                  </div>
                 </div>
-                <div className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                  Host portfolio
+
+                <div className="mt-4">
+                  <SocialLinks socials={host.socials} socialStats={host.socialStats} />
+                </div>
+
+                <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
+                  {host.bio}
+                </p>
+
+                <div className="mt-4 grid grid-cols-4 divide-x divide-border rounded-2xl border border-border bg-background p-3 shadow-sm">
+                  <Stat label="Concepts" value={String(hostConcepts.length)} />
+                  <Stat label="Episodes" value={String(host.completedEpisodes)} />
+                  <Stat label="Participants" value={formatCompact(totalParticipants)} />
+                  <Stat label="Avg. Rating" value={averageRating} />
                 </div>
               </div>
             </div>
+          </section>
 
-            <div className="mt-4">
-              <SocialLinks socials={host.socials} socialStats={host.socialStats} />
-            </div>
-
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              {host.bio}
-            </p>
-
-            <div className="mt-4 grid grid-cols-4 divide-x divide-border rounded-2xl border border-border bg-background p-3 shadow-sm">
-              <Stat label="Concepts" value={String(hostConcepts.length)} />
-              <Stat label="Episodes" value={String(host.completedEpisodes)} />
-              <Stat label="Participants" value={formatCompact(totalParticipants)} />
-              <Stat label="Avg. Rating" value={averageRating} />
-            </div>
+          <div className="no-scrollbar flex gap-6 overflow-x-auto border-b border-border bg-background px-4 pt-4">
+            {hostLayers.map((layer) => (
+              <LayerButton
+                key={layer.id}
+                label={layer.label}
+                active={activeLayer === layer.id}
+                onClick={() => scrollToLayer(layer.id)}
+              />
+            ))}
           </div>
-        </div>
-      </section>
-
       <section className="pb-6">
-        <div className="no-scrollbar flex gap-6 overflow-x-auto border-b border-border bg-background px-4 pt-4">
-          {hostLayers.map((layer) => (
-            <LayerButton
-              key={layer.id}
-              label={layer.label}
-              active={activeLayer === layer.id}
-              onClick={() => scrollToLayer(layer.id)}
-            />
-          ))}
-        </div>
 
         <div
           ref={layerScrollRef}
