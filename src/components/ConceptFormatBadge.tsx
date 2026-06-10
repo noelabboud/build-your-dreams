@@ -9,23 +9,39 @@ const formatBadgeStyles: Record<Concept["type"], string> = {
   Minigame: "bg-fuchsia-400/90",
 };
 
+const formatBadgeLabels: Record<Concept["type"], string> = {
+  "Narrative Series": "Narrative",
+  "Episodic Series": "Episodic",
+  "Competitive Series": "Competitive",
+  "One Shot Event": "One Shot",
+  Minigame: "Minigame",
+};
+
 export function ConceptFormatBadge({
   type,
   className,
+  showLabel = false,
 }: {
   type: Concept["type"];
   className?: string;
+  showLabel?: boolean;
 }) {
   const format = formatBadgeStyles[type];
 
   return (
     <span
-      aria-hidden="true"
+      aria-label={showLabel ? formatBadgeLabels[type] : undefined}
+      aria-hidden={showLabel ? undefined : "true"}
       className={cn(
-        "pointer-events-none absolute right-3 top-0 z-10 block h-5 w-3 rounded-b-[2px] shadow-sm [clip-path:polygon(0_0,100%_0,100%_100%,50%_82%,0_100%)]",
+        "pointer-events-none absolute right-3 top-0 z-10 block rounded-b-[2px] shadow-sm [clip-path:polygon(0_0,100%_0,100%_100%,50%_82%,0_100%)]",
+        showLabel
+          ? "min-w-20 px-3 pb-2 pt-1.5 text-center text-[10px] font-black uppercase leading-none tracking-wide text-white drop-shadow-sm"
+          : "h-5 w-3",
         format,
         className,
       )}
-    />
+    >
+      {showLabel ? formatBadgeLabels[type] : null}
+    </span>
   );
 }

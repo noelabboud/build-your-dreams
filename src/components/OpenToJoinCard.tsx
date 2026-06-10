@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Star, UserRound } from "lucide-react";
+import { UserRound } from "lucide-react";
 import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
 import { ConceptImage } from "@/components/ConceptImage";
 import type { ConceptType, OpenToJoinItem } from "@/data/mock";
@@ -46,7 +46,6 @@ export function OpenToJoinCard({
   item,
   className,
   variant = "default",
-  index,
 }: {
   item: OpenToJoinItem;
   className?: string;
@@ -63,7 +62,7 @@ export function OpenToJoinCard({
     return (
       <article
         className={cn(
-          "flex min-h-28 overflow-hidden rounded-2xl border border-border bg-card shadow-sm",
+          "relative flex min-h-28 overflow-hidden rounded-2xl border border-border bg-card shadow-sm",
           className,
         )}
       >
@@ -78,17 +77,21 @@ export function OpenToJoinCard({
             className="h-full w-full"
             imageClassName="transition duration-300 group-hover:scale-105"
           />
-          <ConceptFormatBadge type={item.type} className="right-2 h-5 w-3" />
         </Link>
+        <ConceptFormatBadge type={item.type} className="right-4 h-5 w-3" />
         <div className="min-w-0 flex-1 p-3">
-          <div className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wide text-primary">
-            <Star className="h-3.5 w-3.5 fill-primary" />
-            {typeof index === "number" ? `Open #${index + 1}` : conceptTypeLabels[item.type]}
+          <div
+            className={cn(
+              "truncate pr-7 text-[11px] font-semibold uppercase tracking-wide",
+              conceptTypeTextColors[item.type],
+            )}
+          >
+            {conceptTypeLabels[item.type]}
           </div>
           <Link
             to="/concept/$id"
             params={{ id: item.conceptId }}
-            className="mt-1 block line-clamp-2 text-base font-black leading-tight transition hover:text-primary"
+            className="mt-1 block line-clamp-2 text-base font-bold leading-tight transition hover:text-primary"
           >
             {item.title}
           </Link>
@@ -105,10 +108,10 @@ export function OpenToJoinCard({
             <Link
               to="/concept/$id"
               params={{ id: item.conceptId }}
-              className="shrink-0 rounded-full bg-primary px-4 py-2 text-sm font-black text-primary-foreground shadow-sm transition hover:bg-primary/90"
-              aria-label={`Join ${item.title}`}
+              className="shrink-0 whitespace-nowrap rounded-full bg-primary px-3 py-2 text-xs font-bold text-primary-foreground shadow-sm transition hover:bg-primary/90"
+              aria-label={`${item.ctaLabel} for ${item.title}`}
             >
-              Join
+              {item.ctaLabel}
             </Link>
           </div>
         </div>
@@ -168,7 +171,7 @@ export function OpenToJoinCard({
             params={{ id: item.conceptId }}
             className="flex w-full items-center justify-center rounded-xl bg-primary px-3 py-2 text-xs font-bold text-primary-foreground shadow-sm"
           >
-            Join Now
+            {item.ctaLabel}
           </Link>
         </div>
       </div>

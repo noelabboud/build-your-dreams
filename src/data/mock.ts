@@ -48,6 +48,27 @@ export type Concept = {
 
 export const concepts: Concept[] = [
   {
+    id: "midnight-jury",
+    title: "Midnight Jury",
+    type: "Narrative Series",
+    host: "Samer",
+    hostId: "samer",
+    rating: 4.8,
+    participants: "312",
+    image: courtroom,
+    tags: ["Story", "Connected", "Full Series"],
+    status: "upcoming",
+    participation: {
+      ctaLabel: "Buy Full Story",
+      priceLabel: "$4.99",
+      availability: {
+        kind: "capped",
+        joinedSpots: 42,
+        totalSpots: 60,
+      },
+    },
+  },
+  {
     id: "courtroom",
     title: "The Courtroom",
     type: "Narrative Series",
@@ -165,6 +186,7 @@ export const concepts: Concept[] = [
     image: impostor,
     tags: ["Mystery", "Elimination"],
     participation: {
+      ctaLabel: "Join Full Series",
       availability: {
         kind: "capped",
         joinedSpots: 52,
@@ -227,6 +249,13 @@ export type OpenToJoinItem = {
   title: string;
   subtitle: string;
   type: ConceptType;
+  joinModel: "full_series" | "episode_based" | "single_event" | "instant_round";
+  status: "open" | "in_progress" | "closed";
+  ctaLabel: string;
+  joinScope: string;
+  currentEpisode?: number;
+  currentRound?: number;
+  requiresFullPurchase?: boolean;
   host: string;
   hostId: string;
   image: string;
@@ -236,30 +265,23 @@ export type OpenToJoinItem = {
     | { kind: "uncapped"; closesIn: string };
 };
 
-export const openToJoinItems: OpenToJoinItem[] = [
+const openToJoinOpportunities: OpenToJoinItem[] = [
   {
-    id: "courtroom-defense",
-    conceptId: "courtroom",
-    title: "The Missing Witness",
-    subtitle: "Submit your defense before voting opens.",
+    id: "courtroom-full-story",
+    conceptId: "midnight-jury",
+    title: "Midnight Jury",
+    subtitle: "Buy the full connected story before episode 1 begins.",
     type: "Narrative Series",
+    joinModel: "full_series",
+    status: "open",
+    ctaLabel: "Buy Full Story",
+    joinScope: "Full story",
+    requiresFullPurchase: true,
     host: "Samer",
     hostId: "samer",
     image: courtroom,
     participants: "1.2K joined",
-    availability: { kind: "capped", spotsLeft: 18, totalSpots: 60 },
-  },
-  {
-    id: "voice-roulette-open",
-    conceptId: "voice-roulette",
-    title: "Voice Note Roulette",
-    subtitle: "Send one voice note before the event locks.",
-    type: "One Shot Event",
-    host: "Samer",
-    hostId: "samer",
-    image: voicenote,
-    participants: "982 joined",
-    availability: { kind: "uncapped", closesIn: "4h" },
+    availability: { kind: "uncapped", closesIn: "2d" },
   },
   {
     id: "escape-beirut-open",
@@ -267,6 +289,11 @@ export const openToJoinItems: OpenToJoinItem[] = [
     title: "Rooftop Escape",
     subtitle: "Join the next episode and solve the route.",
     type: "Episodic Series",
+    joinModel: "episode_based",
+    status: "open",
+    ctaLabel: "Join Episode",
+    joinScope: "Episode 2",
+    currentEpisode: 2,
     host: "Elissa",
     hostId: "elissa",
     image: beirut,
@@ -279,6 +306,11 @@ export const openToJoinItems: OpenToJoinItem[] = [
     title: "Impostor Qualifier",
     subtitle: "Enter the next elimination bracket.",
     type: "Competitive Series",
+    joinModel: "full_series",
+    status: "open",
+    ctaLabel: "Join Full Series",
+    joinScope: "Full series",
+    requiresFullPurchase: true,
     host: "Basit",
     hostId: "basit",
     image: impostor,
@@ -291,11 +323,15 @@ export const openToJoinItems: OpenToJoinItem[] = [
     title: "Worst Excuse Championship",
     subtitle: "Last chance to enter the comedy bracket.",
     type: "One Shot Event",
+    joinModel: "single_event",
+    status: "open",
+    ctaLabel: "Join Event",
+    joinScope: "One event",
     host: "Elissa",
     hostId: "elissa",
     image: excuse,
     participants: "2.4K joined",
-    availability: { kind: "capped", spotsLeft: 3, totalSpots: 40 },
+    availability: { kind: "uncapped", closesIn: "4h" },
   },
   {
     id: "chifomi-live-duel",
@@ -303,13 +339,20 @@ export const openToJoinItems: OpenToJoinItem[] = [
     title: "Chifomi Duel",
     subtitle: "Play live once the room fills.",
     type: "Minigame",
+    joinModel: "instant_round",
+    status: "open",
+    ctaLabel: "Play Now",
+    joinScope: "Minigame round",
+    currentRound: 1,
     host: "Basit",
     hostId: "basit",
     image: impostor,
     participants: "620 joined",
-    availability: { kind: "capped", spotsLeft: 27, totalSpots: 120 },
+    availability: { kind: "uncapped", closesIn: "12m" },
   },
 ];
+
+export const openToJoinItems = openToJoinOpportunities.filter((item) => item.status === "open");
 
 export const episodes = [
   {
@@ -369,8 +412,15 @@ export const topHosts = [
     bio: "Interactive fiction host building courtroom stories, voice events, and audience-shaped mysteries across MIDAN.",
     socials: {
       instagram: "https://instagram.com",
+      tiktok: "https://tiktok.com",
       youtube: "https://youtube.com",
       twitch: "https://twitch.tv",
+    },
+    socialStats: {
+      instagram: "200K",
+      tiktok: "520K",
+      youtube: "84K",
+      twitch: "38K",
     },
   },
   {
@@ -389,6 +439,11 @@ export const topHosts = [
       tiktok: "https://tiktok.com",
       twitch: "https://twitch.tv",
     },
+    socialStats: {
+      instagram: "120K",
+      tiktok: "310K",
+      twitch: "64K",
+    },
   },
   {
     id: "elissa",
@@ -405,6 +460,11 @@ export const topHosts = [
       instagram: "https://instagram.com",
       tiktok: "https://tiktok.com",
       youtube: "https://youtube.com",
+    },
+    socialStats: {
+      instagram: "80K",
+      tiktok: "210K",
+      youtube: "46K",
     },
   },
 ];

@@ -32,9 +32,14 @@ function Home() {
   const survivor = concepts.find((concept) => concept.id === "survivor") ?? concepts[2];
   const chifomi = concepts.find((concept) => concept.id === "chifomi-duel") ?? concepts[4];
   const continuingEvents = [
-    { concept: courtroom, detail: "Episode 4 - In 2 days", progress: 70 },
-    { concept: survivor, detail: "Round 3 - Voting closes tonight", progress: 55 },
-    { concept: chifomi, detail: "Live room opens soon", progress: 35 },
+    { concept: courtroom, detail: "Episode 4 - In 2 days", progress: 70, ctaLabel: "Continue" },
+    {
+      concept: survivor,
+      detail: "Round 3 - Voting closes tonight",
+      progress: 55,
+      ctaLabel: "View Round",
+    },
+    { concept: chifomi, detail: "Live room opens soon", progress: 35, ctaLabel: "Play Now" },
   ];
 
   const handleContinueScroll = () => {
@@ -98,13 +103,13 @@ function Home() {
         onScroll={handleContinueScroll}
         className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-4"
       >
-        {continuingEvents.map(({ concept, detail, progress }) => (
+        {continuingEvents.map(({ concept, detail, progress, ctaLabel }) => (
           <div key={concept.id} className="block basis-[88%] shrink-0 snap-start scroll-ml-4">
             <div className="relative overflow-hidden rounded-2xl">
               <Link to="/concept/$id" params={{ id: concept.id }} className="block">
                 <ConceptImage src={concept.image} alt={concept.title} className="h-52 w-full" />
               </Link>
-              <ConceptFormatBadge type={concept.type} className="h-6 w-3.5" />
+              <ConceptFormatBadge type={concept.type} showLabel />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-4 text-white">
                 <Link
@@ -125,7 +130,7 @@ function Home() {
                   params={{ id: concept.id }}
                   className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground shadow-lg"
                 >
-                  <Play className="h-4 w-4 fill-current" /> Continue
+                  <Play className="h-4 w-4 fill-current" /> {ctaLabel}
                 </Link>
               </div>
             </div>

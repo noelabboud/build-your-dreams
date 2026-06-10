@@ -2,7 +2,6 @@ import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-rout
 import {
   ArrowLeft,
   BadgeCheck,
-  ExternalLink,
   Instagram,
   MoreHorizontal,
   Music2,
@@ -79,10 +78,10 @@ const categoryMeta: Record<
 };
 
 const socialMeta = {
-  instagram: { label: "Instagram", Icon: Instagram },
-  tiktok: { label: "TikTok", Icon: Music2 },
-  youtube: { label: "YouTube", Icon: Youtube },
-  twitch: { label: "Twitch", Icon: Twitch },
+  instagram: { label: "Instagram", Icon: Instagram, iconClassName: "text-pink-500" },
+  tiktok: { label: "TikTok", Icon: Music2, iconClassName: "text-slate-950" },
+  youtube: { label: "YouTube", Icon: Youtube, iconClassName: "text-red-600" },
+  twitch: { label: "Twitch", Icon: Twitch, iconClassName: "text-violet-600" },
 };
 
 type HostLayer = "highlights" | "active" | "all";
@@ -136,58 +135,67 @@ function HostPage() {
 
   return (
     <MobileShell>
-      <section className="relative overflow-hidden bg-[#0B1018] text-white">
-        <ConceptImage
-          src={host.coverImage}
-          alt=""
-          className="absolute inset-x-0 top-0 h-36 w-full opacity-65"
-        />
-        <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/55 via-black/30 to-[#0B1018]" />
-        <div className="relative z-10 flex h-12 items-center justify-between px-4">
+      <section className="relative overflow-hidden bg-muted/30 pb-5">
+        <div className="relative h-44 overflow-hidden bg-muted">
+          <ConceptImage
+            src={host.coverImage}
+            alt=""
+            className="absolute inset-0 h-full w-full opacity-90"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-white/55 to-muted/30" />
+        </div>
+
+        <div className="absolute inset-x-0 top-0 z-20 flex h-14 items-center justify-between px-4">
           <button
             type="button"
             onClick={() => router.history.back()}
             aria-label="Back"
-            className="grid h-9 w-9 place-items-center text-white transition hover:text-white/70"
+            className="grid h-10 w-10 place-items-center rounded-full bg-white/80 text-foreground shadow-sm backdrop-blur transition hover:bg-white"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-6 w-6" />
           </button>
           <button
             type="button"
             aria-label="More actions"
-            className="grid h-9 w-9 place-items-center text-white transition hover:text-white/70"
+            className="grid h-10 w-10 place-items-center rounded-full bg-white/80 text-foreground shadow-sm backdrop-blur transition hover:bg-white"
           >
-            <MoreHorizontal className="h-5 w-5" />
+            <MoreHorizontal className="h-6 w-6" />
           </button>
         </div>
 
-        <div className="relative z-10 px-5 pb-5 pt-8">
-          <div className="flex items-center gap-3.5">
-            <ConceptImage
-              src={host.avatar}
-              alt={host.name}
-              className="h-[76px] w-[76px] shrink-0 rounded-full border-[3px] border-[#0B1018] shadow-lg shadow-black/25"
-            />
-            <div className="min-w-0">
-              <div className="flex items-center gap-1.5 text-[2rem] font-black leading-none">
-                <span className="truncate">{host.name}</span>
-                {host.verified && <BadgeCheck className="h-6 w-6 shrink-0 text-primary" />}
-              </div>
-              <div className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-white/55">
-                Host portfolio
+        <div className="relative z-10 -mt-20 px-5">
+          <div className="rounded-[1.75rem] border border-border/80 bg-card/95 p-4 shadow-[0_18px_45px_-28px_rgba(15,23,42,0.65)] backdrop-blur">
+            <div className="flex items-end gap-4">
+              <ConceptImage
+                src={host.avatar}
+                alt={host.name}
+                className="h-24 w-24 shrink-0 rounded-full border-4 border-card shadow-lg shadow-slate-900/15"
+              />
+              <div className="min-w-0 flex-1 pb-2">
+                <div className="flex items-center gap-1.5 text-3xl font-black leading-none tracking-tight">
+                  <span className="truncate">{host.name}</span>
+                  {host.verified && <BadgeCheck className="h-6 w-6 shrink-0 text-primary" />}
+                </div>
+                <div className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                  Host portfolio
+                </div>
               </div>
             </div>
-          </div>
 
-          <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/76">{host.bio}</p>
+            <div className="mt-4">
+              <SocialLinks socials={host.socials} socialStats={host.socialStats} />
+            </div>
 
-          <SocialLinks socials={host.socials} />
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
+              {host.bio}
+            </p>
 
-          <div className="mt-4 grid grid-cols-4 gap-2 border-t border-white/10 pt-3">
-            <Stat label="Participants" value={formatCompact(totalParticipants)} />
-            <Stat label="Concepts" value={String(hostConcepts.length)} />
-            <Stat label="Avg. Rating" value={averageRating} />
-            <Stat label="Episodes" value={String(host.completedEpisodes)} />
+            <div className="mt-4 grid grid-cols-4 divide-x divide-border rounded-2xl border border-border bg-background p-3 shadow-sm">
+              <Stat label="Concepts" value={String(hostConcepts.length)} />
+              <Stat label="Episodes" value={String(host.completedEpisodes)} />
+              <Stat label="Participants" value={formatCompact(totalParticipants)} />
+              <Stat label="Avg. Rating" value={averageRating} />
+            </div>
           </div>
         </div>
       </section>
@@ -308,16 +316,23 @@ function ActiveConceptCard({ concept }: { concept: Concept }) {
   );
 }
 
-function SocialLinks({ socials }: { socials: Partial<Record<keyof typeof socialMeta, string>> }) {
+function SocialLinks({
+  socials,
+  socialStats,
+}: {
+  socials: Partial<Record<keyof typeof socialMeta, string>>;
+  socialStats: Partial<Record<keyof typeof socialMeta, string>>;
+}) {
   const entries = Object.entries(socials).filter(([key]) => key in socialMeta);
 
   if (entries.length === 0) return null;
 
   return (
-    <section className="mt-3 flex flex-wrap gap-2">
+    <section className="grid grid-cols-4 gap-2">
       {entries.map(([key, href]) => {
         const meta = socialMeta[key as keyof typeof socialMeta];
         const Icon = meta.Icon;
+        const count = socialStats[key as keyof typeof socialMeta];
 
         return (
           <a
@@ -325,11 +340,11 @@ function SocialLinks({ socials }: { socials: Partial<Record<keyof typeof socialM
             href={href}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/15 bg-white/95 px-2.5 py-1.5 text-xs font-semibold text-foreground shadow-sm"
+            aria-label={`${meta.label} profile`}
+            className="inline-flex min-w-0 items-center justify-center gap-1.5 rounded-full border border-border bg-background px-2.5 py-1.5 text-xs font-bold text-foreground shadow-sm"
           >
-            <Icon className="h-3.5 w-3.5" />
-            {meta.label}
-            <ExternalLink className="h-3 w-3 text-muted-foreground" />
+            <Icon className={cn("h-3.5 w-3.5", meta.iconClassName)} />
+            <span className="truncate">{count}</span>
           </a>
         );
       })}
@@ -390,9 +405,9 @@ function PortfolioItem({ concept, showEpisodes }: { concept: Concept; showEpisod
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="min-w-0 rounded-xl border border-white/10 bg-white/[0.06] px-1.5 py-2 text-center">
-      <div className="truncate text-sm font-bold text-white">{value}</div>
-      <div className="mt-0.5 truncate text-[8px] font-semibold uppercase leading-tight text-white/55">
+    <div className="min-w-0 px-1.5 py-1 text-center">
+      <div className="truncate text-lg font-black leading-tight text-foreground">{value}</div>
+      <div className="mt-1 truncate text-[10px] font-semibold leading-tight text-muted-foreground">
         {label}
       </div>
     </div>

@@ -1,9 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { ConceptImage } from "@/components/ConceptImage";
 import { MobileShell } from "@/components/MobileShell";
-import { TopBar } from "@/components/TopBar";
-import { CheckCircle2, ChevronRight, Clock, Lock, Trophy } from "lucide-react";
+import { ArrowLeft, ChevronRight, Lock } from "lucide-react";
 import { episodes, images } from "@/data/mock";
 
 export const Route = createFileRoute("/episode/$id")({
@@ -20,63 +19,42 @@ const tabs = ["Story", "Submit", "Vote", "Results"] as const;
 
 function EpisodePage() {
   const { id } = Route.useParams();
+  const router = useRouter();
   const [tab, setTab] = useState<(typeof tabs)[number]>("Story");
   const episode = episodes.find((ep) => String(ep.n) === id) ?? episodes[2];
   const completed = episode.status === "completed";
-  const live = episode.status === "live";
 
   return (
     <MobileShell>
-      <TopBar back actions="share" title={null} />
-      <div className="px-4">
-        <div className="flex items-start justify-between gap-3 pt-1">
-          <div>
-            <div className="text-xs text-muted-foreground">Episode {id}</div>
-            <h1 className="text-xl font-bold leading-tight">{episode.title}</h1>
-          </div>
-          <span
-            className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-1 text-xs font-medium ${
-              completed
-                ? "bg-muted text-muted-foreground"
-                : live
-                  ? "bg-success/15 text-success"
-                  : "bg-warning/15 text-amber-700"
-            }`}
+      <div className="px-4 pt-8">
+        <div className="grid grid-cols-[2.5rem_1fr] items-start gap-4">
+          <button
+            type="button"
+            onClick={() => router.history.back()}
+            aria-label="Back"
+            className="-ml-1 grid h-10 w-10 place-items-center rounded-full text-foreground transition hover:bg-muted"
           >
-            {completed ? (
-              <CheckCircle2 className="h-3.5 w-3.5" />
-            ) : live ? (
-              <span className="h-1.5 w-1.5 rounded-full bg-success" />
-            ) : (
-              <Clock className="h-3.5 w-3.5" />
-            )}
-            {completed ? "Completed" : live ? "Live" : "Upcoming"}
-          </span>
-        </div>
-        <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
-          {completed ? (
-            <>
-              <Trophy className="h-3.5 w-3.5" /> Results published · {episode.percentile}
-            </>
-          ) : (
-            <>
-              <Clock className="h-3.5 w-3.5" /> ends in 2d 14h
-            </>
-          )}
+            <ArrowLeft className="h-6 w-6" />
+          </button>
+          <div>
+            <div className="text-sm font-medium text-muted-foreground">Episode {id}</div>
+            <h1 className="text-2xl font-black leading-tight tracking-tight">{episode.title}</h1>
+          </div>
         </div>
 
-        <div className="no-scrollbar mt-4 flex gap-2 overflow-x-auto border-b border-border">
+        <div className="mt-7 grid grid-cols-4 border-b border-border">
           {tabs.map((t) => (
             <button
               key={t}
+              type="button"
               onClick={() => setTab(t)}
-              className={`relative shrink-0 px-3 pb-2.5 text-sm font-semibold ${
+              className={`relative min-w-0 px-2 pb-3 text-center text-sm font-semibold ${
                 tab === t ? "text-primary" : "text-muted-foreground"
               }`}
             >
               {t}
               {tab === t && (
-                <span className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-primary" />
+                <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
               )}
             </button>
           ))}
