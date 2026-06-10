@@ -136,7 +136,7 @@ function HostPage() {
   return (
     <MobileShell>
       <section className="relative overflow-hidden bg-muted/30 pb-5">
-        <div className="relative h-44 overflow-hidden bg-muted">
+        <div className="relative h-72 overflow-hidden bg-muted">
           <ConceptImage
             src={host.coverImage}
             alt=""
@@ -163,7 +163,7 @@ function HostPage() {
           </button>
         </div>
 
-        <div className="relative z-10 -mt-20 px-5">
+        <div className="relative z-10 -mt-48 px-5">
           <div className="rounded-[1.75rem] border border-border/80 bg-card/95 p-4 shadow-[0_18px_45px_-28px_rgba(15,23,42,0.65)] backdrop-blur">
             <div className="flex items-end gap-4">
               <ConceptImage
@@ -323,16 +323,18 @@ function SocialLinks({
   socials: Partial<Record<keyof typeof socialMeta, string>>;
   socialStats: Partial<Record<keyof typeof socialMeta, string>>;
 }) {
-  const entries = Object.entries(socials).filter(([key]) => key in socialMeta);
+  const entries = (Object.keys(socialMeta) as Array<keyof typeof socialMeta>)
+    .filter((key) => socials[key])
+    .map((key) => [key, socials[key]] as const);
 
   if (entries.length === 0) return null;
 
   return (
     <section className="grid grid-cols-4 gap-2">
       {entries.map(([key, href]) => {
-        const meta = socialMeta[key as keyof typeof socialMeta];
+        const meta = socialMeta[key];
         const Icon = meta.Icon;
-        const count = socialStats[key as keyof typeof socialMeta];
+        const count = socialStats[key];
 
         return (
           <a
