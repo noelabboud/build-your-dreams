@@ -26,26 +26,32 @@ function Explore() {
 
   return (
     <MobileShell
+      headerClassName="app-gradient-surface"
       header={
-        <>
-          <header className="px-4 pb-1 pt-[calc(1.25rem+env(safe-area-inset-top))]">
+        <section className="px-4 pb-3 pt-[calc(1.25rem+env(safe-area-inset-top))]">
+          <header>
             <h1 className="text-2xl font-bold tracking-tight">Explore</h1>
           </header>
 
-          <div className="px-4 pt-3">
-            <div className="flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2.5">
+          <div className="mt-4">
+            <div className="flex items-center gap-2 rounded-2xl border border-white/70 bg-card px-3 py-2.5 shadow-sm backdrop-blur-xl">
               <Search className="h-4 w-4 text-muted-foreground" />
               <input
-                placeholder="Search concepts, hosts, categories…"
+                placeholder="Search concepts, hosts, categories..."
                 className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
               />
               <SlidersHorizontal className="h-4 w-4 text-muted-foreground" />
             </div>
           </div>
-        </>
+        </section>
       }
     >
-      <SectionHeader title="Trending Concepts" to="/explore" />
+      <div className="flex items-end justify-between px-4 pb-2 pt-2">
+        <h2 className="relative inline-block pb-1 text-[17px] font-bold tracking-tight">
+          Trending Concepts
+          <span className="absolute bottom-0 left-0 h-0.5 w-1/2 rounded-full bg-gradient-to-r from-primary/80 to-primary/0" />
+        </h2>
+      </div>
       <div className="no-scrollbar flex gap-3 overflow-x-auto px-4">
         {trending.map((c) => (
           <div key={c.id} className="w-32 shrink-0">

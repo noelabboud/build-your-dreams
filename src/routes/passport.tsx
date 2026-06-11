@@ -116,78 +116,78 @@ function Passport() {
   const visibleHistoryGroups = groupHistoryByConcept(visibleHistory);
 
   return (
-    <MobileShell>
-          <section className="relative overflow-hidden bg-[#10131A] px-4 pb-4 pt-[calc(1rem+env(safe-area-inset-top))] text-white">
+    <MobileShell mainClassName="bg-[#10131A]">
+      <section className="relative overflow-hidden bg-[#10131A] px-4 pb-4 pt-[calc(1rem+env(safe-area-inset-top))] text-white">
+        <ConceptImage
+          src={concepts[0].image}
+          alt=""
+          className="absolute inset-x-0 top-0 h-44 w-full opacity-35"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-[#10131A]/88 to-[#10131A]" />
+
+        <div className="relative z-10 flex items-center justify-between">
+          <div>
+            <div className="text-[11px] font-bold uppercase tracking-wide text-white/55">
+              MIDAN Passport
+            </div>
+            <h1 className="text-2xl font-black leading-tight">Profile</h1>
+          </div>
+          <button
+            type="button"
+            aria-label="Settings"
+            className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white transition hover:bg-white/15"
+          >
+            <Settings className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="relative z-10 mt-5 rounded-2xl border border-white/12 bg-white/[0.07] p-4 shadow-2xl shadow-black/20">
+          <div className="flex items-center gap-3.5">
             <ConceptImage
-              src={concepts[0].image}
-              alt=""
-              className="absolute inset-x-0 top-0 h-44 w-full opacity-35"
+              src={me.avatar}
+              alt={me.name}
+              className="h-[76px] w-[76px] shrink-0 rounded-2xl ring-2 ring-white/25"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-[#10131A]/88 to-[#10131A]" />
-
-            <div className="relative z-10 flex items-center justify-between">
-              <div>
-                <div className="text-[11px] font-bold uppercase tracking-wide text-white/55">
-                  MIDAN Passport
-                </div>
-                <h1 className="text-2xl font-black leading-tight">Profile</h1>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5 text-[1.65rem] font-black leading-none">
+                <span className="truncate">{me.name}</span>
+                <BadgeCheck className="h-5 w-5 shrink-0 text-primary" />
               </div>
-              <button
-                type="button"
-                aria-label="Settings"
-                className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white transition hover:bg-white/15"
-              >
-                <Settings className="h-5 w-5" />
-              </button>
-            </div>
-
-            <div className="relative z-10 mt-5 rounded-2xl border border-white/12 bg-white/[0.07] p-4 shadow-2xl shadow-black/20">
-              <div className="flex items-center gap-3.5">
-                <ConceptImage
-                  src={me.avatar}
-                  alt={me.name}
-                  className="h-[76px] w-[76px] shrink-0 rounded-2xl ring-2 ring-white/25"
-                />
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-1.5 text-[1.65rem] font-black leading-none">
-                    <span className="truncate">{me.name}</span>
-                    <BadgeCheck className="h-5 w-5 shrink-0 text-primary" />
-                  </div>
-                  <div className="mt-1 text-sm font-semibold text-white/55">{me.handle}</div>
-                  <div className="mt-2 inline-flex max-w-full items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-[#111827]">
-                    <Sparkles className="h-3.5 w-3.5 text-primary" />
-                    <span className="truncate">{me.badge}</span>
-                  </div>
-                </div>
+              <div className="mt-1 text-sm font-semibold text-white/55">{me.handle}</div>
+              <div className="mt-2 inline-flex max-w-full items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-[#111827]">
+                <Sparkles className="h-3.5 w-3.5 text-primary" />
+                <span className="truncate">{me.badge}</span>
               </div>
-            </div>
-          </section>
-
-          <div className="border-b border-border bg-background px-4 pt-3">
-            <div className="no-scrollbar flex gap-6 overflow-x-auto">
-              {tabs.map((tab) => {
-                const active = activeTab === tab.id;
-
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`relative shrink-0 pb-2.5 text-sm font-bold transition ${
-                      active ? "text-primary" : "text-muted-foreground"
-                    }`}
-                  >
-                    {tab.label}
-                    {active && (
-                      <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
-                    )}
-                  </button>
-                );
-              })}
             </div>
           </div>
+        </div>
+      </section>
 
-      <div className="px-4 py-4">
+      <div className="border-b border-border bg-background px-4 pt-3">
+        <div className="no-scrollbar flex gap-6 overflow-x-auto">
+          {tabs.map((tab) => {
+            const active = activeTab === tab.id;
+
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+                className={`relative shrink-0 pb-2.5 text-sm font-bold transition ${
+                  active ? "text-primary" : "text-muted-foreground"
+                }`}
+              >
+                {tab.label}
+                {active && (
+                  <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="bg-background px-4 py-4">
         {activeTab === "highlights" && <Highlights progressPercent={progressPercent} />}
         {activeTab === "badges" && <Badges />}
         {activeTab === "history" && (

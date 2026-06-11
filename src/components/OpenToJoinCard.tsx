@@ -62,7 +62,7 @@ export function OpenToJoinCard({
     return (
       <article
         className={cn(
-          "relative flex min-h-28 overflow-hidden rounded-2xl border border-border bg-card shadow-sm",
+          "relative flex min-h-28 overflow-hidden rounded-2xl border border-white/70 bg-card shadow-sm backdrop-blur-xl",
           className,
         )}
       >
@@ -122,7 +122,7 @@ export function OpenToJoinCard({
   return (
     <article
       className={cn(
-        "flex h-[22rem] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:bg-muted/30",
+        "flex h-[22rem] flex-col overflow-hidden rounded-2xl border border-white/70 bg-card shadow-sm backdrop-blur-xl transition hover:bg-white/82",
         className,
       )}
     >

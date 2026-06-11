@@ -42,10 +42,11 @@
 
 :root {
   --radius: 0.875rem;
-  --background: oklch(0.99 0.003 240);
+  --app-gradient: linear-gradient(112deg, #edf6fb 0%, #f8fbfc 48%, #eaf3f8 100%);
+  --background: rgb(247 251 253 / 0.66);
   --foreground: oklch(0.15 0.02 250);
-  --surface: oklch(0.97 0.005 240);
-  --card: oklch(1 0 0);
+  --surface: rgb(237 246 251);
+  --card: rgb(255 255 255 / 0.82);
   --card-foreground: oklch(0.15 0.02 250);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.15 0.02 250);
@@ -68,8 +69,12 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html, body, #root {
+  * {
+    border-color: var(--color-border);
+  }
+  html,
+  body,
+  #root {
     height: 100%;
     min-height: 100%;
     overflow-x: hidden;
@@ -78,26 +83,44 @@
     overscroll-behavior: none;
   }
   body {
-    background-color: var(--color-surface);
+    background: var(--app-gradient);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     overscroll-behavior: none;
   }
   @supports (height: 100dvh) {
-    html, body, #root {
+    html,
+    body,
+    #root {
       height: 100dvh;
     }
   }
   @media (max-width: 768px) {
-    html, body, #root {
+    html,
+    body,
+    #root {
       overflow: hidden;
     }
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.01em; }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
 }
 
 @layer utilities {
-  .no-scrollbar::-webkit-scrollbar { display: none; }
-  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .app-gradient-surface {
+    background: var(--app-gradient);
+  }
 }

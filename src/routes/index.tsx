@@ -6,7 +6,6 @@ import { ConceptImage } from "@/components/ConceptImage";
 import { HostLink } from "@/components/HostLink";
 import { MobileShell } from "@/components/MobileShell";
 import { OpenToJoinCard } from "@/components/OpenToJoinCard";
-import { SectionHeader } from "@/components/TopBar";
 import { concepts, openToJoinItems } from "@/data/mock";
 
 export const Route = createFileRoute("/")({
@@ -78,32 +77,37 @@ function Home() {
   };
 
   return (
-    <MobileShell
-      header={
-        <>
-          <header className="flex items-center justify-between px-4 pt-[calc(1rem+env(safe-area-inset-top))]">
-            <div className="text-lg font-extrabold tracking-[0.16em] text-primary">MIDAN</div>
-            <button
-              aria-label="Notifications"
-              className="relative grid h-10 w-10 place-items-center rounded-full hover:bg-muted"
-            >
-              <Bell className="h-5 w-5" />
-              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-destructive" />
-            </button>
-          </header>
+    <MobileShell>
+      <section className="relative px-4 pb-7 pt-[calc(1rem+env(safe-area-inset-top))]">
+        <header className="relative flex items-center justify-between">
+          <div className="text-lg font-extrabold tracking-[0.16em] text-primary">MIDAN</div>
+          <button
+            aria-label="Notifications"
+            className="relative grid h-10 w-10 place-items-center rounded-full bg-white/55 text-foreground shadow-[0_14px_30px_-24px_rgba(15,23,42,0.55)] backdrop-blur transition hover:bg-white/75"
+          >
+            <Bell className="h-5 w-5" />
+            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-destructive" />
+          </button>
+        </header>
 
-          <div className="px-4 pb-1 pt-2">
-            <h1 className="text-[22px] font-bold tracking-tight">
-              Good morning, Noel <span className="ml-1">👋</span>
-            </h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Ready to continue your next challenge?
-            </p>
-          </div>
-        </>
-      }
-    >
-      <SectionHeader title="Continue Playing" />
+        <div className="relative pt-2">
+          <h1 className="text-[22px] font-bold tracking-tight">
+            Good morning, Noel <span className="ml-1">👋</span>
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Ready to continue your next challenge?
+          </p>
+        </div>
+      </section>
+
+      <section className="-mt-4 pt-3">
+        <div className="flex items-end justify-between px-4 pb-2">
+          <h2 className="relative inline-block pb-1 text-[17px] font-bold tracking-tight">
+            Continue Playing
+            <span className="absolute bottom-0 left-0 h-0.5 w-1/2 rounded-full bg-gradient-to-r from-primary/80 to-primary/0" />
+          </h2>
+        </div>
+      </section>
       <div
         ref={continueScrollRef}
         onScroll={handleContinueScroll}
@@ -143,7 +147,7 @@ function Home() {
           </div>
         ))}
       </div>
-      <div className="mt-3 flex justify-center gap-1.5">
+      <div className="flex justify-center gap-1.5 pt-3">
         {continuingEvents.map(({ concept }, index) => (
           <button
             key={concept.id}
@@ -183,7 +187,7 @@ function Home() {
           />
         ))}
       </div>
-      <div className="mb-6 mt-5 flex justify-center gap-1.5">
+      <div className="mb-6 flex justify-center gap-1.5 pt-5">
         {openToJoinItems.map((item, index) => (
           <button
             key={item.id}
