@@ -30,12 +30,6 @@ export function MobileShell({
         >
           {children}
         </main>
-        {!hideNav && (
-          <div
-            aria-hidden="true"
-            className="app-gradient-surface pointer-events-none fixed inset-x-0 bottom-0 z-20 mx-auto h-[calc(5.5rem+env(safe-area-inset-bottom))] max-w-md"
-          />
-        )}
         {!hideNav && <BottomNav />}
       </div>
     </div>

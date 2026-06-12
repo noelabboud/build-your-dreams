@@ -115,7 +115,7 @@
       min-height: 100dvh;
     }
     body {
-      background-color: var(--surface);
+      background: var(--app-gradient);
     }
   }
   h1,
