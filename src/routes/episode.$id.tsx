@@ -26,51 +26,49 @@ function EpisodePage() {
 
   return (
     <MobileShell>
-      <div className="px-4 pt-[calc(2rem+env(safe-area-inset-top))]">
-          <div className="grid grid-cols-[2.5rem_1fr] items-start gap-4">
-            <button
-              type="button"
-              onClick={() => router.history.back()}
-              aria-label="Back"
-              className="-ml-1 grid h-10 w-10 place-items-center rounded-full text-foreground transition hover:bg-muted"
-            >
-              <ArrowLeft className="h-6 w-6" />
-            </button>
-            <div>
-              <div className="text-sm font-medium text-muted-foreground">Episode {id}</div>
-              <h1 className="text-2xl font-black leading-tight tracking-tight">{episode.title}</h1>
-            </div>
+      <div className="px-5 pt-[calc(2rem+env(safe-area-inset-top))]">
+        <div className="grid grid-cols-[2.875rem_1fr] items-start gap-4">
+          <button
+            type="button"
+            onClick={() => router.history.back()}
+            aria-label="Back"
+            className="app-icon-button -ml-1 text-foreground transition hover:bg-muted"
+          >
+            <ArrowLeft className="h-6 w-6" />
+          </button>
+          <div>
+            <div className="text-[15px] font-semibold text-muted-foreground">Episode {id}</div>
+            <h1 className="text-[2rem] font-black leading-tight tracking-tight">{episode.title}</h1>
           </div>
+        </div>
 
-          <div className="mt-7 grid grid-cols-4 border-b border-border">
-            {tabs.map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => setTab(t)}
-                className={`relative min-w-0 px-2 pb-3 text-center text-sm font-semibold ${
-                  tab === t ? "text-primary" : "text-muted-foreground"
-                }`}
-              >
-                {t}
-                {tab === t && (
-                  <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
-                )}
-              </button>
-            ))}
-          </div>
+        <div className="mt-8 grid grid-cols-4 border-b border-border">
+          {tabs.map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setTab(t)}
+              className={`app-tab relative min-w-0 px-2 text-center ${
+                tab === t ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              {t}
+              {tab === t && (
+                <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
+              )}
+            </button>
+          ))}
+        </div>
 
         {tab === "Story" && (
-          <div className="pt-4">
-            <div className="rounded-2xl border border-border bg-card p-4">
-              <div className="text-xs font-semibold uppercase tracking-wide text-primary">
-                Case brief
-              </div>
-              <p className="mt-2 text-sm leading-relaxed">
+          <div className="pt-5">
+            <div className="app-card p-4.5">
+              <div className="app-kicker text-primary">Case brief</div>
+              <p className="app-body mt-2.5">
                 The key witness has disappeared. The prosecution claims foul play, but the timeline
                 has gaps and the last voice note may contradict the main accusation.
               </p>
-              <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
+              <div className="mt-4 grid grid-cols-3 gap-2.5 text-center">
                 <MiniStat label="Submissions" value="438" />
                 <MiniStat label="Format" value="Text/Audio" />
                 <MiniStat label="Reward" value="Top 10%" />
@@ -79,19 +77,19 @@ function EpisodePage() {
             <ConceptImage
               src={images.courtroom}
               alt="Courtroom"
-              className="mt-4 h-44 w-full rounded-2xl"
+              className="mt-5 h-52 w-full rounded-[1.35rem]"
             />
-            <div className="mt-5">
-              <div className="text-sm font-semibold">How to participate</div>
-              <ol className="mt-2 space-y-1.5 text-sm">
+            <div className="mt-6">
+              <div className="text-base font-bold">How to participate</div>
+              <ol className="mt-3 space-y-2 text-[15px] leading-relaxed">
                 <li>
-                  <span className="mr-1 inline-grid h-5 w-5 place-items-center rounded-full bg-primary/10 text-[11px] font-bold text-primary">
+                  <span className="mr-1.5 inline-grid h-6 w-6 place-items-center rounded-full bg-primary/10 text-xs font-black text-primary">
                     1
                   </span>
                   Build a defense using the witness timeline, motive, and missing evidence.
                 </li>
                 <li>
-                  <span className="mr-1 inline-grid h-5 w-5 place-items-center rounded-full bg-primary/10 text-[11px] font-bold text-primary">
+                  <span className="mr-1.5 inline-grid h-6 w-6 place-items-center rounded-full bg-primary/10 text-xs font-black text-primary">
                     2
                   </span>
                   Audience and Samer score clarity, originality, and persuasion.
@@ -99,16 +97,16 @@ function EpisodePage() {
               </ol>
             </div>
             {!completed && (
-              <button className="mt-5 w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground">
+              <button className="mt-6 min-h-12 w-full rounded-2xl bg-primary py-3 text-base font-bold text-primary-foreground">
                 Submit Your Defense
               </button>
             )}
-            <button className="mt-2 flex w-full items-center justify-center gap-1 rounded-xl border border-border bg-card py-3 text-sm font-semibold text-primary">
+            <button className="mt-2.5 flex min-h-12 w-full items-center justify-center gap-1.5 rounded-2xl border border-border bg-card py-3 text-base font-bold text-primary">
               {completed ? "View Final Submissions" : "View Submissions (438)"}{" "}
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-5 w-5" />
             </button>
 
-            <div className="mt-5 grid grid-cols-3 gap-2 rounded-2xl border border-border bg-card p-3 text-center text-xs">
+            <div className="app-card mt-6 grid grid-cols-3 gap-2.5 p-3.5 text-center">
               <MiniStat label="Rewards" value="Top 10%" />
               <MiniStat label="Your Status" value={completed ? "Closed" : "Submitted"} />
               <MiniStat label="Stage" value={completed ? "Results" : "Live"} />
@@ -146,19 +144,19 @@ function EpisodePage() {
 
 function MiniStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl bg-muted px-2 py-2">
-      <div className="font-bold text-foreground">{value}</div>
-      <div className="text-[10px] text-muted-foreground">{label}</div>
+    <div className="rounded-2xl bg-muted px-2.5 py-2.5">
+      <div className="text-sm font-black text-foreground">{value}</div>
+      <div className="app-caption mt-0.5 text-muted-foreground">{label}</div>
     </div>
   );
 }
 
 function ClosedPanel({ title }: { title: string }) {
   return (
-    <div className="grid place-items-center gap-3 py-12 text-center">
-      <Lock className="h-5 w-5 text-muted-foreground" />
-      <div className="text-sm text-muted-foreground">{title}</div>
-      <button className="rounded-xl border border-border bg-card px-4 py-2 text-sm font-semibold text-primary">
+    <div className="grid place-items-center gap-3.5 py-14 text-center">
+      <Lock className="h-6 w-6 text-muted-foreground" />
+      <div className="text-[15px] font-medium text-muted-foreground">{title}</div>
+      <button className="min-h-11 rounded-2xl border border-border bg-card px-5 py-2.5 text-sm font-bold text-primary">
         Review entries
       </button>
     </div>
@@ -176,15 +174,15 @@ function ResultsPanel({
 }) {
   return (
     <div className="space-y-3 py-5">
-      <div className="rounded-2xl border border-border bg-card p-4">
-        <div className="text-sm font-semibold">Final results</div>
-        <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
+      <div className="app-card p-4.5">
+        <div className="text-base font-bold">Final results</div>
+        <div className="mt-4 grid grid-cols-3 gap-2.5 text-center">
           <MiniStat label="Score" value={score ? String(score) : "—"} />
           <MiniStat label="Rank" value={percentile ?? "—"} />
           <MiniStat label="Rating" value={rating ? String(rating) : "—"} />
         </div>
       </div>
-      <button className="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground">
+      <button className="min-h-12 w-full rounded-2xl bg-primary py-3 text-base font-bold text-primary-foreground">
         View Leaderboard
       </button>
     </div>
@@ -193,9 +191,9 @@ function ResultsPanel({
 
 function Empty({ title, cta }: { title: string; cta: string }) {
   return (
-    <div className="grid place-items-center gap-3 py-12 text-center">
-      <div className="text-sm text-muted-foreground">{title}</div>
-      <button className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
+    <div className="grid place-items-center gap-3.5 py-14 text-center">
+      <div className="text-[15px] font-medium text-muted-foreground">{title}</div>
+      <button className="min-h-11 rounded-2xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground">
         {cta}
       </button>
     </div>

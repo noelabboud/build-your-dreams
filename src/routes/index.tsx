@@ -78,76 +78,73 @@ function Home() {
 
   return (
     <MobileShell>
-      <section className="relative px-4 pb-7 pt-[calc(1rem+env(safe-area-inset-top))]">
+      <section className="app-page-x relative pb-8 pt-[calc(1.1rem+env(safe-area-inset-top))]">
         <header className="relative flex items-center justify-between">
-          <div className="text-lg font-extrabold tracking-[0.16em] text-primary">MIDAN</div>
+          <div className="text-xl font-black tracking-[0.16em] text-primary">MIDAN</div>
           <button
             aria-label="Notifications"
-            className="relative grid h-10 w-10 place-items-center rounded-full bg-white/55 text-foreground shadow-[0_14px_30px_-24px_rgba(15,23,42,0.55)] backdrop-blur transition hover:bg-white/75"
+            className="app-icon-button relative bg-white/58 text-foreground shadow-[0_14px_30px_-24px_rgba(15,23,42,0.55)] backdrop-blur transition hover:bg-white/75"
           >
-            <Bell className="h-5 w-5" />
-            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-destructive" />
+            <Bell className="h-5.5 w-5.5" />
+            <span className="absolute right-2.5 top-2.5 h-2.5 w-2.5 rounded-full bg-destructive" />
           </button>
         </header>
 
-        <div className="relative pt-2">
-          <h1 className="text-[22px] font-bold tracking-tight">
+        <div className="relative pt-3">
+          <h1 className="text-[25px] font-black leading-tight tracking-tight">
             Good morning, Noel <span className="ml-1">👋</span>
           </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-1.5 text-[15px] font-medium text-muted-foreground">
             Ready to continue your next challenge?
           </p>
         </div>
       </section>
 
       <section className="-mt-4 pt-3">
-        <div className="flex items-end justify-between px-4 pb-2">
-          <h2 className="relative inline-block pb-1 text-[17px] font-bold tracking-tight">
-            Continue Playing
-            <span className="absolute bottom-0 left-0 h-0.5 w-1/2 rounded-full bg-gradient-to-r from-primary/80 to-primary/0" />
-          </h2>
+        <div className="app-page-x flex items-end justify-between pb-3">
+          <h2 className="app-section-title">Continue Playing</h2>
         </div>
       </section>
       <div
         ref={continueScrollRef}
         onScroll={handleContinueScroll}
-        className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-4"
+        className="no-scrollbar flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-5"
       >
         {continuingEvents.map(({ concept, detail, progress, ctaLabel }) => (
-          <div key={concept.id} className="block basis-[88%] shrink-0 snap-start scroll-ml-4">
+          <div key={concept.id} className="block basis-[90%] shrink-0 snap-start scroll-ml-5">
             <div className="relative overflow-hidden rounded-2xl">
               <Link to="/concept/$id" params={{ id: concept.id }} className="block">
-                <ConceptImage src={concept.image} alt={concept.title} className="h-52 w-full" />
+                <ConceptImage src={concept.image} alt={concept.title} className="h-60 w-full" />
               </Link>
               <ConceptFormatBadge type={concept.type} showLabel />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-4 text-white">
+              <div className="absolute inset-x-0 bottom-0 p-4.5 text-white">
                 <Link
                   to="/concept/$id"
                   params={{ id: concept.id }}
-                  className="block text-lg font-bold drop-shadow"
+                  className="block text-xl font-black drop-shadow"
                 >
                   {concept.title}
                 </Link>
-                <div className="mt-0.5 text-xs opacity-90">{detail}</div>
-                <HostLink host={concept.host} hostId={concept.hostId} light className="mt-2" />
+                <div className="mt-1 text-sm font-medium opacity-90">{detail}</div>
+                <HostLink host={concept.host} hostId={concept.hostId} light className="mt-2.5" />
                 <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/25">
                   <div className="h-full rounded-full bg-white" style={{ width: `${progress}%` }} />
                 </div>
-                <div className="mt-1 text-[11px] opacity-80">{progress}%</div>
+                <div className="mt-1 text-xs font-semibold opacity-80">{progress}%</div>
                 <Link
                   to="/concept/$id"
                   params={{ id: concept.id }}
-                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground shadow-lg"
+                  className="mt-3.5 flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3 text-base font-bold text-primary-foreground shadow-lg"
                 >
-                  <Play className="h-4 w-4 fill-current" /> {ctaLabel}
+                  <Play className="h-5 w-5 fill-current" /> {ctaLabel}
                 </Link>
               </div>
             </div>
           </div>
         ))}
       </div>
-      <div className="flex justify-center gap-1.5 pt-3">
+      <div className="flex justify-center gap-1.5 pt-3.5">
         {continuingEvents.map(({ concept }, index) => (
           <button
             key={concept.id}
@@ -162,32 +159,29 @@ function Home() {
         ))}
       </div>
 
-      <div className="flex items-end justify-between px-4 pb-2 pt-5">
-        <h2 className="relative inline-block pb-1 text-[17px] font-bold tracking-tight">
-          Open to Join
-          <span className="absolute bottom-0 left-0 h-0.5 w-1/2 rounded-full bg-gradient-to-r from-primary/80 to-primary/0" />
-        </h2>
+      <div className="app-page-x flex items-end justify-between pb-3 pt-6">
+        <h2 className="app-section-title">Open to Join</h2>
         <Link
           to="/open-to-join"
-          className="inline-flex items-center gap-1 text-xs font-semibold text-primary"
+          className="inline-flex items-center gap-1 text-sm font-bold text-primary"
         >
-          See All <ArrowRight className="h-3.5 w-3.5" />
+          See All <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
       <div
         ref={openJoinScrollRef}
         onScroll={handleOpenJoinScroll}
-        className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-3"
+        className="no-scrollbar flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-5 pb-3"
       >
         {openToJoinItems.map((item) => (
           <OpenToJoinCard
             key={item.id}
             item={item}
-            className="w-44 shrink-0 snap-start scroll-ml-4"
+            className="w-52 shrink-0 snap-start scroll-ml-5"
           />
         ))}
       </div>
-      <div className="flex justify-center gap-1.5 pb-6 pt-2">
+      <div className="flex justify-center gap-1.5 pb-7 pt-2.5">
         {openToJoinItems.map((item, index) => (
           <button
             key={item.id}

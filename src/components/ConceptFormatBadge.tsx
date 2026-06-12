@@ -35,8 +35,8 @@ export function ConceptFormatBadge({
       className={cn(
         "pointer-events-none absolute right-3 top-0 z-10 block rounded-b-[2px] shadow-sm [clip-path:polygon(0_0,100%_0,100%_100%,50%_82%,0_100%)]",
         showLabel
-          ? "min-w-20 px-3 pb-2 pt-1.5 text-center text-[10px] font-black uppercase leading-none tracking-wide text-white drop-shadow-sm"
-          : "h-5 w-3",
+          ? "min-w-24 px-3.5 pb-2.5 pt-2 text-center text-[11px] font-black uppercase leading-none tracking-wide text-white drop-shadow-sm"
+          : "h-6 w-3.5",
         format,
         className,
       )}

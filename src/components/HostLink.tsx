@@ -28,11 +28,11 @@ export function HostLink({
       className={cn(
         "group inline-flex max-w-full items-center transition",
         showProfileRow
-          ? "gap-2.5 py-1 text-foreground hover:text-primary"
+          ? "gap-3 py-1.5 text-foreground hover:text-primary"
           : isPlain
-            ? "text-xs font-medium text-muted-foreground hover:text-primary"
+            ? "text-sm font-semibold text-muted-foreground hover:text-primary"
             : cn(
-                "gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold",
+                "gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold",
                 light
                   ? "bg-white/15 text-white ring-1 ring-white/20 backdrop-blur hover:bg-white/25"
                   : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground",
@@ -46,14 +46,14 @@ export function HostLink({
           alt=""
           className={cn(
             "shrink-0 rounded-full",
-            isPlain ? "h-7 w-7 bg-muted" : "h-4 w-4 ring-1 ring-current/15",
+            isPlain ? "h-8 w-8 bg-muted" : "h-5 w-5 ring-1 ring-current/15",
           )}
         />
       ) : (
-        <UserRound className={cn("shrink-0", isPlain ? "h-3.5 w-3.5" : "h-3 w-3")} />
+        <UserRound className={cn("shrink-0", isPlain ? "h-4 w-4" : "h-3.5 w-3.5")} />
       )}
       {showProfileRow ? (
-        <span className="min-w-0 truncate text-[15px] font-medium text-muted-foreground">
+        <span className="min-w-0 truncate text-base font-semibold text-muted-foreground">
           Hosted by{" "}
           <span className="font-bold text-foreground transition-colors group-hover:text-primary">
             {host}

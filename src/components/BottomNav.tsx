@@ -52,14 +52,14 @@ export function BottomNav() {
             <li key={t.to} className="relative z-10 flex-1">
               <Link
                 to={t.to}
-                className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-[1.35rem] px-1 py-1.5 text-[11px] font-semibold transition-all duration-200 ease-out active:scale-[0.96] ${
+                className={`flex min-h-[3.75rem] flex-col items-center justify-center gap-1 rounded-[1.35rem] px-1 py-2 text-xs font-bold transition-all duration-200 ease-out active:scale-[0.96] ${
                   active
                     ? "text-primary"
                     : "text-muted-foreground/85 hover:text-foreground active:text-foreground"
                 }`}
               >
                 <Icon
-                  className="h-5 w-5 transition-all duration-200 ease-out"
+                  className="h-5.5 w-5.5 transition-all duration-200 ease-out"
                   strokeWidth={active ? 2.4 : 1.8}
                 />
                 <span className="transition-colors duration-200 ease-out">{t.label}</span>

@@ -74,20 +74,19 @@ function MyConcepts() {
     <MobileShell
       header={
         <>
-          <header className="flex items-center justify-between px-4 pb-1 pt-[calc(1.25rem+env(safe-area-inset-top))]">
+          <header className="app-page-x flex items-center justify-between pb-2 pt-[calc(1.35rem+env(safe-area-inset-top))]">
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">My Concepts</h1>
-              <p className="mt-1 text-sm text-muted-foreground">Your next actions, organized.</p>
+              <h1 className="text-[2rem] font-black leading-tight tracking-tight">My Concepts</h1>
+              <p className="mt-1.5 text-[15px] font-medium text-muted-foreground">
+                Your next actions, organized.
+              </p>
             </div>
-            <button
-              aria-label="Notifications"
-              className="grid h-10 w-10 place-items-center rounded-full hover:bg-muted"
-            >
-              <Bell className="h-5 w-5" />
+            <button aria-label="Notifications" className="app-icon-button hover:bg-muted">
+              <Bell className="h-5.5 w-5.5" />
             </button>
           </header>
 
-          <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 py-3">
+          <div className="no-scrollbar flex gap-2.5 overflow-x-auto px-5 py-3.5">
             {tabs.map((tab) => {
               const active = activeTab === tab.value;
 
@@ -96,7 +95,7 @@ function MyConcepts() {
                   key={tab.value}
                   type="button"
                   onClick={() => setActiveTab(tab.value)}
-                  className={`shrink-0 rounded-full px-3.5 py-2 text-xs font-bold transition ${
+                  className={`app-pill shrink-0 rounded-full transition ${
                     active
                       ? "bg-primary text-primary-foreground shadow-sm"
                       : "border border-border bg-card text-muted-foreground"
@@ -110,7 +109,7 @@ function MyConcepts() {
         </>
       }
     >
-      <ul className="space-y-2 px-4 pb-6 pt-1">
+      <ul className="space-y-3 px-5 pb-7 pt-1">
         {visibleItems.map((item) => {
           const concept = conceptById(item.conceptId);
 
@@ -131,33 +130,29 @@ function Row({ concept, item }: { concept: Concept; item: ActiveMyConceptItem })
 
   return (
     <li>
-      <div className="flex items-center gap-2.5 rounded-xl border border-border bg-card p-2.5">
+      <div className="app-card flex min-h-[5.8rem] items-center gap-3 p-3.5">
         <Link
           to="/concept/$id"
           params={{ id: concept.id }}
           className="relative shrink-0 overflow-hidden rounded-lg"
         >
-          <ConceptImage src={concept.image} alt={concept.title} className="h-12 w-12 rounded-lg" />
-          <ConceptFormatBadge type={concept.type} className="right-2 h-4 w-2.5" />
+          <ConceptImage src={concept.image} alt={concept.title} className="h-14 w-14 rounded-xl" />
+          <ConceptFormatBadge type={concept.type} className="right-2 h-4.5 w-3" />
         </Link>
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
             <Link
               to="/concept/$id"
               params={{ id: concept.id }}
-              className="min-w-0 truncate text-[15px] font-bold leading-tight"
+              className="min-w-0 truncate text-base font-extrabold leading-tight"
             >
               {concept.title}
             </Link>
           </div>
           <div className="mt-0.5">
-            <HostLink
-              host={concept.host}
-              hostId={concept.hostId}
-              className="px-2 py-0.5 text-[10px]"
-            />
+            <HostLink host={concept.host} hostId={concept.hostId} className="px-2.5 py-1 text-xs" />
           </div>
-          <div className="mt-1 text-xs leading-snug text-muted-foreground">
+          <div className="mt-1.5 text-sm font-medium leading-snug text-muted-foreground">
             {item.subtitle}
             {item.note && <span className="text-success"> · {item.note}</span>}
           </div>
@@ -170,13 +165,13 @@ function Row({ concept, item }: { concept: Concept; item: ActiveMyConceptItem })
             </div>
           )}
         </div>
-        <div className="flex w-24 shrink-0 justify-end">
+        <div className="flex w-26 shrink-0 justify-end">
           <Link
             to="/concept/$id"
             params={{ id: concept.id }}
-            className={`inline-flex h-9 w-24 items-center justify-center gap-1 rounded-full px-2 text-xs font-bold shadow-sm ${meta.buttonClassName}`}
+            className={`inline-flex min-h-11 w-26 items-center justify-center gap-1.5 rounded-full px-2.5 text-sm font-bold shadow-sm ${meta.buttonClassName}`}
           >
-            <Icon className="h-3.5 w-3.5" />
+            <Icon className="h-4 w-4" />
             {meta.label}
           </Link>
         </div>

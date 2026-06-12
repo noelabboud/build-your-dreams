@@ -60,16 +60,11 @@ export function OpenToJoinCard({
 
   if (variant === "compact") {
     return (
-      <article
-        className={cn(
-          "relative flex min-h-28 overflow-hidden rounded-2xl border border-white/70 bg-card shadow-sm backdrop-blur-xl",
-          className,
-        )}
-      >
+      <article className={cn("app-card relative flex min-h-32 overflow-hidden", className)}>
         <Link
           to="/concept/$id"
           params={{ id: item.conceptId }}
-          className="group relative w-28 shrink-0 overflow-hidden"
+          className="group relative w-32 shrink-0 overflow-hidden"
         >
           <ConceptImage
             src={item.image}
@@ -78,37 +73,32 @@ export function OpenToJoinCard({
             imageClassName="transition duration-300 group-hover:scale-105"
           />
         </Link>
-        <ConceptFormatBadge type={item.type} className="right-4 h-5 w-3" />
-        <div className="min-w-0 flex-1 p-3">
-          <div
-            className={cn(
-              "truncate pr-7 text-[11px] font-semibold uppercase tracking-wide",
-              conceptTypeTextColors[item.type],
-            )}
-          >
+        <ConceptFormatBadge type={item.type} className="right-4" />
+        <div className="min-w-0 flex-1 p-3.5">
+          <div className={cn("app-kicker truncate pr-7", conceptTypeTextColors[item.type])}>
             {conceptTypeLabels[item.type]}
           </div>
           <Link
             to="/concept/$id"
             params={{ id: item.conceptId }}
-            className="mt-1 block line-clamp-2 text-base font-bold leading-tight transition hover:text-primary"
+            className="mt-1.5 block line-clamp-2 text-lg font-extrabold leading-tight transition hover:text-primary"
           >
             {item.title}
           </Link>
-          <div className="mt-1 truncate text-sm font-medium text-muted-foreground">
+          <div className="mt-1 truncate text-sm font-semibold text-muted-foreground">
             Hosted by {item.host}
           </div>
           <div className="mt-2 flex items-center justify-between gap-2">
             <div className="min-w-0">
               <AvailabilityPill availability={availability} />
-              <div className="mt-1 truncate text-[11px] font-semibold text-muted-foreground">
+              <div className="app-caption mt-1 truncate text-muted-foreground">
                 {availabilityDetail}
               </div>
             </div>
             <Link
               to="/concept/$id"
               params={{ id: item.conceptId }}
-              className="shrink-0 whitespace-nowrap rounded-full bg-primary px-3 py-2 text-xs font-bold text-primary-foreground shadow-sm transition hover:bg-primary/90"
+              className="shrink-0 whitespace-nowrap rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground shadow-sm transition hover:bg-primary/90"
               aria-label={`${item.ctaLabel} for ${item.title}`}
             >
               {item.ctaLabel}
@@ -122,45 +112,38 @@ export function OpenToJoinCard({
   return (
     <article
       className={cn(
-        "flex h-[22rem] flex-col overflow-hidden rounded-2xl border border-white/70 bg-card shadow-sm backdrop-blur-xl transition hover:bg-white/82",
+        "app-card flex h-[23.75rem] flex-col overflow-hidden transition hover:bg-white/82",
         className,
       )}
     >
       <Link
         to="/concept/$id"
         params={{ id: item.conceptId }}
-        className="relative h-28 overflow-hidden"
+        className="relative h-32 overflow-hidden"
       >
         <ConceptImage src={item.image} alt={item.title} className="h-full w-full" />
-        <ConceptFormatBadge type={item.type} className="h-6 w-3.5" />
+        <ConceptFormatBadge type={item.type} />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
       </Link>
-      <div className="flex flex-1 flex-col p-3 pb-2.5">
-        <div
-          className={cn(
-            "truncate text-[11px] font-semibold uppercase tracking-wide",
-            conceptTypeTextColors[item.type],
-          )}
-        >
+      <div className="flex flex-1 flex-col p-3.5 pb-3">
+        <div className={cn("app-kicker truncate", conceptTypeTextColors[item.type])}>
           {conceptTypeLabels[item.type]}
         </div>
-        <div className="mt-2 h-[4.75rem]">
+        <div className="mt-2.5 h-[5.1rem]">
           <Link
             to="/concept/$id"
             params={{ id: item.conceptId }}
-            className="block line-clamp-2 text-sm font-bold leading-tight"
+            className="block line-clamp-2 text-base font-extrabold leading-tight"
           >
             {item.title}
           </Link>
-          <p className="mt-1 line-clamp-2 text-xs leading-snug text-muted-foreground">
+          <p className="mt-1.5 line-clamp-2 text-sm leading-snug text-muted-foreground">
             {item.subtitle}
           </p>
         </div>
-        <div className="mt-1.5 h-[4.25rem] space-y-1.5">
+        <div className="mt-1.5 h-[4.6rem] space-y-1.5">
           <AvailabilityPill availability={availability} />
-          <div className="text-[10px] font-medium leading-tight text-muted-foreground">
-            {availabilityDetail}
-          </div>
+          <div className="app-caption text-muted-foreground">{availabilityDetail}</div>
           <div className="-mt-0.5 flex justify-end">
             <HostButton host={item.host} hostId={item.hostId} />
           </div>
@@ -169,7 +152,7 @@ export function OpenToJoinCard({
           <Link
             to="/concept/$id"
             params={{ id: item.conceptId }}
-            className="flex w-full items-center justify-center rounded-xl bg-primary px-3 py-2 text-xs font-bold text-primary-foreground shadow-sm"
+            className="flex min-h-11 w-full items-center justify-center rounded-2xl bg-primary px-3 py-2.5 text-sm font-bold text-primary-foreground shadow-sm"
           >
             {item.ctaLabel}
           </Link>
@@ -184,9 +167,9 @@ function HostButton({ host, hostId }: { host: string; hostId: string }) {
     <Link
       to="/host/$id"
       params={{ id: hostId }}
-      className="inline-flex max-w-full items-center gap-1.5 text-[11px] font-semibold text-muted-foreground transition hover:text-primary"
+      className="inline-flex max-w-full items-center gap-1.5 text-xs font-bold text-muted-foreground transition hover:text-primary"
     >
-      <UserRound className="h-3.5 w-3.5 shrink-0" />
+      <UserRound className="h-4 w-4 shrink-0" />
       <span className="truncate">by {host}</span>
     </Link>
   );
@@ -196,11 +179,11 @@ function AvailabilityPill({ availability }: { availability: ReturnType<typeof av
   return (
     <span
       className={cn(
-        "inline-flex h-6 max-w-full items-center justify-center gap-1 rounded-full px-2 text-[10px] font-bold leading-none ring-1",
+        "inline-flex h-7 max-w-full items-center justify-center gap-1.5 rounded-full px-2.5 text-xs font-bold leading-none ring-1",
         availability.className,
       )}
     >
-      <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", availability.dotClassName)} />
+      <span className={cn("h-2 w-2 shrink-0 rounded-full", availability.dotClassName)} />
       <span className="truncate">{availability.label}</span>
     </span>
   );

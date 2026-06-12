@@ -75,168 +75,164 @@ function ConceptPage() {
 
   return (
     <MobileShell>
-          <div className="relative overflow-hidden">
-            <ConceptImage src={c.image} alt={c.title} className="h-56 w-full" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/35" />
-            <div className="absolute inset-x-0 top-0 flex items-center justify-between px-4 pt-[calc(1rem+env(safe-area-inset-top))]">
-              <button
-                type="button"
-                onClick={() => router.history.back()}
-                aria-label="Back"
-                className="grid h-10 w-10 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </button>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  aria-label="Save concept"
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
-                >
-                  <Bookmark className="h-5 w-5" />
-                </button>
-                <button
-                  type="button"
-                  aria-label="Share concept"
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
-                >
-                  <Share2 className="h-5 w-5" />
-                </button>
-              </div>
+      <div className="relative overflow-hidden">
+        <ConceptImage src={c.image} alt={c.title} className="h-64 w-full" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/35" />
+        <div className="app-page-x absolute inset-x-0 top-0 flex items-center justify-between pt-[calc(1.1rem+env(safe-area-inset-top))]">
+          <button
+            type="button"
+            onClick={() => router.history.back()}
+            aria-label="Back"
+            className="app-icon-button bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
+          >
+            <ArrowLeft className="h-5.5 w-5.5" />
+          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              aria-label="Save concept"
+              className="app-icon-button bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
+            >
+              <Bookmark className="h-5.5 w-5.5" />
+            </button>
+            <button
+              type="button"
+              aria-label="Share concept"
+              className="app-icon-button bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
+            >
+              <Share2 className="h-5.5 w-5.5" />
+            </button>
+          </div>
+        </div>
+        <div className="app-page-x absolute inset-x-0 bottom-5 text-center text-white">
+          <div className="app-kicker tracking-[0.24em] text-white/80">{c.type}</div>
+          <div className="mx-auto mt-2.5 max-w-sm font-display text-[2.05rem] font-black leading-none tracking-wide drop-shadow">
+            {c.title.toUpperCase()}
+          </div>
+        </div>
+      </div>
+
+      <div className="px-5 pt-5">
+        <section className="app-card p-4">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <HostLink
+                host={c.host}
+                hostId={c.hostId}
+                avatar={hostProfile?.avatar}
+                variant="plain"
+                className="py-1.5"
+              />
             </div>
-            <div className="absolute inset-x-0 bottom-4 px-5 text-center text-white">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.26em] text-white/80">
-                {c.type}
-              </div>
-              <div className="mx-auto mt-2 max-w-sm font-display text-[1.8rem] font-black leading-none tracking-wide drop-shadow">
-                {c.title.toUpperCase()}
-              </div>
-            </div>
+            {hasEnded && (
+              <span className="flex shrink-0 items-center gap-1 rounded-full bg-warning/15 px-2.5 py-1.5 text-sm font-bold text-warning">
+                <Star className="h-4 w-4 fill-warning" /> {c.rating}
+              </span>
+            )}
           </div>
 
-          <div className="px-4 pt-4">
-            <section className="rounded-2xl border border-border bg-card p-3">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <HostLink
-                    host={c.host}
-                    hostId={c.hostId}
-                    avatar={hostProfile?.avatar}
-                    variant="plain"
-                    className="py-1"
-                  />
-                </div>
-                {hasEnded && (
-                  <span className="flex shrink-0 items-center gap-1 rounded-full bg-warning/15 px-2 py-1 text-xs font-bold text-warning">
-                    <Star className="h-3.5 w-3.5 fill-warning" /> {c.rating}
-                  </span>
-                )}
-              </div>
-
-              <div className="mt-3 grid grid-cols-3 gap-2 border-t border-border pt-3 text-center">
-                {isSeries ? (
-                  <>
-                    <Stat label="Episodes" value="6" />
-                    <Stat label="Participants" value="1,245" />
-                    {hasEnded ? (
-                      <Stat label="Completion" value="84%" />
-                    ) : (
-                      <Stat label="Status" value={getConceptStatusLabel(c.status)} />
-                    )}
-                  </>
-                ) : c.type === "Minigame" ? (
-                  <>
-                    <Stat label="Mode" value="Live" />
-                    <Stat label="Players" value={c.participants} />
-                    {hasEnded ? (
-                      <Stat label="Rating" value={String(c.rating)} />
-                    ) : (
-                      <Stat label="Status" value={getConceptStatusLabel(c.status)} />
-                    )}
-                  </>
+          <div className="mt-4 grid grid-cols-3 gap-2 border-t border-border pt-4 text-center">
+            {isSeries ? (
+              <>
+                <Stat label="Episodes" value="6" />
+                <Stat label="Participants" value="1,245" />
+                {hasEnded ? (
+                  <Stat label="Completion" value="84%" />
                 ) : (
-                  <>
-                    <Stat label="Format" value="Single" />
-                    <Stat label="Entries" value={c.participants} />
-                    {hasEnded ? (
-                      <Stat label="Rating" value={String(c.rating)} />
-                    ) : (
-                      <Stat label="Status" value={getConceptStatusLabel(c.status)} />
-                    )}
-                  </>
+                  <Stat label="Status" value={getConceptStatusLabel(c.status)} />
                 )}
-              </div>
-            </section>
-          </div>
-
-          {access && (
-            <div className="px-4 pt-3">
-              <section className="rounded-2xl border border-border bg-card p-3">
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-primary">
-                  {access.kind === "capped" ? (
-                    <Users className="h-4 w-4" />
-                  ) : (
-                    <Clock className="h-4 w-4" />
-                  )}
-                  {access.title}
-                </div>
-                {access.kind === "capped" ? (
-                  <CappedAccessProgress access={access} />
+              </>
+            ) : c.type === "Minigame" ? (
+              <>
+                <Stat label="Mode" value="Live" />
+                <Stat label="Players" value={c.participants} />
+                {hasEnded ? (
+                  <Stat label="Rating" value={String(c.rating)} />
                 ) : (
-                  <div className="mt-3 grid grid-cols-2 gap-2">
-                    <AccessTile
-                      icon={<Clock className="h-4 w-4" />}
-                      label="Ticketing closes"
-                      value={access.ticketingCountdown}
-                      detail={access.ticketingLabel}
-                    />
-                    <AccessTile
-                      icon={<CalendarClock className="h-4 w-4" />}
-                      label="Starts"
-                      value={access.startCountdown}
-                      detail={access.startLabel}
-                    />
-                  </div>
+                  <Stat label="Status" value={getConceptStatusLabel(c.status)} />
                 )}
-              </section>
-            </div>
-          )}
-
-          <div className="no-scrollbar mt-5 flex gap-6 overflow-x-auto border-b border-border px-4">
-            {conceptTabs.map((tab) => {
-              const active = activeTab === tab.id;
-
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`relative shrink-0 pb-2.5 text-sm font-semibold transition ${
-                    active ? "text-primary" : "text-muted-foreground"
-                  }`}
-                >
-                  {tab.label}
-                  {active && (
-                    <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
-                  )}
-                </button>
-              );
-            })}
+              </>
+            ) : (
+              <>
+                <Stat label="Format" value="Single" />
+                <Stat label="Entries" value={c.participants} />
+                {hasEnded ? (
+                  <Stat label="Rating" value={String(c.rating)} />
+                ) : (
+                  <Stat label="Status" value={getConceptStatusLabel(c.status)} />
+                )}
+              </>
+            )}
           </div>
-      <div className="px-4 pt-4">
+        </section>
+      </div>
+
+      {access && (
+        <div className="px-5 pt-3.5">
+          <section className="app-card p-4">
+            <div className="app-kicker flex items-center gap-2 text-primary">
+              {access.kind === "capped" ? (
+                <Users className="h-4.5 w-4.5" />
+              ) : (
+                <Clock className="h-4.5 w-4.5" />
+              )}
+              {access.title}
+            </div>
+            {access.kind === "capped" ? (
+              <CappedAccessProgress access={access} />
+            ) : (
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                <AccessTile
+                  icon={<Clock className="h-4 w-4" />}
+                  label="Ticketing closes"
+                  value={access.ticketingCountdown}
+                  detail={access.ticketingLabel}
+                />
+                <AccessTile
+                  icon={<CalendarClock className="h-4 w-4" />}
+                  label="Starts"
+                  value={access.startCountdown}
+                  detail={access.startLabel}
+                />
+              </div>
+            )}
+          </section>
+        </div>
+      )}
+
+      <div className="no-scrollbar mt-6 flex gap-6 overflow-x-auto border-b border-border px-5">
+        {conceptTabs.map((tab) => {
+          const active = activeTab === tab.id;
+
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(tab.id)}
+              className={`app-tab relative shrink-0 transition ${
+                active ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              {tab.label}
+              {active && (
+                <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
+              )}
+            </button>
+          );
+        })}
+      </div>
+      <div className="px-5 pt-5">
         {activeTab === "overview" && (
-          <div className="space-y-5">
+          <div className="space-y-6">
             <section>
-              <div className="text-xs font-bold uppercase tracking-wide text-primary">
-                Concept brief
-              </div>
-              <h2 className="mt-1 text-xl font-bold leading-tight">{brief.headline}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{brief.summary}</p>
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="app-kicker text-primary">Concept brief</div>
+              <h2 className="mt-2 text-[1.4rem] font-black leading-tight">{brief.headline}</h2>
+              <p className="app-body mt-2.5 text-muted-foreground">{brief.summary}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
                 {c.tags.map((t: string) => (
                   <span
                     key={t}
-                    className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground"
+                    className="rounded-full bg-accent px-3.5 py-1.5 text-sm font-bold text-accent-foreground"
                   >
                     {t}
                   </span>
@@ -268,9 +264,9 @@ function ConceptPage() {
             {isMinigame && (
               <section>
                 <SectionLabel>Prize</SectionLabel>
-                <div className="mt-2 rounded-xl bg-primary/5 p-3">
-                  <div className="text-sm font-bold">{brief.rewards[0].value}</div>
-                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                <div className="mt-3 rounded-2xl bg-primary/5 p-3.5">
+                  <div className="text-base font-bold">{brief.rewards[0].value}</div>
+                  <p className="app-body mt-1 text-muted-foreground">
                     {brief.rewardNotes[0].value}
                   </p>
                 </div>
@@ -288,8 +284,10 @@ function ConceptPage() {
         )}
 
         {activeTab === "episodes" && !isSeries && (
-          <div className="space-y-3 text-sm">
-            <div className="font-bold">{c.type === "Minigame" ? "How it plays" : "Event flow"}</div>
+          <div className="space-y-3.5 text-[15px]">
+            <div className="text-base font-bold">
+              {c.type === "Minigame" ? "How it plays" : "Event flow"}
+            </div>
             <p className="leading-relaxed text-muted-foreground">
               {c.type === "Minigame"
                 ? "Jump into a quick automated round. Score points, climb the live leaderboard, and replay anytime."
@@ -302,19 +300,17 @@ function ConceptPage() {
 
         {activeTab === "rewards" && (
           <div>
-            <div className="flex items-center gap-2 text-base font-bold">
-              <Trophy className="h-4 w-4 text-primary" />
+            <div className="flex items-center gap-2 text-lg font-bold">
+              <Trophy className="h-5 w-5 text-primary" />
               Rewards
             </div>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              {brief.rewardsIntro}
-            </p>
+            <p className="app-body mt-2 text-muted-foreground">{brief.rewardsIntro}</p>
             <div className="mt-3 grid grid-cols-3 gap-2 text-center">
               {brief.rewards.map((reward) => (
                 <InfoTile key={reward.label} label={reward.label} value={reward.value} />
               ))}
             </div>
-            <div className="mt-4 space-y-3 text-sm">
+            <div className="mt-4 space-y-3 text-[15px]">
               {brief.rewardNotes.map((reward) => (
                 <InfoRow key={reward.label} label={reward.label} value={reward.value} />
               ))}
@@ -324,17 +320,15 @@ function ConceptPage() {
 
         {activeTab === "grading" && (
           <div>
-            <div className="flex items-center gap-2 text-base font-bold">
-              <Scale className="h-4 w-4 text-primary" />
+            <div className="flex items-center gap-2 text-lg font-bold">
+              <Scale className="h-5 w-5 text-primary" />
               Grading system
             </div>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              {brief.gradingIntro}
-            </p>
+            <p className="app-body mt-2 text-muted-foreground">{brief.gradingIntro}</p>
             <div className="mt-4 space-y-3">
               {grading[c.type].map((row) => (
                 <div key={row.label}>
-                  <div className="mb-1 flex items-center justify-between text-sm">
+                  <div className="mb-1.5 flex items-center justify-between text-[15px]">
                     <span className="font-medium">{row.label}</span>
                     <span className="font-bold text-primary">{row.weight}</span>
                   </div>
@@ -348,11 +342,11 @@ function ConceptPage() {
         )}
       </div>
 
-      <div className="space-y-2 px-4 py-5">
+      <div className="space-y-2 px-5 py-6">
         <button
           type="button"
           disabled={primaryCta.disabled}
-          className={`w-full rounded-xl py-3 text-sm font-semibold shadow-sm transition ${
+          className={`min-h-12 w-full rounded-2xl py-3 text-base font-bold shadow-sm transition ${
             primaryCta.disabled
               ? "cursor-not-allowed bg-muted text-muted-foreground"
               : "bg-primary text-primary-foreground hover:opacity-95"
@@ -515,20 +509,18 @@ function CappedAccessProgress({
   access: Extract<NonNullable<ReturnType<typeof getAccessInfo>>, { kind: "capped" }>;
 }) {
   return (
-    <div className="mt-3 rounded-xl bg-muted px-3 py-3">
+    <div className="mt-3 rounded-2xl bg-muted px-3.5 py-3.5">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
-            <Users className="h-4 w-4" />
+          <div className="app-kicker flex items-center gap-1.5 text-muted-foreground">
+            <Users className="h-4.5 w-4.5" />
             <span className="truncate">Participation cap</span>
           </div>
-          <div className="mt-1 text-2xl font-black leading-tight">{access.milestone}</div>
+          <div className="mt-1.5 text-[1.65rem] font-black leading-tight">{access.milestone}</div>
         </div>
         <div className="shrink-0 text-right">
-          <div className="text-lg font-black leading-tight">{access.percent}%</div>
-          <div className="text-[11px] font-medium text-muted-foreground">
-            {access.spotsLeft} spots left
-          </div>
+          <div className="text-xl font-black leading-tight">{access.percent}%</div>
+          <div className="app-caption text-muted-foreground">{access.spotsLeft} spots left</div>
         </div>
       </div>
       <div className="mt-3 h-2 overflow-hidden rounded-full bg-background">
@@ -550,13 +542,13 @@ function AccessTile({
   detail: string;
 }) {
   return (
-    <div className="min-w-0 rounded-xl bg-muted px-3 py-2.5">
-      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+    <div className="min-w-0 rounded-2xl bg-muted px-3.5 py-3">
+      <div className="app-kicker flex items-center gap-1.5 text-muted-foreground">
         {icon}
         <span className="truncate">{label}</span>
       </div>
-      <div className="mt-1 text-lg font-black leading-tight">{value}</div>
-      <div className="mt-0.5 truncate text-[11px] font-medium text-muted-foreground">{detail}</div>
+      <div className="mt-1.5 text-xl font-black leading-tight">{value}</div>
+      <div className="app-caption mt-0.5 truncate text-muted-foreground">{detail}</div>
     </div>
   );
 }
@@ -571,25 +563,25 @@ function EpisodeRow({ episode }: { episode: (typeof episodes)[number] }) {
         to="/episode/$id"
         params={{ id: String(episode.n) }}
         disabled={locked}
-        className={`flex items-center gap-3 rounded-xl border p-3 transition ${
+        className={`flex min-h-17 items-center gap-3 rounded-2xl border p-3.5 transition ${
           live ? "border-primary bg-primary/5" : "border-border bg-card"
         } ${locked ? "opacity-60" : "hover:bg-muted/40"}`}
       >
         <div className="flex-1">
-          <div className="text-sm font-semibold">
+          <div className="text-base font-bold leading-tight">
             Episode {episode.n} — {episode.title}
           </div>
-          <div className="mt-0.5 text-xs text-muted-foreground capitalize">
+          <div className="mt-1 text-sm font-medium text-muted-foreground capitalize">
             {episode.status === "upcoming" ? "Unlocks in 2 days" : episode.status}
           </div>
         </div>
         {episode.rating && (
-          <span className="flex items-center gap-1 text-xs font-medium text-warning">
-            <Star className="h-3 w-3 fill-warning" /> {episode.rating}
+          <span className="flex items-center gap-1 text-sm font-bold text-warning">
+            <Star className="h-4 w-4 fill-warning" /> {episode.rating}
           </span>
         )}
-        {episode.status === "completed" && <CheckCircle2 className="h-4 w-4 text-success" />}
-        {locked && <Lock className="h-4 w-4 text-muted-foreground" />}
+        {episode.status === "completed" && <CheckCircle2 className="h-5 w-5 text-success" />}
+        {locked && <Lock className="h-5 w-5 text-muted-foreground" />}
       </Link>
     </li>
   );
@@ -834,30 +826,28 @@ const grading: Record<string, { label: string; weight: string }[]> = {
 
 function InfoTile({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl bg-muted px-2 py-2">
-      <div className="text-sm font-bold">{value}</div>
-      <div className="text-[10px] uppercase tracking-wide text-muted-foreground">{label}</div>
+    <div className="rounded-2xl bg-muted px-3 py-3">
+      <div className="text-base font-black">{value}</div>
+      <div className="app-caption mt-0.5 uppercase tracking-wide text-muted-foreground">
+        {label}
+      </div>
     </div>
   );
 }
 
 function SectionLabel({ children }: { children: string }) {
-  return (
-    <div className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-      {children}
-    </div>
-  );
+  return <div className="app-kicker text-muted-foreground">{children}</div>;
 }
 
 function JourneyStep({ number, label, value }: { number: number; label: string; value: string }) {
   return (
-    <div className="flex gap-3">
-      <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+    <div className="flex gap-3.5">
+      <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-black text-primary">
         {number}
       </div>
-      <div className="min-w-0 border-b border-border pb-3 last:border-b-0 last:pb-0">
-        <div className="text-sm font-bold">{label}</div>
-        <div className="mt-0.5 text-sm leading-relaxed text-muted-foreground">{value}</div>
+      <div className="min-w-0 border-b border-border pb-3.5 last:border-b-0 last:pb-0">
+        <div className="text-base font-bold">{label}</div>
+        <div className="app-body mt-1 text-muted-foreground">{value}</div>
       </div>
     </div>
   );
@@ -866,8 +856,8 @@ function JourneyStep({ number, label, value }: { number: number; label: string; 
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="border-t border-border pt-3 first:border-t-0 first:pt-0">
-      <div className="text-xs font-bold uppercase tracking-wide text-foreground">{label}</div>
-      <div className="mt-1 text-sm leading-relaxed text-muted-foreground">{value}</div>
+      <div className="app-kicker text-foreground">{label}</div>
+      <div className="app-body mt-1 text-muted-foreground">{value}</div>
     </div>
   );
 }
@@ -875,8 +865,8 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <div className="text-base font-bold">{value}</div>
-      <div className="text-[10px] uppercase tracking-wide text-muted-foreground">{label}</div>
+      <div className="text-lg font-black leading-tight">{value}</div>
+      <div className="app-caption mt-1 uppercase tracking-wide text-muted-foreground">{label}</div>
     </div>
   );
 }

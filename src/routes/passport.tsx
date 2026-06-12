@@ -117,7 +117,7 @@ function Passport() {
 
   return (
     <MobileShell mainClassName="bg-[#10131A]">
-      <section className="relative overflow-hidden bg-[#10131A] px-4 pb-4 pt-[calc(1rem+env(safe-area-inset-top))] text-white">
+      <section className="relative overflow-hidden bg-[#10131A] px-5 pb-5 pt-[calc(1.1rem+env(safe-area-inset-top))] text-white">
         <ConceptImage
           src={concepts[0].image}
           alt=""
@@ -127,35 +127,33 @@ function Passport() {
 
         <div className="relative z-10 flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wide text-white/55">
-              MIDAN Passport
-            </div>
-            <h1 className="text-2xl font-black leading-tight">Profile</h1>
+            <div className="app-kicker text-white/55">MIDAN Passport</div>
+            <h1 className="text-[2rem] font-black leading-tight">Profile</h1>
           </div>
           <button
             type="button"
             aria-label="Settings"
-            className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white transition hover:bg-white/15"
+            className="app-icon-button bg-white/10 text-white transition hover:bg-white/15"
           >
-            <Settings className="h-5 w-5" />
+            <Settings className="h-5.5 w-5.5" />
           </button>
         </div>
 
-        <div className="relative z-10 mt-5 rounded-2xl border border-white/12 bg-white/[0.07] p-4 shadow-2xl shadow-black/20">
-          <div className="flex items-center gap-3.5">
+        <div className="relative z-10 mt-6 rounded-[1.5rem] border border-white/12 bg-white/[0.07] p-4.5 shadow-2xl shadow-black/20">
+          <div className="flex items-center gap-4">
             <ConceptImage
               src={me.avatar}
               alt={me.name}
-              className="h-[76px] w-[76px] shrink-0 rounded-2xl ring-2 ring-white/25"
+              className="h-[84px] w-[84px] shrink-0 rounded-[1.35rem] ring-2 ring-white/25"
             />
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5 text-[1.65rem] font-black leading-none">
                 <span className="truncate">{me.name}</span>
                 <BadgeCheck className="h-5 w-5 shrink-0 text-primary" />
               </div>
-              <div className="mt-1 text-sm font-semibold text-white/55">{me.handle}</div>
-              <div className="mt-2 inline-flex max-w-full items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-[#111827]">
-                <Sparkles className="h-3.5 w-3.5 text-primary" />
+              <div className="mt-1.5 text-[15px] font-semibold text-white/55">{me.handle}</div>
+              <div className="mt-2.5 inline-flex max-w-full items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-[#111827]">
+                <Sparkles className="h-4 w-4 text-primary" />
                 <span className="truncate">{me.badge}</span>
               </div>
             </div>
@@ -163,7 +161,7 @@ function Passport() {
         </div>
       </section>
 
-      <div className="border-b border-border bg-background px-4 pt-3">
+      <div className="border-b border-border bg-background px-5 pt-3.5">
         <div className="no-scrollbar flex gap-6 overflow-x-auto">
           {tabs.map((tab) => {
             const active = activeTab === tab.id;
@@ -173,7 +171,7 @@ function Passport() {
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative shrink-0 pb-2.5 text-sm font-bold transition ${
+                className={`app-tab relative shrink-0 transition ${
                   active ? "text-primary" : "text-muted-foreground"
                 }`}
               >
@@ -187,7 +185,7 @@ function Passport() {
         </div>
       </div>
 
-      <div className="bg-background px-4 py-4">
+      <div className="bg-background px-5 py-5">
         {activeTab === "highlights" && <Highlights progressPercent={progressPercent} />}
         {activeTab === "badges" && <Badges />}
         {activeTab === "history" && (
@@ -215,21 +213,21 @@ function Highlights({ progressPercent }: { progressPercent: number }) {
 
   return (
     <div className="space-y-4 pb-6">
-      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-        <div className="flex items-start gap-3">
-          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
-            <Sparkles className="h-5 w-5" />
+      <section className="app-card p-4.5">
+        <div className="flex items-start gap-3.5">
+          <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
+            <Sparkles className="h-5.5 w-5.5" />
           </div>
           <div className="min-w-0 flex-1">
-            <div className="text-xl font-black leading-tight">{progress.label}</div>
-            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+            <div className="text-[1.35rem] font-black leading-tight">{progress.label}</div>
+            <p className="app-body mt-1.5 text-muted-foreground">
               XP is earned from verified participation: completed episodes, submitted entries,
               voting, and host-recognized contributions.
             </p>
           </div>
         </div>
         <div className="mt-4">
-          <div className="flex items-center justify-between gap-3 text-sm">
+          <div className="flex items-center justify-between gap-3 text-[15px]">
             <span className="font-bold">Progress to Level {progress.nextLevel}</span>
             <span className="font-black text-primary">
               {progress.currentXp.toLocaleString()} / {progress.nextLevelXp.toLocaleString()} XP
@@ -244,8 +242,8 @@ function Highlights({ progressPercent }: { progressPercent: number }) {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-        <SectionTitle icon={<Sparkles className="h-4 w-4" />} title="Activity" />
+      <section className="app-card p-4.5">
+        <SectionTitle icon={<Sparkles className="h-5 w-5" />} title="Activity" />
         <div className="mt-3 space-y-2">
           <InsightRow
             label={conceptsJoined.label}
@@ -270,8 +268,8 @@ function Highlights({ progressPercent }: { progressPercent: number }) {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-        <SectionTitle icon={<ShieldCheck className="h-4 w-4" />} title="Trust Signals" />
+      <section className="app-card p-4.5">
+        <SectionTitle icon={<ShieldCheck className="h-5 w-5" />} title="Trust Signals" />
         <div className="mt-3 space-y-2">
           <InsightRow
             label={onTime.label}
@@ -292,9 +290,9 @@ function Highlights({ progressPercent }: { progressPercent: number }) {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-        <SectionTitle icon={<Trophy className="h-4 w-4" />} title="Quality Signals" />
-        <div className="mt-3 grid grid-cols-2 gap-2">
+      <section className="app-card p-4.5">
+        <SectionTitle icon={<Trophy className="h-5 w-5" />} title="Quality Signals" />
+        <div className="mt-3.5 grid grid-cols-2 gap-2.5">
           {[
             { ...wins, description: "First-place finishes where the format had a winner." },
             {
@@ -304,12 +302,10 @@ function Highlights({ progressPercent }: { progressPercent: number }) {
             { ...featuredEntries, description: "Entries highlighted by hosts." },
             { ...averageRating, description: "Average rating from completed public records." },
           ].map((item) => (
-            <div key={item.label} className="rounded-xl bg-muted p-3">
-              <div className="text-lg font-black leading-tight text-primary">{item.value}</div>
-              <div className="mt-1 text-xs font-black leading-tight">{item.label}</div>
-              <div className="mt-1 text-[11px] leading-snug text-muted-foreground">
-                {item.description}
-              </div>
+            <div key={item.label} className="rounded-2xl bg-muted p-3.5">
+              <div className="text-xl font-black leading-tight text-primary">{item.value}</div>
+              <div className="mt-1 text-sm font-black leading-tight">{item.label}</div>
+              <div className="app-caption mt-1.5 text-muted-foreground">{item.description}</div>
             </div>
           ))}
         </div>
@@ -325,21 +321,19 @@ function Badges() {
         const Icon = badgeIcons[index % badgeIcons.length];
 
         return (
-          <div key={badge.id} className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-            <div className="flex items-start gap-3">
-              <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
-                <Icon className="h-5 w-5" />
+          <div key={badge.id} className="app-card p-4.5">
+            <div className="flex items-start gap-3.5">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
+                <Icon className="h-5.5 w-5.5" />
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-3">
-                  <div className="truncate text-base font-black">{badge.name}</div>
-                  <span className="shrink-0 rounded-full bg-muted px-2.5 py-1 text-xs font-black text-primary">
+                  <div className="truncate text-lg font-black">{badge.name}</div>
+                  <span className="shrink-0 rounded-full bg-muted px-3 py-1.5 text-xs font-black text-primary">
                     x{badge.count}
                   </span>
                 </div>
-                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                  {badge.description}
-                </p>
+                <p className="app-body mt-1.5 text-muted-foreground">{badge.description}</p>
               </div>
             </div>
           </div>
@@ -401,7 +395,7 @@ function History({
 
   return (
     <div className="pb-6">
-      <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-3">
+      <div className="no-scrollbar -mx-5 flex gap-2.5 overflow-x-auto px-5 pb-3.5">
         {formats.map((format) => {
           const active = activeFormat === format;
 
@@ -414,7 +408,7 @@ function History({
                 setSelectedConceptTitle(null);
                 setSelectedEpisodeId(null);
               }}
-              className={`shrink-0 rounded-full border px-3 py-2 text-xs font-bold transition ${
+              className={`app-pill shrink-0 rounded-full border transition ${
                 active
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-border bg-card text-muted-foreground"
@@ -457,32 +451,32 @@ function HistoryConceptCard({
     <button
       type="button"
       onClick={onView}
-      className="w-full rounded-2xl border border-border bg-card p-4 text-left shadow-sm transition hover:bg-muted/35"
+      className="app-card w-full p-4.5 text-left transition hover:bg-muted/35"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <div className="min-w-0 truncate text-base font-black leading-tight">
+            <div className="min-w-0 truncate text-lg font-black leading-tight">
               {group.conceptTitle}
             </div>
-            <span className="rounded-full bg-primary/10 px-2 py-1 text-[10px] font-black text-primary">
+            <span className="rounded-full bg-primary/10 px-2.5 py-1.5 text-xs font-black text-primary">
               {format}
             </span>
           </div>
-          <div className="mt-1 text-xs font-bold text-muted-foreground">
+          <div className="mt-1 text-sm font-bold text-muted-foreground">
             {group.items.length} {completedLabel} completed
           </div>
         </div>
         <ChevronRight className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" />
       </div>
 
-      <div className="mt-3 space-y-2 rounded-xl bg-muted px-3 py-2.5">
+      <div className="mt-3.5 space-y-2 rounded-2xl bg-muted px-3.5 py-3">
         <HistoryFact label="Best" value={best} />
         <HistoryFact label="Latest" value={latest?.date ?? "Recorded"} />
       </div>
 
       <div className="mt-3 flex items-end justify-between gap-3">
-        <div className="min-w-0 text-xs font-semibold text-muted-foreground">
+        <div className="min-w-0 text-sm font-semibold text-muted-foreground">
           {badgeSummary ? (
             <span className="line-clamp-1">{badgeSummary}</span>
           ) : (
@@ -490,8 +484,8 @@ function HistoryConceptCard({
           )}
         </div>
         <div className="shrink-0 text-right">
-          <div className="text-sm font-black text-primary">+{totalXp} XP</div>
-          <div className="mt-0.5 text-xs font-black text-primary">View record</div>
+          <div className="text-base font-black text-primary">+{totalXp} XP</div>
+          <div className="mt-0.5 text-sm font-black text-primary">View record</div>
         </div>
       </div>
     </button>
@@ -523,12 +517,10 @@ function ConceptRecordView({
 
       <section className="space-y-3">
         <div>
-          <div className="text-[11px] font-black uppercase tracking-wide text-primary">
-            Concept Record
-          </div>
+          <div className="app-kicker text-primary">Concept Record</div>
           <div className="mt-1 flex items-start justify-between gap-3">
             <h2 className="min-w-0 text-2xl font-black leading-tight">{group.conceptTitle}</h2>
-            <span className="mt-1 shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-black text-primary">
+            <span className="mt-1 shrink-0 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-black text-primary">
               {format}
             </span>
           </div>
@@ -546,7 +538,7 @@ function ConceptRecordView({
         <div className="mb-2.5">
           <div className="text-sm font-black">{recordsTitle}</div>
           {badgeCounts.length > 0 && (
-            <div className="mt-1 truncate text-xs font-semibold text-muted-foreground">
+            <div className="mt-1 truncate text-sm font-semibold text-muted-foreground">
               {getBadgeSummary(group.items)}
             </div>
           )}
@@ -563,7 +555,7 @@ function ConceptRecordView({
 
 function ConceptSummaryChip({ value }: { value: string }) {
   return (
-    <span className="shrink-0 rounded-full border border-border bg-background px-3 py-2 text-xs font-black text-foreground shadow-[0_1px_0_rgba(15,23,42,0.03)]">
+    <span className="shrink-0 rounded-full border border-border bg-background px-3.5 py-2.5 text-sm font-black text-foreground shadow-[0_1px_0_rgba(15,23,42,0.03)]">
       {value}
     </span>
   );
@@ -574,28 +566,28 @@ function EpisodeRecordRow({ item, onView }: { item: PassportHistoryItem; onView:
     <button
       type="button"
       onClick={onView}
-      className="w-full rounded-2xl border border-border bg-card px-3.5 py-3 text-left shadow-sm transition hover:border-primary/35 hover:bg-primary/[0.03]"
+      className="app-card w-full px-4 py-3.5 text-left transition hover:border-primary/35 hover:bg-primary/[0.03]"
     >
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <div className="truncate text-sm font-black leading-tight">
+          <div className="truncate text-base font-black leading-tight">
             {item.episodeLabel ?? item.conceptTitle}
           </div>
-          <div className="mt-1 text-[11px] font-semibold text-muted-foreground">
+          <div className="mt-1 text-sm font-semibold text-muted-foreground">
             {item.status} - {item.date}
           </div>
           {item.result && (
-            <div className="mt-1 text-xs font-bold text-foreground">{item.result}</div>
+            <div className="mt-1 text-sm font-bold text-foreground">{item.result}</div>
           )}
         </div>
         <div className="flex shrink-0 items-center gap-1.5">
-          <span className="rounded-full bg-primary/10 px-2 py-1 text-xs font-black text-primary">
+          <span className="rounded-full bg-primary/10 px-2.5 py-1.5 text-xs font-black text-primary">
             +{item.xp} XP
           </span>
-          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          <ChevronRight className="h-5 w-5 text-muted-foreground" />
         </div>
       </div>
-      <div className="mt-2 border-t border-border/70 pt-2 text-xs font-black text-primary">
+      <div className="mt-2.5 border-t border-border/70 pt-2.5 text-sm font-black text-primary">
         View submission
       </div>
     </button>
@@ -609,7 +601,7 @@ type HistoryBreadcrumbItem = {
 
 function HistoryBreadcrumb({ items }: { items: HistoryBreadcrumbItem[] }) {
   return (
-    <div className="flex min-w-0 items-center gap-1 text-[11px] font-bold text-muted-foreground">
+    <div className="flex min-w-0 items-center gap-1 text-xs font-bold text-muted-foreground">
       {items.map((item, index) => (
         <span key={`${item.label}-${index}`} className="flex min-w-0 items-center gap-1">
           {index > 0 && <span className="text-muted-foreground/60">&rsaquo;</span>}
@@ -635,8 +627,8 @@ function HistoryBreadcrumb({ items }: { items: HistoryBreadcrumbItem[] }) {
 function HistoryFact({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between gap-3 border-b border-border/70 py-1.5 last:border-b-0">
-      <div className="text-xs font-bold text-muted-foreground">{label}</div>
-      <div className="min-w-0 truncate text-right text-xs font-black text-foreground">{value}</div>
+      <div className="text-sm font-bold text-muted-foreground">{label}</div>
+      <div className="min-w-0 truncate text-right text-sm font-black text-foreground">{value}</div>
     </div>
   );
 }
@@ -660,29 +652,27 @@ function EpisodeDetailView({
         ]}
       />
 
-      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+      <section className="app-card p-4.5">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <div className="text-[11px] font-black uppercase tracking-wide text-primary">
-              Submission detail
-            </div>
-            <h2 className="mt-1 text-xl font-black leading-tight">
+            <div className="app-kicker text-primary">Submission detail</div>
+            <h2 className="mt-1.5 text-[1.4rem] font-black leading-tight">
               {item.episodeLabel ?? item.conceptTitle}
             </h2>
-            <div className="mt-1 text-sm font-semibold text-muted-foreground">
+            <div className="mt-1.5 text-sm font-semibold text-muted-foreground">
               {item.status} - {item.date}
               {item.result ? ` - ${item.result}` : ""}
             </div>
           </div>
-          <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-black text-primary">
+          <span className="shrink-0 rounded-full bg-primary/10 px-3 py-1.5 text-sm font-black text-primary">
             +{item.xp} XP
           </span>
         </div>
       </section>
 
-      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-        <SectionTitle icon={<Star className="h-4 w-4" />} title="Performance" />
-        <div className="mt-3 rounded-xl bg-muted px-3 py-2.5">
+      <section className="app-card p-4.5">
+        <SectionTitle icon={<Star className="h-5 w-5" />} title="Performance" />
+        <div className="mt-3.5 rounded-2xl bg-muted px-3.5 py-3">
           <HistoryFact label="User score" value={item.score ? String(item.score) : "N/A"} />
           <HistoryFact
             label="Average score"
@@ -696,12 +686,10 @@ function EpisodeDetailView({
         </div>
       </section>
 
-      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+      <section className="app-card p-4.5">
         <div className="flex items-center justify-between gap-3">
-          <div className="text-[11px] font-black uppercase tracking-wide text-primary">
-            Your submission
-          </div>
-          <span className="rounded-full bg-card px-2 py-1 text-[10px] font-black text-primary">
+          <div className="app-kicker text-primary">Your submission</div>
+          <span className="rounded-full bg-card px-2.5 py-1.5 text-xs font-black text-primary">
             {item.submission.kind}
           </span>
         </div>
@@ -709,14 +697,14 @@ function EpisodeDetailView({
       </section>
 
       {item.hostFeedback && (
-        <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-          <SectionTitle icon={<ShieldCheck className="h-4 w-4" />} title="Feedback" />
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.hostFeedback}</p>
+        <section className="app-card p-4.5">
+          <SectionTitle icon={<ShieldCheck className="h-5 w-5" />} title="Feedback" />
+          <p className="app-body mt-3 text-muted-foreground">{item.hostFeedback}</p>
         </section>
       )}
 
-      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-        <SectionTitle icon={<Trophy className="h-4 w-4" />} title="Badges earned" />
+      <section className="app-card p-4.5">
+        <SectionTitle icon={<Trophy className="h-5 w-5" />} title="Badges earned" />
         {item.badges.length > 0 ? (
           <div className="mt-3 flex flex-wrap gap-1.5">
             {item.badges.map((badge) => (
@@ -750,11 +738,11 @@ function InsightRow({
   subtle?: boolean;
 }) {
   return (
-    <div className="rounded-xl bg-muted p-3">
+    <div className="rounded-2xl bg-muted p-3.5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <div className="text-sm font-black">{label}</div>
-          <div className="mt-1 text-[11px] leading-snug text-muted-foreground">{description}</div>
+          <div className="text-base font-black">{label}</div>
+          <div className="app-caption mt-1.5 text-muted-foreground">{description}</div>
         </div>
         <div
           className={`shrink-0 rounded-full px-2.5 py-1 text-sm font-black ${
@@ -771,28 +759,28 @@ function InsightRow({
 function SubmissionPreview({ item }: { item: PassportHistoryItem }) {
   if (item.submission.kind === "Image") {
     return (
-      <div className="mt-3 overflow-hidden rounded-xl border border-border bg-muted">
-        <div className="grid h-28 place-items-center bg-primary/10 text-center text-xs font-bold text-primary">
+      <div className="mt-3.5 overflow-hidden rounded-2xl border border-border bg-muted">
+        <div className="grid h-32 place-items-center bg-primary/10 text-center text-sm font-bold text-primary">
           Image preview placeholder
         </div>
-        <div className="p-3 text-sm leading-relaxed text-foreground">{item.submission.preview}</div>
+        <div className="app-body p-3.5 text-foreground">{item.submission.preview}</div>
       </div>
     );
   }
 
   if (item.submission.kind === "Video") {
     return (
-      <div className="mt-3 overflow-hidden rounded-xl border border-border bg-muted">
-        <div className="grid h-28 place-items-center bg-[#10131A] text-center text-xs font-bold text-white">
+      <div className="mt-3.5 overflow-hidden rounded-2xl border border-border bg-muted">
+        <div className="grid h-32 place-items-center bg-[#10131A] text-center text-sm font-bold text-white">
           Video preview placeholder
         </div>
-        <div className="p-3 text-sm leading-relaxed text-foreground">{item.submission.preview}</div>
+        <div className="app-body p-3.5 text-foreground">{item.submission.preview}</div>
       </div>
     );
   }
 
   return (
-    <div className="mt-3 rounded-xl bg-muted p-3 text-sm leading-relaxed text-foreground">
+    <div className="app-body mt-3.5 rounded-2xl bg-muted p-3.5 text-foreground">
       {item.submission.preview}
     </div>
   );
@@ -800,7 +788,7 @@ function SubmissionPreview({ item }: { item: PassportHistoryItem }) {
 
 function SectionTitle({ icon, title }: { icon: ReactNode; title: string }) {
   return (
-    <div className="flex items-center gap-2 text-sm font-black">
+    <div className="flex items-center gap-2 text-base font-black">
       <span className="text-primary">{icon}</span>
       {title}
     </div>

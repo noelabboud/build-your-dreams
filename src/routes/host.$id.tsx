@@ -135,8 +135,8 @@ function HostPage() {
 
   return (
     <MobileShell>
-      <section className="relative overflow-hidden bg-muted/30 pb-5">
-        <div className="relative h-72 overflow-hidden bg-muted">
+      <section className="relative overflow-hidden bg-muted/30 pb-6">
+        <div className="relative h-80 overflow-hidden bg-muted">
           <ConceptImage
             src={host.coverImage}
             alt=""
@@ -145,40 +145,38 @@ function HostPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-white/55 to-muted/30" />
         </div>
 
-        <div className="absolute inset-x-0 top-0 z-20 flex h-[calc(3.5rem+env(safe-area-inset-top))] items-center justify-between px-4 pt-[env(safe-area-inset-top)]">
+        <div className="absolute inset-x-0 top-0 z-20 flex h-[calc(4rem+env(safe-area-inset-top))] items-center justify-between px-5 pt-[env(safe-area-inset-top)]">
           <button
             type="button"
             onClick={() => router.history.back()}
             aria-label="Back"
-            className="grid h-10 w-10 place-items-center rounded-full bg-white/80 text-foreground shadow-sm backdrop-blur transition hover:bg-white"
+            className="app-icon-button bg-white/80 text-foreground shadow-sm backdrop-blur transition hover:bg-white"
           >
             <ArrowLeft className="h-6 w-6" />
           </button>
           <button
             type="button"
             aria-label="More actions"
-            className="grid h-10 w-10 place-items-center rounded-full bg-white/80 text-foreground shadow-sm backdrop-blur transition hover:bg-white"
+            className="app-icon-button bg-white/80 text-foreground shadow-sm backdrop-blur transition hover:bg-white"
           >
             <MoreHorizontal className="h-6 w-6" />
           </button>
         </div>
 
-        <div className="relative z-10 -mt-48 px-5">
-          <div className="rounded-[1.75rem] border border-border/80 bg-card/95 p-4 shadow-[0_18px_45px_-28px_rgba(15,23,42,0.65)] backdrop-blur">
+        <div className="relative z-10 -mt-52 px-5">
+          <div className="app-card rounded-[1.75rem] bg-card/95 p-4.5">
             <div className="flex items-end gap-4">
               <ConceptImage
                 src={host.avatar}
                 alt={host.name}
-                className="h-24 w-24 shrink-0 rounded-full border-4 border-card shadow-lg shadow-slate-900/15"
+                className="h-28 w-28 shrink-0 rounded-full border-4 border-card shadow-lg shadow-slate-900/15"
               />
               <div className="min-w-0 flex-1 pb-2">
-                <div className="flex items-center gap-1.5 text-3xl font-black leading-none tracking-tight">
+                <div className="flex items-center gap-1.5 text-[2.1rem] font-black leading-none tracking-tight">
                   <span className="truncate">{host.name}</span>
                   {host.verified && <BadgeCheck className="h-6 w-6 shrink-0 text-primary" />}
                 </div>
-                <div className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                  Host portfolio
-                </div>
+                <div className="app-kicker mt-2.5 text-muted-foreground">Host portfolio</div>
               </div>
             </div>
 
@@ -186,11 +184,9 @@ function HostPage() {
               <SocialLinks socials={host.socials} socialStats={host.socialStats} />
             </div>
 
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              {host.bio}
-            </p>
+            <p className="app-body mt-4.5 max-w-sm text-muted-foreground">{host.bio}</p>
 
-            <div className="mt-4 grid grid-cols-4 divide-x divide-border rounded-2xl border border-border bg-background p-3 shadow-sm">
+            <div className="mt-4.5 grid grid-cols-4 divide-x divide-border rounded-2xl border border-border bg-background p-3.5 shadow-sm">
               <Stat label="Concepts" value={String(hostConcepts.length)} />
               <Stat label="Episodes" value={String(host.completedEpisodes)} />
               <Stat label="Participants" value={formatCompact(totalParticipants)} />
@@ -200,7 +196,7 @@ function HostPage() {
         </div>
       </section>
 
-      <div className="no-scrollbar flex gap-6 overflow-x-auto border-b border-border bg-background px-4 pt-4">
+      <div className="no-scrollbar flex gap-6 overflow-x-auto border-b border-border bg-background px-5 pt-4.5">
         {hostLayers.map((layer) => (
           <LayerButton
             key={layer.id}
@@ -210,23 +206,23 @@ function HostPage() {
           />
         ))}
       </div>
-      <section className="bg-background pb-6">
+      <section className="bg-background pb-7">
         <div
           ref={layerScrollRef}
           onScroll={handleLayerScroll}
           className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto"
         >
-          <div className="w-full shrink-0 snap-start px-4 pt-3">
+          <div className="w-full shrink-0 snap-start px-5 pt-4">
             <HighlightsCard highlights={highlights} />
           </div>
-          <div className="w-full shrink-0 snap-start px-4 pt-3">
+          <div className="w-full shrink-0 snap-start px-5 pt-4">
             <div className="space-y-3">
               {activeConcepts.map((concept) => (
                 <ActiveConceptCard key={concept.id} concept={concept} />
               ))}
             </div>
           </div>
-          <div className="w-full shrink-0 snap-start px-4 pt-3">
+          <div className="w-full shrink-0 snap-start px-5 pt-4">
             <div className="grid grid-cols-2 gap-3">
               {visibleFolders.map(({ type, items }) => (
                 <FolderCard key={type} type={type} items={items} />
@@ -252,9 +248,7 @@ function LayerButton({
     <button
       type="button"
       onClick={onClick}
-      className={`relative pb-2.5 text-sm font-bold transition ${
-        active ? "text-primary" : "text-muted-foreground"
-      }`}
+      className={`app-tab relative transition ${active ? "text-primary" : "text-muted-foreground"}`}
     >
       {label}
       {active && <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />}
@@ -270,13 +264,11 @@ function HighlightsCard({ highlights }: { highlights: ReturnType<typeof getHighl
           key={highlight.label}
           to={highlight.to}
           params={highlight.params}
-          className="min-h-32 rounded-2xl border border-border bg-card p-4 shadow-sm transition hover:bg-muted/40"
+          className="app-card min-h-36 p-4.5 transition hover:bg-muted/40"
         >
-          <div className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
-            {highlight.label}
-          </div>
+          <div className="app-kicker text-muted-foreground">{highlight.label}</div>
           <div className="mt-4 text-2xl font-black leading-none">{highlight.value}</div>
-          <div className="mt-3 line-clamp-2 text-sm font-medium leading-snug text-muted-foreground">
+          <div className="mt-3 line-clamp-2 text-[15px] font-semibold leading-snug text-muted-foreground">
             {highlight.title}
           </div>
         </Link>
@@ -292,22 +284,24 @@ function ActiveConceptCard({ concept }: { concept: Concept }) {
     <Link
       to="/concept/$id"
       params={{ id: concept.id }}
-      className="flex overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:bg-muted/40"
+      className="app-card flex min-h-36 overflow-hidden transition hover:bg-muted/40"
     >
-      <div className="relative h-28 w-28 shrink-0 overflow-hidden">
+      <div className="relative h-auto w-32 shrink-0 overflow-hidden">
         <ConceptImage src={concept.image} alt={concept.title} className="h-full w-full" />
         <ConceptFormatBadge type={concept.type} className="right-2 h-5 w-3" />
       </div>
-      <div className="min-w-0 flex-1 p-3">
-        <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-primary">
+      <div className="min-w-0 flex-1 p-3.5">
+        <div className="app-kicker flex items-center gap-1.5 text-primary">
           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
           {status}
         </div>
-        <div className="mt-1 line-clamp-2 text-base font-bold leading-tight">{concept.title}</div>
-        <div className="mt-1 text-xs font-medium text-muted-foreground">
+        <div className="mt-1.5 line-clamp-2 text-lg font-extrabold leading-tight">
+          {concept.title}
+        </div>
+        <div className="mt-1 text-sm font-semibold text-muted-foreground">
           {categoryMeta[concept.type].label}
         </div>
-        <div className="mt-3 text-xs font-semibold text-muted-foreground">
+        <div className="mt-3 text-sm font-bold text-muted-foreground">
           {concept.participants} participants
         </div>
       </div>
@@ -329,7 +323,7 @@ function SocialLinks({
   if (entries.length === 0) return null;
 
   return (
-    <section className="grid grid-cols-4 gap-2">
+    <section className="grid grid-cols-4 gap-2.5">
       {entries.map(([key, href]) => {
         const meta = socialMeta[key];
         const Icon = meta.Icon;
@@ -342,9 +336,9 @@ function SocialLinks({
             target="_blank"
             rel="noreferrer"
             aria-label={`${meta.label} profile`}
-            className="inline-flex min-w-0 items-center justify-center gap-1.5 rounded-full border border-border bg-background px-2.5 py-1.5 text-xs font-bold text-foreground shadow-sm"
+            className="inline-flex min-h-9 min-w-0 items-center justify-center gap-1.5 rounded-full border border-border bg-background px-3 py-2 text-xs font-bold text-foreground shadow-sm"
           >
-            <Icon className={cn("h-3.5 w-3.5", meta.iconClassName)} />
+            <Icon className={cn("h-4 w-4", meta.iconClassName)} />
             <span className="truncate">{count}</span>
           </a>
         );
@@ -364,15 +358,15 @@ function FolderCard({ type, items }: { type: ConceptType; items: Concept[] }) {
     <details className="group">
       <summary
         className={cn(
-          "relative flex min-h-32 cursor-pointer list-none flex-col items-center justify-center rounded-2xl bg-gradient-to-br p-4 text-center text-white shadow-sm [&::-webkit-details-marker]:hidden",
+          "relative flex min-h-36 cursor-pointer list-none flex-col items-center justify-center rounded-[1.35rem] bg-gradient-to-br p-4.5 text-center text-white shadow-sm [&::-webkit-details-marker]:hidden",
           meta.color,
         )}
       >
         {active && (
           <span className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full bg-emerald-300 ring-2 ring-white/30" />
         )}
-        <div className="text-base font-bold leading-tight">{meta.folderLabel}</div>
-        <div className="mt-1 text-xs font-medium text-white/80">{countLabel}</div>
+        <div className="text-lg font-extrabold leading-tight">{meta.folderLabel}</div>
+        <div className="mt-1.5 text-sm font-semibold text-white/80">{countLabel}</div>
       </summary>
       <div className="mt-2 space-y-2">
         {items.map((item) => (
@@ -388,15 +382,15 @@ function PortfolioItem({ concept, showEpisodes }: { concept: Concept; showEpisod
     <Link
       to="/concept/$id"
       params={{ id: concept.id }}
-      className="flex items-center gap-2 rounded-xl border border-border bg-card p-2 transition hover:bg-muted/40"
+      className="app-card flex min-h-17 items-center gap-3 p-3 transition hover:bg-muted/40"
     >
-      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg">
+      <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl">
         <ConceptImage src={concept.image} alt={concept.title} className="h-full w-full" />
-        <ConceptFormatBadge type={concept.type} className="right-1.5 h-4 w-2.5" />
+        <ConceptFormatBadge type={concept.type} className="right-1.5 h-4.5 w-3" />
       </div>
       <div className="min-w-0 flex-1">
-        <div className="truncate text-sm font-bold">{concept.title}</div>
-        <div className="mt-0.5 text-xs text-muted-foreground">
+        <div className="truncate text-base font-bold">{concept.title}</div>
+        <div className="mt-0.5 text-sm font-medium text-muted-foreground">
           {showEpisodes ? "Episodes inside" : `${concept.participants} participants`}
         </div>
       </div>
@@ -406,11 +400,9 @@ function PortfolioItem({ concept, showEpisodes }: { concept: Concept; showEpisod
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="min-w-0 px-1.5 py-1 text-center">
-      <div className="truncate text-lg font-black leading-tight text-foreground">{value}</div>
-      <div className="mt-1 truncate text-[10px] font-semibold leading-tight text-muted-foreground">
-        {label}
-      </div>
+    <div className="min-w-0 px-1.5 py-1.5 text-center">
+      <div className="truncate text-xl font-black leading-tight text-foreground">{value}</div>
+      <div className="app-caption mt-1 truncate text-muted-foreground">{label}</div>
     </div>
   );
 }

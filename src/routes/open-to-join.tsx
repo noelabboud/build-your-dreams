@@ -23,16 +23,16 @@ function OpenToJoinPage() {
       header={
         <>
           <TopBar title="Open to Join" />
-          <div className="px-4 pb-1 pt-3">
-            <h1 className="text-xl font-bold tracking-tight">Open Formats</h1>
-            <p className="text-sm leading-relaxed text-muted-foreground">
+          <div className="px-5 pb-2 pt-4">
+            <h1 className="text-[1.45rem] font-black tracking-tight">Open Formats</h1>
+            <p className="app-body mt-1 text-muted-foreground">
               Formats currently recruiting participants.
             </p>
           </div>
         </>
       }
     >
-      <div className="space-y-3 px-4 pb-6 pt-4">
+      <div className="space-y-3.5 px-5 pb-7 pt-4">
         {openToJoinItems.map((item, index) => (
           <OpenToJoinCard key={item.id} item={item} variant="compact" index={index} />
         ))}
