@@ -22,19 +22,19 @@ export function BottomNav() {
   );
 
   return (
-    <nav className="pointer-events-none absolute inset-x-0 bottom-0 z-30 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-6">
-      <ul className="pointer-events-auto relative mx-auto flex max-w-md items-center justify-around overflow-hidden rounded-[2rem] border border-white/70 bg-white/58 px-2 py-2 shadow-[0_18px_38px_-34px_rgba(15,23,42,0.46)] backdrop-blur-[28px] backdrop-saturate-150 supports-[backdrop-filter]:bg-white/50">
+    <nav className="pointer-events-none absolute inset-x-0 bottom-[max(0.35rem,calc(env(safe-area-inset-bottom)-0.35rem))] z-30 px-4">
+      <ul className="pointer-events-auto relative mx-auto flex max-w-md items-center justify-around overflow-hidden rounded-[2rem] border border-white/90 bg-white/72 px-2 py-2 shadow-[0_18px_42px_-30px_rgba(15,23,42,0.54),0_0_0_1px_rgba(74,96,120,0.05)] backdrop-blur-[30px] backdrop-saturate-150 supports-[backdrop-filter]:bg-white/64">
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-3 top-0 h-px bg-white/65"
+          className="pointer-events-none absolute inset-x-3 top-0 h-px bg-white/90"
         />
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 rounded-[2rem] bg-white/[0.06] shadow-[inset_0_1px_0_rgba(255,255,255,0.46),inset_0_-1px_0_rgba(255,255,255,0.18)]"
+          className="pointer-events-none absolute inset-0 rounded-[2rem] bg-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.78),inset_0_-1px_0_rgba(91,112,132,0.10)]"
         />
         <span
           aria-hidden="true"
-          className="absolute bottom-2 top-2 rounded-[1.35rem] bg-[color-mix(in_oklab,var(--primary)_7%,white_88%)]/72 shadow-[inset_0_1px_0_rgba(255,255,255,0.72),0_10px_20px_-22px_rgba(67,102,232,0.28)] backdrop-blur-xl transition-transform duration-300 ease-out"
+          className="absolute bottom-2 top-2 rounded-[1.35rem] bg-[color-mix(in_oklab,var(--primary)_10%,white_86%)]/78 shadow-[inset_0_1px_0_rgba(255,255,255,0.82),0_10px_22px_-22px_rgba(67,102,232,0.38)] backdrop-blur-xl transition-transform duration-300 ease-out"
           style={{
             left: "0.5rem",
             width: `calc((100% - 1rem) / ${tabs.length})`,

@@ -26,7 +26,7 @@ function Explore() {
 
   return (
     <MobileShell
-      headerClassName="app-gradient-surface"
+      headerClassName="bg-transparent"
       header={
         <section className="px-4 pb-3 pt-[calc(1.25rem+env(safe-area-inset-top))]">
           <header>

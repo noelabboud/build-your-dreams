@@ -15,7 +15,7 @@ export function MobileShell({
   headerClassName?: string;
   mainClassName?: string;
 }) {
-  const scrollSurfaceClassName = mainClassName ?? "app-gradient-surface";
+  const scrollSurfaceClassName = mainClassName ?? "bg-transparent";
 
   return (
     <div className="app-gradient-surface h-dvh min-h-dvh overflow-hidden">
@@ -24,7 +24,7 @@ export function MobileShell({
         <main
           className={cn(
             "min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain [-webkit-overflow-scrolling:touch]",
-            !hideNav && "pb-[calc(5.75rem+env(safe-area-inset-bottom))]",
+            !hideNav && "pb-[calc(6.5rem+env(safe-area-inset-bottom))]",
             scrollSurfaceClassName,
           )}
         >

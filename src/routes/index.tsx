@@ -177,7 +177,7 @@ function Home() {
       <div
         ref={openJoinScrollRef}
         onScroll={handleOpenJoinScroll}
-        className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-4"
+        className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-3"
       >
         {openToJoinItems.map((item) => (
           <OpenToJoinCard
@@ -187,7 +187,7 @@ function Home() {
           />
         ))}
       </div>
-      <div className="mb-6 flex justify-center gap-1.5 pt-5">
+      <div className="flex justify-center gap-1.5 pb-6 pt-2">
         {openToJoinItems.map((item, index) => (
           <button
             key={item.id}
