@@ -18,7 +18,7 @@ export function MobileShell({
   const scrollSurfaceClassName = mainClassName ?? "bg-transparent";
 
   return (
-    <div className="app-gradient-surface h-dvh min-h-dvh overflow-hidden">
+    <div className="app-gradient-surface h-screen min-h-screen overflow-hidden supports-[height:100dvh]:h-dvh supports-[height:100dvh]:min-h-dvh">
       <div className="app-gradient-surface relative mx-auto flex h-full min-h-0 max-w-md flex-col overflow-hidden shadow-[0_0_60px_-20px_rgba(0,0,0,0.15)]">
         {header && <div className={cn("shrink-0 bg-background/80", headerClassName)}>{header}</div>}
         <main
@@ -33,7 +33,7 @@ export function MobileShell({
         {!hideNav && (
           <div
             aria-hidden="true"
-            className="app-gradient-surface pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[calc(5.5rem+env(safe-area-inset-bottom))]"
+            className="app-gradient-surface pointer-events-none fixed inset-x-0 bottom-0 z-20 mx-auto h-[calc(5.5rem+env(safe-area-inset-bottom))] max-w-md"
           />
         )}
         {!hideNav && <BottomNav />}
