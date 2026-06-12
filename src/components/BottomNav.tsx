@@ -22,15 +22,15 @@ export function BottomNav() {
   );
 
   return (
-    <nav className="pointer-events-none absolute inset-x-0 bottom-[max(0.35rem,calc(env(safe-area-inset-bottom)-0.35rem))] z-30 px-4">
-      <ul className="pointer-events-auto relative mx-auto flex max-w-md items-center justify-around overflow-hidden rounded-[2rem] border border-white/90 bg-white/72 px-2 py-2 shadow-[0_18px_42px_-30px_rgba(15,23,42,0.54),0_0_0_1px_rgba(74,96,120,0.05)] backdrop-blur-[30px] backdrop-saturate-150 supports-[backdrop-filter]:bg-white/64">
+    <nav className="pointer-events-none absolute inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+0.5rem)] z-30 px-4">
+      <ul className="pointer-events-auto relative mx-auto flex max-w-md items-center justify-around overflow-hidden rounded-[2rem] border border-white/95 bg-white/74 px-2 py-2 shadow-[0_18px_44px_-28px_rgba(15,23,42,0.56),0_0_0_1px_rgba(61,83,105,0.08)] backdrop-blur-[30px] backdrop-saturate-150 supports-[backdrop-filter]:bg-white/66">
         <span
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-3 top-0 h-px bg-white/90"
         />
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 rounded-[2rem] bg-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.78),inset_0_-1px_0_rgba(91,112,132,0.10)]"
+          className="pointer-events-none absolute inset-0 rounded-[2rem] bg-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.82),inset_0_-1px_0_rgba(74,96,120,0.16)]"
         />
         <span
           aria-hidden="true"

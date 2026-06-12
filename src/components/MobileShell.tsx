@@ -24,12 +24,18 @@ export function MobileShell({
         <main
           className={cn(
             "min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain [-webkit-overflow-scrolling:touch]",
-            !hideNav && "pb-[calc(6.5rem+env(safe-area-inset-bottom))]",
+            !hideNav && "pb-[calc(6.75rem+env(safe-area-inset-bottom))]",
             scrollSurfaceClassName,
           )}
         >
           {children}
         </main>
+        {!hideNav && (
+          <div
+            aria-hidden="true"
+            className="app-gradient-surface pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[calc(5.5rem+env(safe-area-inset-bottom))]"
+          />
+        )}
         {!hideNav && <BottomNav />}
       </div>
     </div>

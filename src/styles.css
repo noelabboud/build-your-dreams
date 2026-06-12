@@ -105,6 +105,18 @@
       overflow: hidden;
     }
   }
+  @media all and (display-mode: standalone) {
+    html,
+    body,
+    #root {
+      background: var(--app-gradient);
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+    body {
+      background-color: var(--surface);
+    }
+  }
   h1,
   h2,
   h3,
