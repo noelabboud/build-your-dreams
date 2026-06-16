@@ -78,23 +78,23 @@ function Home() {
 
   return (
     <MobileShell>
-      <section className="app-page-x relative pb-8 pt-[calc(1.1rem+env(safe-area-inset-top))]">
+      <section className="app-page-x relative pb-6 pt-[calc(1rem+env(safe-area-inset-top))]">
         <header className="relative flex items-center justify-between">
-          <div className="text-xl font-black tracking-[0.16em] text-primary">MIDAN</div>
+          <div className="text-lg font-black tracking-[0.16em] text-primary">MIDAN</div>
           <button
             aria-label="Notifications"
             className="app-icon-button relative bg-white/58 text-foreground shadow-[0_14px_30px_-24px_rgba(15,23,42,0.55)] backdrop-blur transition hover:bg-white/75"
           >
-            <Bell className="h-5.5 w-5.5" />
-            <span className="absolute right-2.5 top-2.5 h-2.5 w-2.5 rounded-full bg-destructive" />
+            <Bell className="h-5 w-5" />
+            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-destructive" />
           </button>
         </header>
 
         <div className="relative pt-3">
-          <h1 className="text-[25px] font-black leading-tight tracking-tight">
+          <h1 className="text-[22px] font-black leading-tight tracking-tight">
             Good morning, Noel <span className="ml-1">👋</span>
           </h1>
-          <p className="mt-1.5 text-[15px] font-medium text-muted-foreground">
+          <p className="mt-1.5 text-sm font-medium text-muted-foreground">
             Ready to continue your next challenge?
           </p>
         </div>
@@ -108,21 +108,21 @@ function Home() {
       <div
         ref={continueScrollRef}
         onScroll={handleContinueScroll}
-        className="no-scrollbar flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-5"
+        className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-4"
       >
         {continuingEvents.map(({ concept, detail, progress, ctaLabel }) => (
-          <div key={concept.id} className="block basis-[90%] shrink-0 snap-start scroll-ml-5">
+          <div key={concept.id} className="block basis-[86%] shrink-0 snap-start scroll-ml-4">
             <div className="relative overflow-hidden rounded-2xl">
               <Link to="/concept/$id" params={{ id: concept.id }} className="block">
-                <ConceptImage src={concept.image} alt={concept.title} className="h-60 w-full" />
+                <ConceptImage src={concept.image} alt={concept.title} className="h-52 w-full" />
               </Link>
               <ConceptFormatBadge type={concept.type} showLabel />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-4.5 text-white">
+              <div className="absolute inset-x-0 bottom-0 p-4 text-white">
                 <Link
                   to="/concept/$id"
                   params={{ id: concept.id }}
-                  className="block text-xl font-black drop-shadow"
+                  className="block text-lg font-black drop-shadow"
                 >
                   {concept.title}
                 </Link>
@@ -135,9 +135,9 @@ function Home() {
                 <Link
                   to="/concept/$id"
                   params={{ id: concept.id }}
-                  className="mt-3.5 flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3 text-base font-bold text-primary-foreground shadow-lg"
+                  className="mt-3 flex min-h-10 w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-bold text-primary-foreground shadow-lg"
                 >
-                  <Play className="h-5 w-5 fill-current" /> {ctaLabel}
+                  <Play className="h-4.5 w-4.5 fill-current" /> {ctaLabel}
                 </Link>
               </div>
             </div>
@@ -159,7 +159,7 @@ function Home() {
         ))}
       </div>
 
-      <div className="app-page-x flex items-end justify-between pb-3 pt-6">
+      <div className="app-page-x flex items-end justify-between pb-3 pt-5">
         <h2 className="app-section-title">Open to Join</h2>
         <Link
           to="/open-to-join"
@@ -171,13 +171,13 @@ function Home() {
       <div
         ref={openJoinScrollRef}
         onScroll={handleOpenJoinScroll}
-        className="no-scrollbar flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-5 pb-3"
+        className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-3"
       >
         {openToJoinItems.map((item) => (
           <OpenToJoinCard
             key={item.id}
             item={item}
-            className="w-52 shrink-0 snap-start scroll-ml-5"
+            className="w-48 shrink-0 snap-start scroll-ml-4"
           />
         ))}
       </div>

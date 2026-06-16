@@ -117,7 +117,7 @@ function Passport() {
 
   return (
     <MobileShell mainClassName="bg-[#10131A]">
-      <section className="relative overflow-hidden bg-[#10131A] px-5 pb-5 pt-[calc(1.1rem+env(safe-area-inset-top))] text-white">
+      <section className="relative overflow-hidden bg-[#10131A] px-4 pb-4 pt-[calc(1rem+env(safe-area-inset-top))] text-white">
         <ConceptImage
           src={concepts[0].image}
           alt=""
@@ -128,31 +128,31 @@ function Passport() {
         <div className="relative z-10 flex items-center justify-between">
           <div>
             <div className="app-kicker text-white/55">MIDAN Passport</div>
-            <h1 className="text-[2rem] font-black leading-tight">Profile</h1>
+            <h1 className="text-[1.6rem] font-black leading-tight">Profile</h1>
           </div>
           <button
             type="button"
             aria-label="Settings"
             className="app-icon-button bg-white/10 text-white transition hover:bg-white/15"
           >
-            <Settings className="h-5.5 w-5.5" />
+            <Settings className="h-5 w-5" />
           </button>
         </div>
 
-        <div className="relative z-10 mt-6 rounded-[1.5rem] border border-white/12 bg-white/[0.07] p-4.5 shadow-2xl shadow-black/20">
-          <div className="flex items-center gap-4">
+        <div className="relative z-10 mt-5 rounded-2xl border border-white/12 bg-white/[0.07] p-4 shadow-2xl shadow-black/20">
+          <div className="flex items-center gap-3">
             <ConceptImage
               src={me.avatar}
               alt={me.name}
-              className="h-[84px] w-[84px] shrink-0 rounded-[1.35rem] ring-2 ring-white/25"
+              className="h-[72px] w-[72px] shrink-0 rounded-2xl ring-2 ring-white/25"
             />
             <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-1.5 text-[1.65rem] font-black leading-none">
+              <div className="flex items-center gap-1.5 text-[1.35rem] font-black leading-none">
                 <span className="truncate">{me.name}</span>
                 <BadgeCheck className="h-5 w-5 shrink-0 text-primary" />
               </div>
-              <div className="mt-1.5 text-[15px] font-semibold text-white/55">{me.handle}</div>
-              <div className="mt-2.5 inline-flex max-w-full items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-[#111827]">
+              <div className="mt-1.5 text-sm font-semibold text-white/55">{me.handle}</div>
+              <div className="mt-2 inline-flex max-w-full items-center gap-1.5 rounded-full bg-white px-2.5 py-1.5 text-[11px] font-bold text-[#111827]">
                 <Sparkles className="h-4 w-4 text-primary" />
                 <span className="truncate">{me.badge}</span>
               </div>
@@ -161,8 +161,8 @@ function Passport() {
         </div>
       </section>
 
-      <div className="border-b border-border bg-background px-5 pt-3.5">
-        <div className="no-scrollbar flex gap-6 overflow-x-auto">
+      <div className="border-b border-border bg-background px-4 pt-3">
+        <div className="no-scrollbar flex gap-5 overflow-x-auto">
           {tabs.map((tab) => {
             const active = activeTab === tab.id;
 
@@ -185,7 +185,7 @@ function Passport() {
         </div>
       </div>
 
-      <div className="bg-background px-5 py-5">
+      <div className="bg-background px-4 py-4">
         {activeTab === "highlights" && <Highlights progressPercent={progressPercent} />}
         {activeTab === "badges" && <Badges />}
         {activeTab === "history" && (
@@ -213,13 +213,13 @@ function Highlights({ progressPercent }: { progressPercent: number }) {
 
   return (
     <div className="space-y-4 pb-6">
-      <section className="app-card p-4.5">
-        <div className="flex items-start gap-3.5">
-          <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
-            <Sparkles className="h-5.5 w-5.5" />
+      <section className="app-card p-4">
+        <div className="flex items-start gap-3">
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+            <Sparkles className="h-5 w-5" />
           </div>
           <div className="min-w-0 flex-1">
-            <div className="text-[1.35rem] font-black leading-tight">{progress.label}</div>
+            <div className="text-[1.15rem] font-black leading-tight">{progress.label}</div>
             <p className="app-body mt-1.5 text-muted-foreground">
               XP is earned from verified participation: completed episodes, submitted entries,
               voting, and host-recognized contributions.
@@ -227,7 +227,7 @@ function Highlights({ progressPercent }: { progressPercent: number }) {
           </div>
         </div>
         <div className="mt-4">
-          <div className="flex items-center justify-between gap-3 text-[15px]">
+          <div className="flex items-center justify-between gap-3 text-sm">
             <span className="font-bold">Progress to Level {progress.nextLevel}</span>
             <span className="font-black text-primary">
               {progress.currentXp.toLocaleString()} / {progress.nextLevelXp.toLocaleString()} XP
@@ -242,7 +242,7 @@ function Highlights({ progressPercent }: { progressPercent: number }) {
         </div>
       </section>
 
-      <section className="app-card p-4.5">
+      <section className="app-card p-4">
         <SectionTitle icon={<Sparkles className="h-5 w-5" />} title="Activity" />
         <div className="mt-3 space-y-2">
           <InsightRow
@@ -268,7 +268,7 @@ function Highlights({ progressPercent }: { progressPercent: number }) {
         </div>
       </section>
 
-      <section className="app-card p-4.5">
+      <section className="app-card p-4">
         <SectionTitle icon={<ShieldCheck className="h-5 w-5" />} title="Trust Signals" />
         <div className="mt-3 space-y-2">
           <InsightRow
@@ -290,7 +290,7 @@ function Highlights({ progressPercent }: { progressPercent: number }) {
         </div>
       </section>
 
-      <section className="app-card p-4.5">
+      <section className="app-card p-4">
         <SectionTitle icon={<Trophy className="h-5 w-5" />} title="Quality Signals" />
         <div className="mt-3.5 grid grid-cols-2 gap-2.5">
           {[
@@ -321,7 +321,7 @@ function Badges() {
         const Icon = badgeIcons[index % badgeIcons.length];
 
         return (
-          <div key={badge.id} className="app-card p-4.5">
+          <div key={badge.id} className="app-card p-4">
             <div className="flex items-start gap-3.5">
               <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
                 <Icon className="h-5.5 w-5.5" />
@@ -395,7 +395,7 @@ function History({
 
   return (
     <div className="pb-6">
-      <div className="no-scrollbar -mx-5 flex gap-2.5 overflow-x-auto px-5 pb-3.5">
+      <div className="no-scrollbar -mx-4 flex gap-2.5 overflow-x-auto px-4 pb-3.5">
         {formats.map((format) => {
           const active = activeFormat === format;
 
@@ -451,7 +451,7 @@ function HistoryConceptCard({
     <button
       type="button"
       onClick={onView}
-      className="app-card w-full p-4.5 text-left transition hover:bg-muted/35"
+      className="app-card w-full p-4 text-left transition hover:bg-muted/35"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
@@ -652,11 +652,11 @@ function EpisodeDetailView({
         ]}
       />
 
-      <section className="app-card p-4.5">
+      <section className="app-card p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="app-kicker text-primary">Submission detail</div>
-            <h2 className="mt-1.5 text-[1.4rem] font-black leading-tight">
+            <h2 className="mt-1.5 text-[1.2rem] font-black leading-tight">
               {item.episodeLabel ?? item.conceptTitle}
             </h2>
             <div className="mt-1.5 text-sm font-semibold text-muted-foreground">
@@ -670,7 +670,7 @@ function EpisodeDetailView({
         </div>
       </section>
 
-      <section className="app-card p-4.5">
+      <section className="app-card p-4">
         <SectionTitle icon={<Star className="h-5 w-5" />} title="Performance" />
         <div className="mt-3.5 rounded-2xl bg-muted px-3.5 py-3">
           <HistoryFact label="User score" value={item.score ? String(item.score) : "N/A"} />
@@ -686,7 +686,7 @@ function EpisodeDetailView({
         </div>
       </section>
 
-      <section className="app-card p-4.5">
+      <section className="app-card p-4">
         <div className="flex items-center justify-between gap-3">
           <div className="app-kicker text-primary">Your submission</div>
           <span className="rounded-full bg-card px-2.5 py-1.5 text-xs font-black text-primary">
@@ -697,13 +697,13 @@ function EpisodeDetailView({
       </section>
 
       {item.hostFeedback && (
-        <section className="app-card p-4.5">
+        <section className="app-card p-4">
           <SectionTitle icon={<ShieldCheck className="h-5 w-5" />} title="Feedback" />
           <p className="app-body mt-3 text-muted-foreground">{item.hostFeedback}</p>
         </section>
       )}
 
-      <section className="app-card p-4.5">
+      <section className="app-card p-4">
         <SectionTitle icon={<Trophy className="h-5 w-5" />} title="Badges earned" />
         {item.badges.length > 0 ? (
           <div className="mt-3 flex flex-wrap gap-1.5">

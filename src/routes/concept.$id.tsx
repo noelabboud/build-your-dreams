@@ -76,7 +76,7 @@ function ConceptPage() {
   return (
     <MobileShell>
       <div className="relative overflow-hidden">
-        <ConceptImage src={c.image} alt={c.title} className="h-64 w-full" />
+        <ConceptImage src={c.image} alt={c.title} className="h-56 w-full" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/35" />
         <div className="app-page-x absolute inset-x-0 top-0 flex items-center justify-between pt-[calc(1.1rem+env(safe-area-inset-top))]">
           <button
@@ -85,7 +85,7 @@ function ConceptPage() {
             aria-label="Back"
             className="app-icon-button bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
           >
-            <ArrowLeft className="h-5.5 w-5.5" />
+            <ArrowLeft className="h-5 w-5" />
           </button>
           <div className="flex items-center gap-2">
             <button
@@ -93,27 +93,27 @@ function ConceptPage() {
               aria-label="Save concept"
               className="app-icon-button bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
             >
-              <Bookmark className="h-5.5 w-5.5" />
+              <Bookmark className="h-5 w-5" />
             </button>
             <button
               type="button"
               aria-label="Share concept"
               className="app-icon-button bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
             >
-              <Share2 className="h-5.5 w-5.5" />
+              <Share2 className="h-5 w-5" />
             </button>
           </div>
         </div>
-        <div className="app-page-x absolute inset-x-0 bottom-5 text-center text-white">
+        <div className="app-page-x absolute inset-x-0 bottom-4 text-center text-white">
           <div className="app-kicker tracking-[0.24em] text-white/80">{c.type}</div>
-          <div className="mx-auto mt-2.5 max-w-sm font-display text-[2.05rem] font-black leading-none tracking-wide drop-shadow">
+          <div className="mx-auto mt-2 max-w-sm font-display text-[1.55rem] font-black leading-none tracking-wide drop-shadow">
             {c.title.toUpperCase()}
           </div>
         </div>
       </div>
 
-      <div className="px-5 pt-5">
-        <section className="app-card p-4">
+      <div className="px-4 pt-4">
+        <section className="app-card p-3.5">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <HostLink
@@ -131,7 +131,7 @@ function ConceptPage() {
             )}
           </div>
 
-          <div className="mt-4 grid grid-cols-3 gap-2 border-t border-border pt-4 text-center">
+          <div className="mt-3.5 grid grid-cols-3 gap-2 border-t border-border pt-3.5 text-center">
             {isSeries ? (
               <>
                 <Stat label="Episodes" value="6" />
@@ -168,8 +168,8 @@ function ConceptPage() {
       </div>
 
       {access && (
-        <div className="px-5 pt-3.5">
-          <section className="app-card p-4">
+        <div className="px-4 pt-3">
+          <section className="app-card p-3.5">
             <div className="app-kicker flex items-center gap-2 text-primary">
               {access.kind === "capped" ? (
                 <Users className="h-4.5 w-4.5" />
@@ -200,7 +200,7 @@ function ConceptPage() {
         </div>
       )}
 
-      <div className="no-scrollbar mt-6 flex gap-6 overflow-x-auto border-b border-border px-5">
+      <div className="no-scrollbar mt-5 flex gap-5 overflow-x-auto border-b border-border px-4">
         {conceptTabs.map((tab) => {
           const active = activeTab === tab.id;
 
@@ -221,12 +221,12 @@ function ConceptPage() {
           );
         })}
       </div>
-      <div className="px-5 pt-5">
+      <div className="px-4 pt-4">
         {activeTab === "overview" && (
           <div className="space-y-6">
             <section>
               <div className="app-kicker text-primary">Concept brief</div>
-              <h2 className="mt-2 text-[1.4rem] font-black leading-tight">{brief.headline}</h2>
+              <h2 className="mt-2 text-[1.2rem] font-black leading-tight">{brief.headline}</h2>
               <p className="app-body mt-2.5 text-muted-foreground">{brief.summary}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {c.tags.map((t: string) => (
@@ -284,7 +284,7 @@ function ConceptPage() {
         )}
 
         {activeTab === "episodes" && !isSeries && (
-          <div className="space-y-3.5 text-[15px]">
+          <div className="space-y-3.5 text-sm">
             <div className="text-base font-bold">
               {c.type === "Minigame" ? "How it plays" : "Event flow"}
             </div>
@@ -310,7 +310,7 @@ function ConceptPage() {
                 <InfoTile key={reward.label} label={reward.label} value={reward.value} />
               ))}
             </div>
-            <div className="mt-4 space-y-3 text-[15px]">
+            <div className="mt-4 space-y-3 text-sm">
               {brief.rewardNotes.map((reward) => (
                 <InfoRow key={reward.label} label={reward.label} value={reward.value} />
               ))}
@@ -328,7 +328,7 @@ function ConceptPage() {
             <div className="mt-4 space-y-3">
               {grading[c.type].map((row) => (
                 <div key={row.label}>
-                  <div className="mb-1.5 flex items-center justify-between text-[15px]">
+                  <div className="mb-1.5 flex items-center justify-between text-sm">
                     <span className="font-medium">{row.label}</span>
                     <span className="font-bold text-primary">{row.weight}</span>
                   </div>
@@ -342,11 +342,11 @@ function ConceptPage() {
         )}
       </div>
 
-      <div className="space-y-2 px-5 py-6">
+      <div className="space-y-2 px-4 py-6">
         <button
           type="button"
           disabled={primaryCta.disabled}
-          className={`min-h-12 w-full rounded-2xl py-3 text-base font-bold shadow-sm transition ${
+          className={`min-h-10 w-full rounded-2xl py-3 text-base font-bold shadow-sm transition ${
             primaryCta.disabled
               ? "cursor-not-allowed bg-muted text-muted-foreground"
               : "bg-primary text-primary-foreground hover:opacity-95"
@@ -516,7 +516,7 @@ function CappedAccessProgress({
             <Users className="h-4.5 w-4.5" />
             <span className="truncate">Participation cap</span>
           </div>
-          <div className="mt-1.5 text-[1.65rem] font-black leading-tight">{access.milestone}</div>
+          <div className="mt-1.5 text-[1.35rem] font-black leading-tight">{access.milestone}</div>
         </div>
         <div className="shrink-0 text-right">
           <div className="text-xl font-black leading-tight">{access.percent}%</div>

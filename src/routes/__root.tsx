@@ -15,7 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 function NotFoundComponent() {
   return (
     <div className="app-page-x flex min-h-screen items-center justify-center bg-background">
-      <div className="max-w-md text-center">
+      <div className="max-w-[390px] text-center">
         <h1 className="text-7xl font-black text-foreground">404</h1>
         <h2 className="mt-4 text-2xl font-black text-foreground">Page not found</h2>
         <p className="app-body mt-2 text-muted-foreground">
@@ -24,7 +24,7 @@ function NotFoundComponent() {
         <div className="mt-6">
           <Link
             to="/"
-            className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-primary px-6 py-3 text-base font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex min-h-10 items-center justify-center rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Go home
           </Link>
@@ -43,7 +43,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 
   return (
     <div className="app-page-x flex min-h-screen items-center justify-center bg-background">
-      <div className="max-w-md text-center">
+      <div className="max-w-[390px] text-center">
         <h1 className="text-2xl font-black tracking-tight text-foreground">
           This page didn't load
         </h1>
@@ -56,13 +56,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
               router.invalidate();
               reset();
             }}
-            className="inline-flex min-h-11 items-center justify-center rounded-2xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex min-h-11 items-center justify-center rounded-2xl bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Try again
           </button>
           <a
             href="/"
-            className="inline-flex min-h-11 items-center justify-center rounded-2xl border border-input bg-background px-5 py-2.5 text-sm font-bold text-foreground transition-colors hover:bg-accent"
+            className="inline-flex min-h-11 items-center justify-center rounded-2xl border border-input bg-background px-4 py-2.5 text-sm font-bold text-foreground transition-colors hover:bg-accent"
           >
             Go home
           </a>

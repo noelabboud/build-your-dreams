@@ -13,30 +13,30 @@ export function TopBar({
 }) {
   const router = useRouter();
   return (
-    <div className="sticky top-0 z-20 flex h-[calc(4rem+env(safe-area-inset-top))] items-center gap-2 border-b border-border/60 bg-background/90 px-4 pt-[env(safe-area-inset-top)] backdrop-blur">
+    <div className="sticky top-0 z-20 flex h-[calc(3.5rem+env(safe-area-inset-top))] items-center gap-2 border-b border-border/60 bg-background/90 px-3.5 pt-[env(safe-area-inset-top)] backdrop-blur">
       {back && (
         <button
           onClick={() => router.history.back()}
           aria-label="Back"
           className="app-icon-button text-foreground hover:bg-muted"
         >
-          <ArrowLeft className="h-5.5 w-5.5" />
+          <ArrowLeft className="h-5 w-5" />
         </button>
       )}
-      <div className="flex-1 truncate text-lg font-bold">{title}</div>
+      <div className="flex-1 truncate text-base font-bold">{title}</div>
       {actions === "share" && (
         <>
           <button className="app-icon-button hover:bg-muted">
-            <Bookmark className="h-5.5 w-5.5" />
+            <Bookmark className="h-5 w-5" />
           </button>
           <button className="app-icon-button hover:bg-muted">
-            <Share2 className="h-5.5 w-5.5" />
+            <Share2 className="h-5 w-5" />
           </button>
         </>
       )}
       {actions === "more" && (
         <button className="app-icon-button hover:bg-muted">
-          <MoreHorizontal className="h-5.5 w-5.5" />
+          <MoreHorizontal className="h-5 w-5" />
         </button>
       )}
       {typeof actions !== "string" && actions}
@@ -46,7 +46,7 @@ export function TopBar({
 
 export function SectionHeader({ title, to }: { title: string; to?: string }) {
   return (
-    <div className="app-page-x flex items-end justify-between pb-3 pt-6">
+    <div className="app-page-x flex items-end justify-between pb-3 pt-5">
       <h2 className="app-section-title">{title}</h2>
       {to && (
         <Link to={to} className="text-sm font-bold text-primary">

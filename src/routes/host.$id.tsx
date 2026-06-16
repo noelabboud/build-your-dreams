@@ -2,18 +2,19 @@ import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-rout
 import {
   ArrowLeft,
   BadgeCheck,
+  Bookmark,
+  ChevronRight,
+  Funnel,
   Instagram,
   MoreHorizontal,
   Music2,
+  Star,
   Twitch,
   Youtube,
 } from "lucide-react";
-import { useRef, useState } from "react";
-import { ConceptFormatBadge } from "@/components/ConceptFormatBadge";
 import { ConceptImage } from "@/components/ConceptImage";
 import { MobileShell } from "@/components/MobileShell";
-import { concepts, episodes, topHosts, type Concept, type ConceptType } from "@/data/mock";
-import { isConceptEnded } from "@/lib/concept-status";
+import { concepts, topHosts, type Concept, type ConceptType } from "@/data/mock";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/host/$id")({
@@ -24,7 +25,7 @@ export const Route = createFileRoute("/host/$id")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: `${loaderData?.name ?? "Host"} — MIDAN` },
+      { title: `${loaderData?.name ?? "Host"} - MIDAN` },
       { name: "description", content: `Public host profile for ${loaderData?.name}.` },
     ],
   }),
@@ -41,42 +42,6 @@ export const Route = createFileRoute("/host/$id")({
   component: HostPage,
 });
 
-const categoryMeta: Record<
-  ConceptType,
-  { label: string; folderLabel: string; color: string; itemName: string }
-> = {
-  "Narrative Series": {
-    label: "Narrative Series",
-    folderLabel: "Narrative Series",
-    color: "from-[#7C3AED] to-[#4C1D95]",
-    itemName: "concepts",
-  },
-  "Episodic Series": {
-    label: "Episodic Series",
-    folderLabel: "Episodic Series",
-    color: "from-[#1E3A5F] to-[#0F172A]",
-    itemName: "concepts",
-  },
-  "Competitive Series": {
-    label: "Competitive Series",
-    folderLabel: "Competitive Series",
-    color: "from-[#D97706] to-[#92400E]",
-    itemName: "concepts",
-  },
-  "One Shot Event": {
-    label: "One Shot Events",
-    folderLabel: "One Shot Events",
-    color: "from-[#0D9488] to-[#115E59]",
-    itemName: "events",
-  },
-  Minigame: {
-    label: "Minigames",
-    folderLabel: "Minigames",
-    color: "from-[#2563EB] to-[#1E40AF]",
-    itemName: "events",
-  },
-};
-
 const socialMeta = {
   instagram: { label: "Instagram", Icon: Instagram, iconClassName: "text-pink-500" },
   tiktok: { label: "TikTok", Icon: Music2, iconClassName: "text-slate-950" },
@@ -84,111 +49,113 @@ const socialMeta = {
   twitch: { label: "Twitch", Icon: Twitch, iconClassName: "text-violet-600" },
 };
 
-type HostLayer = "highlights" | "active" | "all";
+const categoryMeta: Record<ConceptType, { label: string; text: string; chip: string }> = {
+  "Narrative Series": {
+    label: "Narrative Series",
+    text: "text-sky-600",
+    chip: "bg-sky-50 text-sky-700 ring-sky-100",
+  },
+  "Episodic Series": {
+    label: "Episodic",
+    text: "text-violet-600",
+    chip: "bg-violet-50 text-violet-700 ring-violet-100",
+  },
+  "Competitive Series": {
+    label: "Competitive",
+    text: "text-amber-600",
+    chip: "bg-amber-50 text-amber-700 ring-amber-100",
+  },
+  "One Shot Event": {
+    label: "One-Shot Event",
+    text: "text-emerald-600",
+    chip: "bg-emerald-50 text-emerald-700 ring-emerald-100",
+  },
+  Minigame: {
+    label: "Minigame",
+    text: "text-fuchsia-600",
+    chip: "bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-100",
+  },
+};
 
-const hostLayers: { id: HostLayer; label: string }[] = [
-  { id: "highlights", label: "Highlights" },
-  { id: "active", label: "Active Concepts" },
-  { id: "all", label: "All Concepts" },
+const reviews = [
+  {
+    name: "Amina K.",
+    rating: "5.0",
+    quote: "Midnight Jury is one of the most immersive experiences I've had.",
+  },
+  {
+    name: "Leo R.",
+    rating: "5.0",
+    quote: "Samer's storytelling keeps everyone on the edge.",
+  },
 ];
 
 function HostPage() {
   const host = Route.useLoaderData();
   const router = useRouter();
-  const [activeLayer, setActiveLayer] = useState<HostLayer>("highlights");
-  const layerScrollRef = useRef<HTMLDivElement>(null);
   const hostConcepts = concepts.filter((concept) => concept.hostId === host.id);
-  const activeConcepts = hostConcepts.filter((concept) => !isConceptEnded(concept.status));
-  const completedConcepts = hostConcepts.filter((concept) => isConceptEnded(concept.status));
-  const averageRating = completedConcepts.length
-    ? (
-        completedConcepts.reduce((total, concept) => total + concept.rating, 0) /
-        completedConcepts.length
-      ).toFixed(1)
-    : "—";
+  const averageRating = getAverageRating(hostConcepts);
   const totalParticipants = hostConcepts.reduce(
     (total, concept) => total + parseParticipantCount(concept.participants),
     0,
   );
-  const groupedConcepts = groupByType(hostConcepts);
-  const highlights = getHighlights(hostConcepts, host.completedEpisodes);
-  const visibleFolders = (Object.keys(categoryMeta) as ConceptType[])
-    .map((type) => ({ type, items: groupedConcepts[type] ?? [] }))
-    .filter(({ items }) => items.length > 0);
-
-  const scrollToLayer = (layer: HostLayer) => {
-    const container = layerScrollRef.current;
-    const targetIndex = hostLayers.findIndex((item) => item.id === layer);
-    const panel = container?.children[targetIndex] as HTMLElement | undefined;
-
-    setActiveLayer(layer);
-    panel?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
-  };
-
-  const handleLayerScroll = () => {
-    const container = layerScrollRef.current;
-    if (!container) return;
-
-    const activeIndex = Math.round(container.scrollLeft / container.clientWidth);
-    setActiveLayer(hostLayers[activeIndex]?.id ?? "highlights");
-  };
 
   return (
-    <MobileShell>
-      <section className="relative overflow-hidden bg-muted/30 pb-6">
-        <div className="relative h-80 overflow-hidden bg-muted">
+    <MobileShell mainClassName="bg-white">
+      <section className="relative">
+        <div className="relative h-[14rem] overflow-hidden bg-slate-950">
           <ConceptImage
             src={host.coverImage}
             alt=""
-            className="absolute inset-0 h-full w-full opacity-90"
+            className="absolute inset-0 h-full w-full opacity-95"
+            imageClassName="bg-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-white/55 to-muted/30" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-slate-900/15 to-slate-900/50" />
         </div>
 
-        <div className="absolute inset-x-0 top-0 z-20 flex h-[calc(4rem+env(safe-area-inset-top))] items-center justify-between px-5 pt-[env(safe-area-inset-top)]">
+        <div className="absolute inset-x-0 top-0 z-20 flex h-[calc(3.75rem+env(safe-area-inset-top))] items-center justify-between px-4 pt-[env(safe-area-inset-top)]">
           <button
             type="button"
             onClick={() => router.history.back()}
             aria-label="Back"
-            className="app-icon-button bg-white/80 text-foreground shadow-sm backdrop-blur transition hover:bg-white"
+            className="app-icon-button bg-white/95 text-foreground shadow-sm backdrop-blur transition active:scale-95"
           >
             <ArrowLeft className="h-6 w-6" />
           </button>
           <button
             type="button"
             aria-label="More actions"
-            className="app-icon-button bg-white/80 text-foreground shadow-sm backdrop-blur transition hover:bg-white"
+            className="app-icon-button bg-white/95 text-foreground shadow-sm backdrop-blur transition active:scale-95"
           >
             <MoreHorizontal className="h-6 w-6" />
           </button>
         </div>
 
-        <div className="relative z-10 -mt-52 px-5">
-          <div className="app-card rounded-[1.75rem] bg-card/95 p-4.5">
-            <div className="flex items-end gap-4">
+        <div className="relative z-10 -mt-24 px-4">
+          <div className="rounded-[1.5rem] border border-white/90 bg-white/95 p-4 shadow-[0_22px_54px_-34px_rgba(15,23,42,0.72)] backdrop-blur">
+            <div className="flex items-center gap-3">
               <ConceptImage
                 src={host.avatar}
                 alt={host.name}
-                className="h-28 w-28 shrink-0 rounded-full border-4 border-card shadow-lg shadow-slate-900/15"
+                className="h-[5.25rem] w-[5.25rem] shrink-0 rounded-full border-[5px] border-white shadow-lg shadow-slate-900/15"
               />
-              <div className="min-w-0 flex-1 pb-2">
-                <div className="flex items-center gap-1.5 text-[2.1rem] font-black leading-none tracking-tight">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5 text-[1.95rem] font-black leading-none">
                   <span className="truncate">{host.name}</span>
-                  {host.verified && <BadgeCheck className="h-6 w-6 shrink-0 text-primary" />}
+                  {host.verified && <BadgeCheck className="h-5 w-5 shrink-0 text-blue-500" />}
                 </div>
-                <div className="app-kicker mt-2.5 text-muted-foreground">Host portfolio</div>
+                <div className="mt-1.5 text-[11px] font-extrabold uppercase tracking-[0.08em] text-slate-500">
+                  Host portfolio
+                </div>
               </div>
             </div>
 
-            <div className="mt-4">
-              <SocialLinks socials={host.socials} socialStats={host.socialStats} />
-            </div>
+            <SocialLinks socials={host.socials} socialStats={host.socialStats} />
 
-            <p className="app-body mt-4.5 max-w-sm text-muted-foreground">{host.bio}</p>
+            <p className="mt-4 text-[15px] font-medium leading-6 text-slate-600">{host.bio}</p>
 
-            <div className="mt-4.5 grid grid-cols-4 divide-x divide-border rounded-2xl border border-border bg-background p-3.5 shadow-sm">
+            <div className="mt-4 grid grid-cols-3 divide-x divide-slate-200 rounded-[1.15rem] border border-slate-200 bg-slate-50/70 px-2 py-3 shadow-sm">
               <Stat label="Concepts" value={String(hostConcepts.length)} />
-              <Stat label="Episodes" value={String(host.completedEpisodes)} />
               <Stat label="Participants" value={formatCompact(totalParticipants)} />
               <Stat label="Avg. Rating" value={averageRating} />
             </div>
@@ -196,116 +163,34 @@ function HostPage() {
         </div>
       </section>
 
-      <div className="no-scrollbar flex gap-6 overflow-x-auto border-b border-border bg-background px-5 pt-4.5">
-        {hostLayers.map((layer) => (
-          <LayerButton
-            key={layer.id}
-            label={layer.label}
-            active={activeLayer === layer.id}
-            onClick={() => scrollToLayer(layer.id)}
-          />
-        ))}
-      </div>
-      <section className="bg-background pb-7">
-        <div
-          ref={layerScrollRef}
-          onScroll={handleLayerScroll}
-          className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto"
-        >
-          <div className="w-full shrink-0 snap-start px-5 pt-4">
-            <HighlightsCard highlights={highlights} />
-          </div>
-          <div className="w-full shrink-0 snap-start px-5 pt-4">
-            <div className="space-y-3">
-              {activeConcepts.map((concept) => (
-                <ActiveConceptCard key={concept.id} concept={concept} />
-              ))}
-            </div>
-          </div>
-          <div className="w-full shrink-0 snap-start px-5 pt-4">
-            <div className="grid grid-cols-2 gap-3">
-              {visibleFolders.map(({ type, items }) => (
-                <FolderCard key={type} type={type} items={items} />
-              ))}
-            </div>
-          </div>
+      <div className="space-y-6 px-4 pb-8 pt-5">
+        <SectionHeader count={hostConcepts.length} title="Concepts" />
+        <div className="space-y-3">
+          {hostConcepts.map((concept) => (
+            <ConceptRow key={concept.id} concept={concept} />
+          ))}
         </div>
-      </section>
+        <Reviews averageRating={averageRating} />
+      </div>
     </MobileShell>
   );
 }
 
-function LayerButton({
-  label,
-  active,
-  onClick,
-}: {
-  label: string;
-  active: boolean;
-  onClick: () => void;
-}) {
+function SectionHeader({ count, title }: { count: number; title: string }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`app-tab relative transition ${active ? "text-primary" : "text-muted-foreground"}`}
-    >
-      {label}
-      {active && <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />}
-    </button>
-  );
-}
-
-function HighlightsCard({ highlights }: { highlights: ReturnType<typeof getHighlights> }) {
-  return (
-    <div className="grid grid-cols-2 gap-3">
-      {highlights.map((highlight) => (
-        <Link
-          key={highlight.label}
-          to={highlight.to}
-          params={highlight.params}
-          className="app-card min-h-36 p-4.5 transition hover:bg-muted/40"
-        >
-          <div className="app-kicker text-muted-foreground">{highlight.label}</div>
-          <div className="mt-4 text-2xl font-black leading-none">{highlight.value}</div>
-          <div className="mt-3 line-clamp-2 text-[15px] font-semibold leading-snug text-muted-foreground">
-            {highlight.title}
-          </div>
-        </Link>
-      ))}
+    <div className="flex items-center justify-between">
+      <h2 className="text-xl font-black leading-tight">
+        {title} <span className="ml-1 text-base font-bold text-slate-500">({count})</span>
+      </h2>
+      <button
+        type="button"
+        className="flex items-center gap-1.5 text-sm font-bold text-primary"
+        aria-label="Filter concepts"
+      >
+        Filter
+        <Funnel className="h-4 w-4" />
+      </button>
     </div>
-  );
-}
-
-function ActiveConceptCard({ concept }: { concept: Concept }) {
-  const status = concept.status === "upcoming" ? "Opening soon" : "Live now";
-
-  return (
-    <Link
-      to="/concept/$id"
-      params={{ id: concept.id }}
-      className="app-card flex min-h-36 overflow-hidden transition hover:bg-muted/40"
-    >
-      <div className="relative h-auto w-32 shrink-0 overflow-hidden">
-        <ConceptImage src={concept.image} alt={concept.title} className="h-full w-full" />
-        <ConceptFormatBadge type={concept.type} className="right-2 h-5 w-3" />
-      </div>
-      <div className="min-w-0 flex-1 p-3.5">
-        <div className="app-kicker flex items-center gap-1.5 text-primary">
-          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          {status}
-        </div>
-        <div className="mt-1.5 line-clamp-2 text-lg font-extrabold leading-tight">
-          {concept.title}
-        </div>
-        <div className="mt-1 text-sm font-semibold text-muted-foreground">
-          {categoryMeta[concept.type].label}
-        </div>
-        <div className="mt-3 text-sm font-bold text-muted-foreground">
-          {concept.participants} participants
-        </div>
-      </div>
-    </Link>
   );
 }
 
@@ -316,30 +201,27 @@ function SocialLinks({
   socials: Partial<Record<keyof typeof socialMeta, string>>;
   socialStats: Partial<Record<keyof typeof socialMeta, string>>;
 }) {
-  const entries = (Object.keys(socialMeta) as Array<keyof typeof socialMeta>)
-    .filter((key) => socials[key])
-    .map((key) => [key, socials[key]] as const);
-
-  if (entries.length === 0) return null;
+  const entries = (Object.keys(socialMeta) as Array<keyof typeof socialMeta>).filter(
+    (key) => socials[key],
+  );
 
   return (
-    <section className="grid grid-cols-4 gap-2.5">
-      {entries.map(([key, href]) => {
+    <section className="mt-4 grid grid-cols-4 gap-2">
+      {entries.map((key) => {
         const meta = socialMeta[key];
         const Icon = meta.Icon;
-        const count = socialStats[key];
 
         return (
           <a
             key={key}
-            href={href}
+            href={socials[key]}
             target="_blank"
             rel="noreferrer"
             aria-label={`${meta.label} profile`}
-            className="inline-flex min-h-9 min-w-0 items-center justify-center gap-1.5 rounded-full border border-border bg-background px-3 py-2 text-xs font-bold text-foreground shadow-sm"
+            className="inline-flex min-h-9 min-w-0 items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-2 text-xs font-black text-slate-950 shadow-sm"
           >
-            <Icon className={cn("h-4 w-4", meta.iconClassName)} />
-            <span className="truncate">{count}</span>
+            <Icon className={cn("h-3.5 w-3.5", meta.iconClassName)} />
+            <span className="truncate">{socialStats[key]}</span>
           </a>
         );
       })}
@@ -347,119 +229,111 @@ function SocialLinks({
   );
 }
 
-function FolderCard({ type, items }: { type: ConceptType; items: Concept[] }) {
-  const meta = categoryMeta[type];
-  const active = items.some((item) => item.status === "live" || item.status === "upcoming");
-  const threeLayer =
-    type === "Narrative Series" || type === "Episodic Series" || type === "Competitive Series";
-  const countLabel = `${items.length} ${threeLayer ? meta.itemName : meta.itemName}`;
-
+function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <details className="group">
-      <summary
-        className={cn(
-          "relative flex min-h-36 cursor-pointer list-none flex-col items-center justify-center rounded-[1.35rem] bg-gradient-to-br p-4.5 text-center text-white shadow-sm [&::-webkit-details-marker]:hidden",
-          meta.color,
-        )}
-      >
-        {active && (
-          <span className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full bg-emerald-300 ring-2 ring-white/30" />
-        )}
-        <div className="text-lg font-extrabold leading-tight">{meta.folderLabel}</div>
-        <div className="mt-1.5 text-sm font-semibold text-white/80">{countLabel}</div>
-      </summary>
-      <div className="mt-2 space-y-2">
-        {items.map((item) => (
-          <PortfolioItem key={item.id} concept={item} showEpisodes={threeLayer} />
-        ))}
-      </div>
-    </details>
+    <div className="min-w-0 px-1 py-1 text-center">
+      <div className="truncate text-[1.12rem] font-black leading-tight">{value}</div>
+      <div className="mt-0.5 truncate text-[11px] font-bold text-slate-500">{label}</div>
+    </div>
   );
 }
 
-function PortfolioItem({ concept, showEpisodes }: { concept: Concept; showEpisodes: boolean }) {
+function ConceptRow({ concept }: { concept: Concept }) {
+  const meta = categoryMeta[concept.type];
+  const status =
+    concept.status === "upcoming" ? "Opening soon" : concept.status === "live" ? "Live" : "Open";
+
   return (
     <Link
       to="/concept/$id"
       params={{ id: concept.id }}
-      className="app-card flex min-h-17 items-center gap-3 p-3 transition hover:bg-muted/40"
+      className="app-card group flex min-h-[6.85rem] items-center gap-3 overflow-hidden p-2.5 transition active:scale-[0.99]"
     >
-      <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl">
+      <div className="relative h-[5.75rem] w-[8rem] shrink-0 overflow-hidden rounded-xl bg-slate-100">
         <ConceptImage src={concept.image} alt={concept.title} className="h-full w-full" />
-        <ConceptFormatBadge type={concept.type} className="right-1.5 h-4.5 w-3" />
+        <span
+          className={cn(
+            "absolute left-2 top-2 rounded-full bg-white/92 px-2.5 py-1 text-[9px] font-black uppercase tracking-wide shadow-sm ring-1 backdrop-blur",
+            meta.chip,
+          )}
+        >
+          {status}
+        </span>
       </div>
-      <div className="min-w-0 flex-1">
-        <div className="truncate text-base font-bold">{concept.title}</div>
-        <div className="mt-0.5 text-sm font-medium text-muted-foreground">
-          {showEpisodes ? "Episodes inside" : `${concept.participants} participants`}
+
+      <div className="grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 pr-1">
+        <div className="min-w-0 flex-1">
+          <div className="line-clamp-1 text-lg font-black leading-tight">{concept.title}</div>
+          <div className={cn("mt-1 line-clamp-1 text-sm font-extrabold", meta.text)}>
+            {meta.label}
+          </div>
+          <div className="mt-1.5 truncate text-sm font-semibold text-slate-500">
+            {concept.participants} participants
+          </div>
+          <div className="mt-1.5 inline-flex items-center gap-1 text-sm font-bold text-slate-600">
+            <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+            {concept.rating}
+          </div>
+        </div>
+
+        <div className="flex shrink-0 items-center gap-1.5">
+          <span
+            className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white/90 text-slate-500 shadow-sm"
+            aria-hidden="true"
+          >
+            <Bookmark className="h-4.5 w-4.5" />
+          </span>
+          <ChevronRight className="h-4.5 w-4.5 text-slate-400 transition group-active:translate-x-0.5" />
         </div>
       </div>
     </Link>
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Reviews({ averageRating }: { averageRating: string }) {
   return (
-    <div className="min-w-0 px-1.5 py-1.5 text-center">
-      <div className="truncate text-xl font-black leading-tight text-foreground">{value}</div>
-      <div className="app-caption mt-1 truncate text-muted-foreground">{label}</div>
-    </div>
+    <section>
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-base font-black leading-tight">Reviews</h2>
+        <Link to="/explore" className="text-sm font-bold text-primary">
+          View all
+        </Link>
+      </div>
+      <div className="no-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4">
+        <div className="w-36 shrink-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="text-3xl font-black leading-none">{averageRating}</div>
+          <div className="mt-2 flex gap-0.5 text-amber-400">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <Star key={index} className="h-4 w-4 fill-current" />
+            ))}
+          </div>
+          <div className="mt-2 text-xs font-semibold text-slate-500">From 1.6K reviews</div>
+        </div>
+        {reviews.map((review) => (
+          <article
+            key={review.name}
+            className="w-60 shrink-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <div className="text-sm font-black">{review.name}</div>
+              <div className="flex items-center gap-1 text-xs font-semibold text-slate-500">
+                <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                {review.rating}
+              </div>
+            </div>
+            <p className="mt-2 line-clamp-2 text-xs font-medium leading-5 text-slate-600">
+              "{review.quote}"
+            </p>
+          </article>
+        ))}
+      </div>
+    </section>
   );
 }
 
-function groupByType(items: Concept[]) {
-  return items.reduce<Partial<Record<ConceptType, Concept[]>>>((groups, item) => {
-    groups[item.type] = [...(groups[item.type] ?? []), item];
-    return groups;
-  }, {});
-}
-
-function getHighlights(hostConcepts: Concept[], completedEpisodes: number) {
-  const bestConcept = [...hostConcepts].sort((a, b) => b.rating - a.rating)[0] ?? hostConcepts[0];
-  const mostParticipated =
-    [...hostConcepts].sort(
-      (a, b) => parseParticipantCount(b.participants) - parseParticipantCount(a.participants),
-    )[0] ?? hostConcepts[0];
-  const hostConceptIds = new Set(hostConcepts.map((concept) => concept.id));
-  const bestEpisode = episodes
-    .filter((episode) => episode.score && hostConceptIds.has(episode.conceptId))
-    .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))[0];
-  const bestEpisodeConcept = hostConcepts.find((concept) => concept.id === bestEpisode?.conceptId);
-  const firstActiveConcept = hostConcepts.find((concept) => !isConceptEnded(concept.status));
-  const activeCount = hostConcepts.filter((concept) => !isConceptEnded(concept.status)).length;
-
-  return [
-    bestConcept && {
-      label: "Highest rated concept",
-      title: bestConcept.title,
-      value: `${bestConcept.rating}`,
-      to: "/concept/$id" as const,
-      params: { id: bestConcept.id },
-    },
-    mostParticipated && {
-      label: "Most participated",
-      title: mostParticipated.title,
-      value: formatCompact(parseParticipantCount(mostParticipated.participants)),
-      to: "/concept/$id" as const,
-      params: { id: mostParticipated.id },
-    },
-    bestEpisode && {
-      label: "Top episode score",
-      title: `${bestEpisode.title}${
-        bestEpisodeConcept ? ` (${bestEpisodeConcept.title}, Episode ${bestEpisode.n})` : ""
-      }`,
-      value: `${bestEpisode.score}`,
-      to: "/episode/$id" as const,
-      params: { id: String(bestEpisode.n) },
-    },
-    {
-      label: "Active now",
-      title: `${completedEpisodes} completed episodes in the archive`,
-      value: String(activeCount),
-      to: "/concept/$id" as const,
-      params: { id: firstActiveConcept?.id ?? bestConcept.id },
-    },
-  ].filter(Boolean);
+function getAverageRating(items: Concept[]) {
+  if (items.length === 0) return "-";
+  return (items.reduce((total, concept) => total + concept.rating, 0) / items.length).toFixed(1);
 }
 
 function parseParticipantCount(value: string) {

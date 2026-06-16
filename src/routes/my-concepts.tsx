@@ -74,19 +74,19 @@ function MyConcepts() {
     <MobileShell
       header={
         <>
-          <header className="app-page-x flex items-center justify-between pb-2 pt-[calc(1.35rem+env(safe-area-inset-top))]">
+          <header className="app-page-x flex items-center justify-between pb-2 pt-[calc(1rem+env(safe-area-inset-top))]">
             <div>
-              <h1 className="text-[2rem] font-black leading-tight tracking-tight">My Concepts</h1>
-              <p className="mt-1.5 text-[15px] font-medium text-muted-foreground">
+              <h1 className="text-[1.6rem] font-black leading-tight tracking-tight">My Concepts</h1>
+              <p className="mt-1 text-sm font-medium text-muted-foreground">
                 Your next actions, organized.
               </p>
             </div>
             <button aria-label="Notifications" className="app-icon-button hover:bg-muted">
-              <Bell className="h-5.5 w-5.5" />
+              <Bell className="h-5 w-5" />
             </button>
           </header>
 
-          <div className="no-scrollbar flex gap-2.5 overflow-x-auto px-5 py-3.5">
+          <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 py-3">
             {tabs.map((tab) => {
               const active = activeTab === tab.value;
 
@@ -109,7 +109,7 @@ function MyConcepts() {
         </>
       }
     >
-      <ul className="space-y-3 px-5 pb-7 pt-1">
+      <ul className="space-y-2.5 px-4 pb-7 pt-1">
         {visibleItems.map((item) => {
           const concept = conceptById(item.conceptId);
 
@@ -130,13 +130,13 @@ function Row({ concept, item }: { concept: Concept; item: ActiveMyConceptItem })
 
   return (
     <li>
-      <div className="app-card flex min-h-[5.8rem] items-center gap-3 p-3.5">
+      <div className="app-card flex min-h-[5rem] items-center gap-2.5 p-3">
         <Link
           to="/concept/$id"
           params={{ id: concept.id }}
           className="relative shrink-0 overflow-hidden rounded-lg"
         >
-          <ConceptImage src={concept.image} alt={concept.title} className="h-14 w-14 rounded-xl" />
+          <ConceptImage src={concept.image} alt={concept.title} className="h-12 w-12 rounded-xl" />
           <ConceptFormatBadge type={concept.type} className="right-2 h-4.5 w-3" />
         </Link>
         <div className="min-w-0 flex-1">
@@ -144,15 +144,15 @@ function Row({ concept, item }: { concept: Concept; item: ActiveMyConceptItem })
             <Link
               to="/concept/$id"
               params={{ id: concept.id }}
-              className="min-w-0 truncate text-base font-extrabold leading-tight"
+              className="min-w-0 truncate text-sm font-extrabold leading-tight"
             >
               {concept.title}
             </Link>
           </div>
           <div className="mt-0.5">
-            <HostLink host={concept.host} hostId={concept.hostId} className="px-2.5 py-1 text-xs" />
+            <HostLink host={concept.host} hostId={concept.hostId} className="px-2 py-0.5 text-xs" />
           </div>
-          <div className="mt-1.5 text-sm font-medium leading-snug text-muted-foreground">
+          <div className="mt-1 text-xs font-medium leading-snug text-muted-foreground">
             {item.subtitle}
             {item.note && <span className="text-success"> · {item.note}</span>}
           </div>
@@ -169,7 +169,7 @@ function Row({ concept, item }: { concept: Concept; item: ActiveMyConceptItem })
           <Link
             to="/concept/$id"
             params={{ id: concept.id }}
-            className={`inline-flex min-h-11 w-26 items-center justify-center gap-1.5 rounded-full px-2.5 text-sm font-bold shadow-sm ${meta.buttonClassName}`}
+            className={`inline-flex min-h-10 w-24 items-center justify-center gap-1.5 rounded-full px-2 text-xs font-bold shadow-sm ${meta.buttonClassName}`}
           >
             <Icon className="h-4 w-4" />
             {meta.label}
