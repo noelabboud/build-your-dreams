@@ -2,7 +2,6 @@ import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-rout
 import {
   ArrowLeft,
   BadgeCheck,
-  Bookmark,
   ChevronRight,
   Funnel,
   Instagram,
@@ -49,31 +48,39 @@ const socialMeta = {
   twitch: { label: "Twitch", Icon: Twitch, iconClassName: "text-violet-600" },
 };
 
-const categoryMeta: Record<ConceptType, { label: string; text: string; chip: string }> = {
+const categoryMeta: Record<
+  ConceptType,
+  { label: string; text: string; chip: string; accent: string }
+> = {
   "Narrative Series": {
     label: "Narrative Series",
     text: "text-sky-600",
     chip: "bg-sky-50 text-sky-700 ring-sky-100",
+    accent: "bg-sky-400",
   },
   "Episodic Series": {
     label: "Episodic",
     text: "text-violet-600",
     chip: "bg-violet-50 text-violet-700 ring-violet-100",
+    accent: "bg-violet-400",
   },
   "Competitive Series": {
     label: "Competitive",
     text: "text-amber-600",
     chip: "bg-amber-50 text-amber-700 ring-amber-100",
+    accent: "bg-amber-400",
   },
   "One Shot Event": {
     label: "One-Shot Event",
     text: "text-emerald-600",
     chip: "bg-emerald-50 text-emerald-700 ring-emerald-100",
+    accent: "bg-emerald-400",
   },
   Minigame: {
     label: "Minigame",
     text: "text-fuchsia-600",
     chip: "bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-100",
+    accent: "bg-fuchsia-400",
   },
 };
 
@@ -247,8 +254,12 @@ function ConceptRow({ concept }: { concept: Concept }) {
     <Link
       to="/concept/$id"
       params={{ id: concept.id }}
-      className="app-card group flex min-h-[6.85rem] items-center gap-3 overflow-hidden p-2.5 transition active:scale-[0.99]"
+      className="app-card group relative flex min-h-[6.85rem] items-center gap-3 overflow-hidden p-2.5 pl-3 transition active:scale-[0.99]"
     >
+      <span
+        aria-hidden="true"
+        className={cn("absolute inset-y-3 left-0 w-1 rounded-r-full", meta.accent)}
+      />
       <div className="relative h-[5.75rem] w-[8rem] shrink-0 overflow-hidden rounded-xl bg-slate-100">
         <ConceptImage src={concept.image} alt={concept.title} className="h-full w-full" />
         <span
@@ -276,14 +287,8 @@ function ConceptRow({ concept }: { concept: Concept }) {
           </div>
         </div>
 
-        <div className="flex shrink-0 items-center gap-1.5">
-          <span
-            className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white/90 text-slate-500 shadow-sm"
-            aria-hidden="true"
-          >
-            <Bookmark className="h-4.5 w-4.5" />
-          </span>
-          <ChevronRight className="h-4.5 w-4.5 text-slate-400 transition group-active:translate-x-0.5" />
+        <div className="flex shrink-0 items-center">
+          <ChevronRight className="h-5 w-5 text-slate-400 transition group-active:translate-x-0.5" />
         </div>
       </div>
     </Link>

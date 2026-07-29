@@ -73,7 +73,7 @@ export function OpenToJoinCard({
             imageClassName="transition duration-300 group-hover:scale-105"
           />
         </Link>
-        <ConceptFormatBadge type={item.type} className="right-5 top-2" />
+        <ConceptFormatBadge type={item.type} className="right-5 top-2 h-8 w-4" />
         <div className="min-w-0 flex-1 p-2.5">
           <div className={cn("app-kicker truncate pr-7", conceptTypeTextColors[item.type])}>
             {conceptTypeLabels[item.type]}
@@ -122,7 +122,7 @@ export function OpenToJoinCard({
         className="relative h-28 overflow-hidden"
       >
         <ConceptImage src={item.image} alt={item.title} className="h-full w-full" />
-        <ConceptFormatBadge type={item.type} />
+        <ConceptFormatBadge type={item.type} className="h-7 w-4" />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
       </Link>
       <div className="flex flex-1 flex-col p-3 pb-3">

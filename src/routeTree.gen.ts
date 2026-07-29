@@ -14,9 +14,17 @@ import { Route as OpenToJoinRouteImport } from './routes/open-to-join'
 import { Route as MyConceptsRouteImport } from './routes/my-concepts'
 import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CreatorIndexRouteImport } from './routes/creator.index'
 import { Route as HostIdRouteImport } from './routes/host.$id'
 import { Route as EpisodeIdRouteImport } from './routes/episode.$id'
+import { Route as CreatorSubmissionsRouteImport } from './routes/creator.submissions'
+import { Route as CreatorSettingsRouteImport } from './routes/creator.settings'
+import { Route as CreatorEarningsRouteImport } from './routes/creator.earnings'
+import { Route as CreatorCreateRouteImport } from './routes/creator.create'
+import { Route as CreatorConceptsRouteImport } from './routes/creator.concepts'
+import { Route as CreatorAnalyticsRouteImport } from './routes/creator.analytics'
 import { Route as ConceptIdRouteImport } from './routes/concept.$id'
+import { Route as CreatorConceptsIdRouteImport } from './routes/creator.concepts.$id'
 
 const PassportRoute = PassportRouteImport.update({
   id: '/passport',
@@ -43,6 +51,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreatorIndexRoute = CreatorIndexRouteImport.update({
+  id: '/creator/',
+  path: '/creator/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HostIdRoute = HostIdRouteImport.update({
   id: '/host/$id',
   path: '/host/$id',
@@ -53,10 +66,45 @@ const EpisodeIdRoute = EpisodeIdRouteImport.update({
   path: '/episode/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreatorSubmissionsRoute = CreatorSubmissionsRouteImport.update({
+  id: '/creator/submissions',
+  path: '/creator/submissions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreatorSettingsRoute = CreatorSettingsRouteImport.update({
+  id: '/creator/settings',
+  path: '/creator/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreatorEarningsRoute = CreatorEarningsRouteImport.update({
+  id: '/creator/earnings',
+  path: '/creator/earnings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreatorCreateRoute = CreatorCreateRouteImport.update({
+  id: '/creator/create',
+  path: '/creator/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreatorConceptsRoute = CreatorConceptsRouteImport.update({
+  id: '/creator/concepts',
+  path: '/creator/concepts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreatorAnalyticsRoute = CreatorAnalyticsRouteImport.update({
+  id: '/creator/analytics',
+  path: '/creator/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ConceptIdRoute = ConceptIdRouteImport.update({
   id: '/concept/$id',
   path: '/concept/$id',
   getParentRoute: () => rootRouteImport,
+} as any)
+const CreatorConceptsIdRoute = CreatorConceptsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => CreatorConceptsRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -66,8 +114,16 @@ export interface FileRoutesByFullPath {
   '/open-to-join': typeof OpenToJoinRoute
   '/passport': typeof PassportRoute
   '/concept/$id': typeof ConceptIdRoute
+  '/creator/analytics': typeof CreatorAnalyticsRoute
+  '/creator/concepts': typeof CreatorConceptsRouteWithChildren
+  '/creator/create': typeof CreatorCreateRoute
+  '/creator/earnings': typeof CreatorEarningsRoute
+  '/creator/settings': typeof CreatorSettingsRoute
+  '/creator/submissions': typeof CreatorSubmissionsRoute
   '/episode/$id': typeof EpisodeIdRoute
   '/host/$id': typeof HostIdRoute
+  '/creator/': typeof CreatorIndexRoute
+  '/creator/concepts/$id': typeof CreatorConceptsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -76,8 +132,16 @@ export interface FileRoutesByTo {
   '/open-to-join': typeof OpenToJoinRoute
   '/passport': typeof PassportRoute
   '/concept/$id': typeof ConceptIdRoute
+  '/creator/analytics': typeof CreatorAnalyticsRoute
+  '/creator/concepts': typeof CreatorConceptsRouteWithChildren
+  '/creator/create': typeof CreatorCreateRoute
+  '/creator/earnings': typeof CreatorEarningsRoute
+  '/creator/settings': typeof CreatorSettingsRoute
+  '/creator/submissions': typeof CreatorSubmissionsRoute
   '/episode/$id': typeof EpisodeIdRoute
   '/host/$id': typeof HostIdRoute
+  '/creator': typeof CreatorIndexRoute
+  '/creator/concepts/$id': typeof CreatorConceptsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -87,8 +151,16 @@ export interface FileRoutesById {
   '/open-to-join': typeof OpenToJoinRoute
   '/passport': typeof PassportRoute
   '/concept/$id': typeof ConceptIdRoute
+  '/creator/analytics': typeof CreatorAnalyticsRoute
+  '/creator/concepts': typeof CreatorConceptsRouteWithChildren
+  '/creator/create': typeof CreatorCreateRoute
+  '/creator/earnings': typeof CreatorEarningsRoute
+  '/creator/settings': typeof CreatorSettingsRoute
+  '/creator/submissions': typeof CreatorSubmissionsRoute
   '/episode/$id': typeof EpisodeIdRoute
   '/host/$id': typeof HostIdRoute
+  '/creator/': typeof CreatorIndexRoute
+  '/creator/concepts/$id': typeof CreatorConceptsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -99,8 +171,16 @@ export interface FileRouteTypes {
     | '/open-to-join'
     | '/passport'
     | '/concept/$id'
+    | '/creator/analytics'
+    | '/creator/concepts'
+    | '/creator/create'
+    | '/creator/earnings'
+    | '/creator/settings'
+    | '/creator/submissions'
     | '/episode/$id'
     | '/host/$id'
+    | '/creator/'
+    | '/creator/concepts/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -109,8 +189,16 @@ export interface FileRouteTypes {
     | '/open-to-join'
     | '/passport'
     | '/concept/$id'
+    | '/creator/analytics'
+    | '/creator/concepts'
+    | '/creator/create'
+    | '/creator/earnings'
+    | '/creator/settings'
+    | '/creator/submissions'
     | '/episode/$id'
     | '/host/$id'
+    | '/creator'
+    | '/creator/concepts/$id'
   id:
     | '__root__'
     | '/'
@@ -119,8 +207,16 @@ export interface FileRouteTypes {
     | '/open-to-join'
     | '/passport'
     | '/concept/$id'
+    | '/creator/analytics'
+    | '/creator/concepts'
+    | '/creator/create'
+    | '/creator/earnings'
+    | '/creator/settings'
+    | '/creator/submissions'
     | '/episode/$id'
     | '/host/$id'
+    | '/creator/'
+    | '/creator/concepts/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -130,8 +226,15 @@ export interface RootRouteChildren {
   OpenToJoinRoute: typeof OpenToJoinRoute
   PassportRoute: typeof PassportRoute
   ConceptIdRoute: typeof ConceptIdRoute
+  CreatorAnalyticsRoute: typeof CreatorAnalyticsRoute
+  CreatorConceptsRoute: typeof CreatorConceptsRouteWithChildren
+  CreatorCreateRoute: typeof CreatorCreateRoute
+  CreatorEarningsRoute: typeof CreatorEarningsRoute
+  CreatorSettingsRoute: typeof CreatorSettingsRoute
+  CreatorSubmissionsRoute: typeof CreatorSubmissionsRoute
   EpisodeIdRoute: typeof EpisodeIdRoute
   HostIdRoute: typeof HostIdRoute
+  CreatorIndexRoute: typeof CreatorIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -171,6 +274,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/creator/': {
+      id: '/creator/'
+      path: '/creator'
+      fullPath: '/creator/'
+      preLoaderRoute: typeof CreatorIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/host/$id': {
       id: '/host/$id'
       path: '/host/$id'
@@ -185,6 +295,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EpisodeIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/creator/submissions': {
+      id: '/creator/submissions'
+      path: '/creator/submissions'
+      fullPath: '/creator/submissions'
+      preLoaderRoute: typeof CreatorSubmissionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/creator/settings': {
+      id: '/creator/settings'
+      path: '/creator/settings'
+      fullPath: '/creator/settings'
+      preLoaderRoute: typeof CreatorSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/creator/earnings': {
+      id: '/creator/earnings'
+      path: '/creator/earnings'
+      fullPath: '/creator/earnings'
+      preLoaderRoute: typeof CreatorEarningsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/creator/create': {
+      id: '/creator/create'
+      path: '/creator/create'
+      fullPath: '/creator/create'
+      preLoaderRoute: typeof CreatorCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/creator/concepts': {
+      id: '/creator/concepts'
+      path: '/creator/concepts'
+      fullPath: '/creator/concepts'
+      preLoaderRoute: typeof CreatorConceptsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/creator/analytics': {
+      id: '/creator/analytics'
+      path: '/creator/analytics'
+      fullPath: '/creator/analytics'
+      preLoaderRoute: typeof CreatorAnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/concept/$id': {
       id: '/concept/$id'
       path: '/concept/$id'
@@ -192,8 +344,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConceptIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/creator/concepts/$id': {
+      id: '/creator/concepts/$id'
+      path: '/$id'
+      fullPath: '/creator/concepts/$id'
+      preLoaderRoute: typeof CreatorConceptsIdRouteImport
+      parentRoute: typeof CreatorConceptsRoute
+    }
   }
 }
+
+interface CreatorConceptsRouteChildren {
+  CreatorConceptsIdRoute: typeof CreatorConceptsIdRoute
+}
+
+const CreatorConceptsRouteChildren: CreatorConceptsRouteChildren = {
+  CreatorConceptsIdRoute: CreatorConceptsIdRoute,
+}
+
+const CreatorConceptsRouteWithChildren = CreatorConceptsRoute._addFileChildren(
+  CreatorConceptsRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -202,8 +373,15 @@ const rootRouteChildren: RootRouteChildren = {
   OpenToJoinRoute: OpenToJoinRoute,
   PassportRoute: PassportRoute,
   ConceptIdRoute: ConceptIdRoute,
+  CreatorAnalyticsRoute: CreatorAnalyticsRoute,
+  CreatorConceptsRoute: CreatorConceptsRouteWithChildren,
+  CreatorCreateRoute: CreatorCreateRoute,
+  CreatorEarningsRoute: CreatorEarningsRoute,
+  CreatorSettingsRoute: CreatorSettingsRoute,
+  CreatorSubmissionsRoute: CreatorSubmissionsRoute,
   EpisodeIdRoute: EpisodeIdRoute,
   HostIdRoute: HostIdRoute,
+  CreatorIndexRoute: CreatorIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

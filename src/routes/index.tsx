@@ -81,13 +81,19 @@ function Home() {
       <section className="app-page-x relative pb-6 pt-[calc(1rem+env(safe-area-inset-top))]">
         <header className="relative flex items-center justify-between">
           <div className="text-lg font-black tracking-[0.16em] text-primary">MIDAN</div>
-          <button
-            aria-label="Notifications"
-            className="app-icon-button relative bg-white/58 text-foreground shadow-[0_14px_30px_-24px_rgba(15,23,42,0.55)] backdrop-blur transition hover:bg-white/75"
-          >
-            <Bell className="h-5 w-5" />
-            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-destructive" />
-          </button>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center rounded-xl border border-border bg-white/70 p-0.5 text-xs font-medium shadow-[0_14px_30px_-24px_rgba(15,23,42,0.55)] backdrop-blur">
+              <Link to="/" className="rounded-lg bg-primary px-3 py-1.5 text-primary-foreground">Participant</Link>
+              <Link to="/creator" className="rounded-lg px-3 py-1.5 text-muted-foreground">Creator</Link>
+            </div>
+            <button
+              aria-label="Notifications"
+              className="app-icon-button relative bg-white/58 text-foreground shadow-[0_14px_30px_-24px_rgba(15,23,42,0.55)] backdrop-blur transition hover:bg-white/75"
+            >
+              <Bell className="h-5 w-5" />
+              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-destructive" />
+            </button>
+          </div>
         </header>
 
         <div className="relative pt-3">

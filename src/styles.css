@@ -34,6 +34,7 @@
   --color-surface: var(--surface);
   --color-success: var(--success);
   --color-warning: var(--warning);
+  --color-info: var(--info);
   --color-wave-sky: var(--wave-sky);
 
   --font-display: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
@@ -66,7 +67,11 @@
   --destructive-foreground: oklch(1 0 0);
   --success: oklch(0.65 0.17 152);
   --warning: oklch(0.78 0.16 75);
+  --info: oklch(0.58 0.16 250);
+  --warning-foreground: oklch(0.33 0.12 78);
+  --success-foreground: oklch(0.26 0.08 152);
   --wave-sky: oklch(0.93 0.04 235);
+  --surface-2: rgb(248 251 254);
   --border: oklch(0.92 0.008 240);
   --input: oklch(0.92 0.008 240);
   --ring: oklch(0.62 0.21 256);
@@ -180,6 +185,52 @@
     min-width: var(--app-touch);
     place-items: center;
     border-radius: 999px;
+  }
+  .bg-surface-2 {
+    background-color: var(--surface-2);
+  }
+  .bg-primary-soft {
+    background-color: color-mix(in srgb, var(--primary) 12%, white);
+  }
+  .text-warning-foreground {
+    color: var(--warning-foreground);
+  }
+  .text-success-foreground {
+    color: var(--success-foreground);
+  }
+  .text-info {
+    color: var(--info);
+  }
+  .card-soft {
+    border: 1px solid rgb(255 255 255 / 0.72);
+    border-radius: 1.2rem;
+    background: var(--card);
+    box-shadow: 0 8px 24px -16px rgb(15 23 42 / 0.24);
+    backdrop-filter: blur(14px) saturate(1.12);
+  }
+  .shadow-soft {
+    box-shadow: 0 8px 24px -14px rgb(15 23 42 / 0.24);
+  }
+  .shadow-lift {
+    box-shadow: 0 14px 30px -20px rgb(15 23 42 / 0.34);
+  }
+  .gradient-cover-1 {
+    background: linear-gradient(135deg, oklch(0.75 0.13 235), oklch(0.6 0.15 260));
+  }
+  .gradient-cover-2 {
+    background: linear-gradient(135deg, oklch(0.82 0.12 195), oklch(0.65 0.14 225));
+  }
+  .gradient-cover-3 {
+    background: linear-gradient(135deg, oklch(0.85 0.1 90), oklch(0.72 0.14 45));
+  }
+  .gradient-cover-4 {
+    background: linear-gradient(135deg, oklch(0.82 0.1 155), oklch(0.6 0.13 195));
+  }
+  .gradient-cover-5 {
+    background: linear-gradient(135deg, oklch(0.85 0.09 320), oklch(0.65 0.15 285));
+  }
+  .gradient-cover-6 {
+    background: linear-gradient(135deg, oklch(0.86 0.08 60), oklch(0.68 0.13 25));
   }
   .app-kicker {
     font-size: 0.6875rem;

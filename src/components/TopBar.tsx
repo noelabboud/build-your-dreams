@@ -1,4 +1,4 @@
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link, useRouter, useRouterState } from "@tanstack/react-router";
 import { ArrowLeft, Bookmark, Share2, MoreHorizontal } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -12,6 +12,8 @@ export function TopBar({
   actions?: "share" | "more" | ReactNode;
 }) {
   const router = useRouter();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const isCreator = pathname.startsWith("/creator");
   return (
     <div className="sticky top-0 z-20 flex h-[calc(3.5rem+env(safe-area-inset-top))] items-center gap-2 border-b border-border/60 bg-background/90 px-3.5 pt-[env(safe-area-inset-top)] backdrop-blur">
       {back && (
@@ -24,6 +26,14 @@ export function TopBar({
         </button>
       )}
       <div className="flex-1 truncate text-base font-bold">{title}</div>
+      <div className="flex items-center rounded-xl border border-border bg-surface-2 p-0.5 text-xs font-medium">
+        <Link to="/" className={`rounded-lg px-2.5 py-1 ${!isCreator ? "bg-primary text-primary-foreground shadow-soft" : "text-muted-foreground"}`}>
+          Participant
+        </Link>
+        <Link to="/creator" className={`rounded-lg px-2.5 py-1 ${isCreator ? "bg-primary text-primary-foreground shadow-soft" : "text-muted-foreground"}`}>
+          Creator
+        </Link>
+      </div>
       {actions === "share" && (
         <>
           <button className="app-icon-button hover:bg-muted">
