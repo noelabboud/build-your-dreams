@@ -39,7 +39,7 @@ export function CreatorStudioShell({
     exact ? pathname === to : pathname === to || pathname.startsWith(`${to}/`);
 
   return (
-    <div className="grid h-screen min-h-screen place-items-center bg-[radial-gradient(circle_at_top,_rgba(86,155,255,.16),_transparent_42%),var(--app-gradient)] sm:p-4">
+    <div className="grid h-screen min-h-screen place-items-center bg-[radial-gradient(circle_at_top,_rgba(86,155,255,.16),_transparent_42%),var(--app-gradient)] supports-[height:100dvh]:h-dvh supports-[height:100dvh]:min-h-dvh sm:p-4">
       <div className="relative flex h-full w-full max-w-[430px] flex-col overflow-hidden bg-background shadow-[0_28px_90px_-30px_rgba(15,23,42,.42)] sm:h-[calc(100dvh-2rem)] sm:max-h-[900px] sm:rounded-[2rem] sm:border sm:border-white/80">
         <header className="relative z-20 flex min-h-16 shrink-0 items-center gap-3 bg-surface/90 px-4 pt-[env(safe-area-inset-top)] backdrop-blur-xl">
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-primary font-display text-sm font-black text-primary-foreground shadow-soft">
@@ -120,8 +120,8 @@ export function CreatorStudioShell({
           <div className="space-y-5">{children}</div>
         </main>
 
-        <nav className="absolute inset-x-0 bottom-0 z-30 border-t border-white/80 bg-white/92 px-2 pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_32px_-24px_rgba(15,23,42,.5)] backdrop-blur-xl">
-          <div className="grid h-[4.75rem] grid-cols-5 items-end">
+        <nav className="pointer-events-none absolute inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+0.5rem)] z-30 px-3">
+          <div className="pointer-events-auto grid h-[4.25rem] grid-cols-5 items-stretch rounded-[1.5rem] border border-white bg-white/72 px-1.5 py-1.5 shadow-[0_18px_42px_-30px_rgba(15,23,42,0.68),0_0_0_1px_rgba(36,66,94,0.14)] backdrop-blur-[24px] backdrop-saturate-150 supports-[backdrop-filter]:bg-white/64">
             <MobileNavLink
               to="/creator"
               label="Home"
@@ -137,10 +137,10 @@ export function CreatorStudioShell({
             <Link
               to="/creator/create"
               aria-label="Create concept"
-              className="group flex h-full flex-col items-center justify-end gap-1 pb-2 text-[10px] font-bold text-primary"
+              className="group flex h-full flex-col items-center justify-center gap-0.5 rounded-[1.1rem] text-[10px] font-bold text-primary transition active:scale-[0.96]"
             >
-              <span className="-mt-4 grid h-14 w-14 place-items-center rounded-2xl border-4 border-white bg-primary text-primary-foreground shadow-lg transition group-active:scale-95">
-                <Plus className="h-6 w-6" />
+              <span className="grid h-8 w-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-sm">
+                <Plus className="h-5 w-5" />
               </span>
               Create
             </Link>
@@ -152,7 +152,7 @@ export function CreatorStudioShell({
             />
             <button
               onClick={() => setMenuOpen(true)}
-              className="flex h-full flex-col items-center justify-end gap-1 pb-2 text-[10px] font-semibold text-muted-foreground"
+              className="flex h-full flex-col items-center justify-center gap-0.5 rounded-[1.1rem] text-[10px] font-semibold text-muted-foreground transition active:scale-[0.96]"
             >
               <Menu className="h-5 w-5" />
               More
@@ -178,12 +178,12 @@ function MobileNavLink({
   return (
     <Link
       to={to}
-      className={`flex h-full flex-col items-center justify-end gap-1 pb-2 text-[10px] font-semibold ${
-        active ? "text-primary" : "text-muted-foreground"
+      className={`flex h-full flex-col items-center justify-center gap-0.5 rounded-[1.1rem] text-[10px] font-semibold transition active:scale-[0.96] ${
+        active ? "bg-primary/10 text-primary" : "text-muted-foreground"
       }`}
     >
       <span
-        className={`grid h-8 w-12 place-items-center rounded-full ${active ? "bg-primary/10" : ""}`}
+        className="grid h-8 w-12 place-items-center rounded-full"
       >
         <Icon className="h-5 w-5" />
       </span>
