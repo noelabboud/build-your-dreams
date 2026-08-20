@@ -469,224 +469,512 @@ export const topHosts = [
   },
 ];
 
-export const me = {
+export type CreativeCategory = "Acting" | "Writing" | "Comedy" | "Photo" | "Video";
+
+export type SubmissionMediaKind = "Video" | "Script" | "Photo" | "Audio" | "Text";
+
+export type AchievementType =
+  | "Winner"
+  | "Finalist"
+  | "Host Pick"
+  | "Judge Pick"
+  | "Qualified"
+  | "Completed";
+
+export type PassportSubmission = {
+  id: string;
+  conceptTitle: string;
+  seasonLabel?: string;
+  category: CreativeCategory;
+  kind: SubmissionMediaKind;
+  title?: string;
+  thumbnail?: string;
+  preview?: string;
+  date: string;
+  hostId: string;
+  hostName: string;
+  placementLabel?: string;
+  recognitionType?: AchievementType;
+};
+
+export type PassportAchievement = {
+  id: string;
+  type: AchievementType;
+  category: CreativeCategory;
+  conceptTitle: string;
+  seasonLabel?: string;
+  hostId: string;
+  hostName: string;
+  date: string;
+  placementLabel: string;
+  placementRank: number;
+  entrantCount?: number;
+  judgeScore?: number;
+  communityVotePercent?: number;
+  recognitionNote?: string;
+  evaluationMethod?: string;
+  stageProgression?: string[];
+  featured?: boolean;
+  submissionId: string;
+};
+
+export type ParticipantPassport = {
+  name: string;
+  handle: string;
+  avatar: string;
+  bio: string;
+  categories: CreativeCategory[];
+  xp: {
+    level: number;
+    label: string;
+    currentXp: number;
+    nextLevelXp: number;
+  };
+  achievements: PassportAchievement[];
+  submissions: PassportSubmission[];
+  participation: {
+    completionRate: number;
+    onTimeRate: number;
+    conceptsCompleted: number;
+    averageJudgeScore: number;
+    votingCompletionRate: number;
+    dropoutRate: number;
+    repeatHostRate: number;
+  };
+};
+
+export const participantPassport: ParticipantPassport = {
   name: "Marc El Hage",
   handle: "@marc",
-  badge: "Top 5% Storyteller",
-  level: 18,
-  xpToNext: 3240,
   avatar: marc,
-  stats: { joined: 14, played: 87, wins: 12, top10: 25 },
-  traits: { Humor: 8.7, Creativity: 9.0, Storytelling: 7.8, Originality: 8.4, Persuasion: 8.2 },
-};
-
-export type PassportFormat = "Narrative" | "Episodic" | "Competitive" | "One Shot" | "Minigames";
-
-export type PassportHistoryItem = {
-  id: string;
-  format: PassportFormat;
-  conceptTitle: string;
-  episodeLabel?: string;
-  status: "Completed" | "Submitted" | "Qualified" | "Played";
-  date: string;
-  result?: string;
-  xp: number;
-  badges: string[];
-  submission: {
-    kind: "Text" | "Image" | "Video" | "Live Action";
-    preview: string;
-  };
-  score?: number;
-  averageScore?: number;
-  rank?: string;
-  hostFeedback?: string;
-  communityRating?: number;
-};
-
-export const passportProfile = {
-  progress: {
+  bio: "Performer and writer chasing courtroom dramas, twist endings, and anything with a live audience.",
+  categories: ["Acting", "Writing", "Comedy"],
+  xp: {
     level: 6,
-    label: "Level 6 Creator",
+    label: "Participant Level 6",
     currentXp: 1240,
     nextLevelXp: 1500,
-    nextLevel: 7,
   },
-  coreStats: [
-    { label: "Concepts joined", value: "14" },
-    { label: "Episodes completed", value: "37" },
-    { label: "Submissions made", value: "42" },
-    { label: "Completion rate", value: "91%" },
+  achievements: [
+    {
+      id: "last-night-alive",
+      type: "Finalist",
+      category: "Acting",
+      conceptTitle: "Last Night Alive",
+      seasonLabel: "Season 2",
+      hostId: "samer",
+      hostName: "Samer",
+      date: "Aug 2, 2026",
+      placementLabel: "Top 8 / 624",
+      placementRank: 8,
+      entrantCount: 624,
+      judgeScore: 91,
+      evaluationMethod: "Host judge panel scored live performance rounds.",
+      stageProgression: ["Open Call", "Callback", "Semifinal", "Final Eight"],
+      featured: true,
+      submissionId: "sub-last-night-alive",
+    },
+    {
+      id: "write-my-ending",
+      type: "Winner",
+      category: "Writing",
+      conceptTitle: "Write My Ending",
+      hostId: "elissa",
+      hostName: "Elissa",
+      date: "Jul 14, 2026",
+      placementLabel: "1st / 318",
+      placementRank: 1,
+      entrantCount: 318,
+      communityVotePercent: 68,
+      recognitionNote: "Creator Pick + Audience Finalist",
+      evaluationMethod: "Host creator pick, decided by audience vote.",
+      stageProgression: ["Entry", "Shortlist", "Audience Vote", "Winner"],
+      featured: true,
+      submissionId: "sub-write-my-ending",
+    },
+    {
+      id: "character-switch",
+      type: "Winner",
+      category: "Acting",
+      conceptTitle: "Character Switch",
+      hostId: "basit",
+      hostName: "Basit",
+      date: "Jun 20, 2026",
+      placementLabel: "1st / 410",
+      placementRank: 1,
+      entrantCount: 410,
+      judgeScore: 95,
+      evaluationMethod: "Judged by host panel across two performance rounds.",
+      stageProgression: ["Entry", "Quarterfinal", "Final"],
+      featured: true,
+      submissionId: "sub-character-switch",
+    },
+    {
+      id: "impro-nights",
+      type: "Finalist",
+      category: "Acting",
+      conceptTitle: "Impro Nights",
+      hostId: "samer",
+      hostName: "Samer",
+      date: "Mar 9, 2026",
+      placementLabel: "Top 10 / 180",
+      placementRank: 10,
+      entrantCount: 180,
+      judgeScore: 87,
+      submissionId: "sub-impro-nights",
+    },
+    {
+      id: "two-truths-one-lie",
+      type: "Finalist",
+      category: "Acting",
+      conceptTitle: "Two Truths One Lie",
+      hostId: "basit",
+      hostName: "Basit",
+      date: "Feb 18, 2026",
+      placementLabel: "Top 12 / 300",
+      placementRank: 12,
+      entrantCount: 300,
+      judgeScore: 84,
+      submissionId: "sub-two-truths-one-lie",
+    },
+    {
+      id: "silent-room",
+      type: "Completed",
+      category: "Acting",
+      conceptTitle: "Silent Room",
+      hostId: "elissa",
+      hostName: "Elissa",
+      date: "Apr 11, 2026",
+      placementLabel: "Completed",
+      placementRank: 999,
+      entrantCount: 150,
+      submissionId: "sub-silent-room",
+    },
+    {
+      id: "impostors-voice",
+      type: "Completed",
+      category: "Acting",
+      conceptTitle: "The Impostor's Voice",
+      hostId: "elissa",
+      hostName: "Elissa",
+      date: "Jan 24, 2026",
+      placementLabel: "Completed",
+      placementRank: 999,
+      entrantCount: 210,
+      submissionId: "sub-impostors-voice",
+    },
+    {
+      id: "plot-twist-lab",
+      type: "Finalist",
+      category: "Writing",
+      conceptTitle: "Plot Twist Lab",
+      hostId: "samer",
+      hostName: "Samer",
+      date: "May 6, 2026",
+      placementLabel: "Top 15 / 210",
+      placementRank: 15,
+      entrantCount: 210,
+      judgeScore: 93,
+      submissionId: "sub-plot-twist-lab",
+    },
+    {
+      id: "midnight-confessions",
+      type: "Finalist",
+      category: "Writing",
+      conceptTitle: "Midnight Confessions",
+      hostId: "samer",
+      hostName: "Samer",
+      date: "Jun 3, 2026",
+      placementLabel: "Top 10 / 240",
+      placementRank: 10,
+      entrantCount: 240,
+      judgeScore: 88,
+      submissionId: "sub-midnight-confessions",
+    },
+    {
+      id: "cliffhanger-club",
+      type: "Completed",
+      category: "Writing",
+      conceptTitle: "Cliffhanger Club",
+      hostId: "elissa",
+      hostName: "Elissa",
+      date: "Mar 27, 2026",
+      placementLabel: "Completed",
+      placementRank: 999,
+      entrantCount: 130,
+      submissionId: "sub-cliffhanger-club",
+    },
+    {
+      id: "60-second-comedy",
+      type: "Host Pick",
+      category: "Comedy",
+      conceptTitle: "60 Second Comedy",
+      hostId: "basit",
+      hostName: "Basit",
+      date: "May 30, 2026",
+      placementLabel: "Top 5 / 190",
+      placementRank: 5,
+      entrantCount: 190,
+      recognitionNote: "Selected by host for standout timing.",
+      submissionId: "sub-60-second-comedy",
+    },
+    {
+      id: "worst-alibi-ever",
+      type: "Completed",
+      category: "Comedy",
+      conceptTitle: "Worst Alibi Ever",
+      hostId: "basit",
+      hostName: "Basit",
+      date: "Apr 2, 2026",
+      placementLabel: "Completed",
+      placementRank: 999,
+      entrantCount: 260,
+      submissionId: "sub-worst-alibi-ever",
+    },
+    {
+      id: "roast-battle-royale",
+      type: "Completed",
+      category: "Comedy",
+      conceptTitle: "Roast Battle Royale",
+      hostId: "basit",
+      hostName: "Basit",
+      date: "Feb 9, 2026",
+      placementLabel: "Completed",
+      placementRank: 999,
+      entrantCount: 340,
+      submissionId: "sub-roast-battle-royale",
+    },
+    {
+      id: "cold-open-challenge",
+      type: "Completed",
+      category: "Comedy",
+      conceptTitle: "Cold Open Challenge",
+      hostId: "elissa",
+      hostName: "Elissa",
+      date: "Jan 12, 2026",
+      placementLabel: "Completed",
+      placementRank: 999,
+      entrantCount: 175,
+      submissionId: "sub-cold-open-challenge",
+    },
+    {
+      id: "punchline-sprint",
+      type: "Completed",
+      category: "Comedy",
+      conceptTitle: "Punchline Sprint",
+      hostId: "basit",
+      hostName: "Basit",
+      date: "Jun 16, 2026",
+      placementLabel: "Completed",
+      placementRank: 999,
+      entrantCount: 145,
+      submissionId: "sub-punchline-sprint",
+    },
   ],
-  reliability: [
-    { label: "On-time submissions", value: "94%" },
-    { label: "Voting completion", value: "88%" },
-    { label: "Dropout rate", value: "4%" },
+  submissions: [
+    {
+      id: "sub-last-night-alive",
+      conceptTitle: "Last Night Alive",
+      seasonLabel: "Season 2",
+      category: "Acting",
+      kind: "Video",
+      title: "Final Eight performance",
+      thumbnail: survivor,
+      date: "Aug 2, 2026",
+      hostId: "samer",
+      hostName: "Samer",
+      placementLabel: "Top 8",
+      recognitionType: "Finalist",
+    },
+    {
+      id: "sub-write-my-ending",
+      conceptTitle: "Write My Ending",
+      category: "Writing",
+      kind: "Script",
+      title: "The ending they didn't see coming",
+      preview:
+        "She didn't leave because she stopped loving the house. She left because the house finally told the truth about who built it.",
+      date: "Jul 14, 2026",
+      hostId: "elissa",
+      hostName: "Elissa",
+      placementLabel: "1st",
+      recognitionType: "Winner",
+    },
+    {
+      id: "sub-character-switch",
+      conceptTitle: "Character Switch",
+      category: "Acting",
+      kind: "Video",
+      title: "Final round performance",
+      thumbnail: impostor,
+      date: "Jun 20, 2026",
+      hostId: "basit",
+      hostName: "Basit",
+      placementLabel: "1st",
+      recognitionType: "Winner",
+    },
+    {
+      id: "sub-impro-nights",
+      conceptTitle: "Impro Nights",
+      category: "Acting",
+      kind: "Video",
+      thumbnail: courtroom,
+      date: "Mar 9, 2026",
+      hostId: "samer",
+      hostName: "Samer",
+      placementLabel: "Top 10",
+      recognitionType: "Finalist",
+    },
+    {
+      id: "sub-two-truths-one-lie",
+      conceptTitle: "Two Truths One Lie",
+      category: "Acting",
+      kind: "Video",
+      thumbnail: beirut,
+      date: "Feb 18, 2026",
+      hostId: "basit",
+      hostName: "Basit",
+      placementLabel: "Top 12",
+      recognitionType: "Finalist",
+    },
+    {
+      id: "sub-silent-room",
+      conceptTitle: "Silent Room",
+      category: "Acting",
+      kind: "Video",
+      thumbnail: excuse,
+      date: "Apr 11, 2026",
+      hostId: "elissa",
+      hostName: "Elissa",
+    },
+    {
+      id: "sub-impostors-voice",
+      conceptTitle: "The Impostor's Voice",
+      category: "Acting",
+      kind: "Audio",
+      preview: "Voice performance: a witness statement that slowly reveals it was rehearsed.",
+      date: "Jan 24, 2026",
+      hostId: "elissa",
+      hostName: "Elissa",
+    },
+    {
+      id: "sub-plot-twist-lab",
+      conceptTitle: "Plot Twist Lab",
+      category: "Writing",
+      kind: "Script",
+      title: "The last witness",
+      preview:
+        "The jury never saw the second letter. It was postmarked the day before the murder, not after.",
+      date: "May 6, 2026",
+      hostId: "samer",
+      hostName: "Samer",
+      placementLabel: "Top 15",
+      recognitionType: "Finalist",
+    },
+    {
+      id: "sub-midnight-confessions",
+      conceptTitle: "Midnight Confessions",
+      category: "Writing",
+      kind: "Script",
+      preview:
+        "He confessed to the wrong crime on purpose, to protect the person who committed the right one.",
+      date: "Jun 3, 2026",
+      hostId: "samer",
+      hostName: "Samer",
+      placementLabel: "Top 10",
+      recognitionType: "Finalist",
+    },
+    {
+      id: "sub-cliffhanger-club",
+      conceptTitle: "Cliffhanger Club",
+      category: "Writing",
+      kind: "Script",
+      preview: "The call was coming from inside the courtroom.",
+      date: "Mar 27, 2026",
+      hostId: "elissa",
+      hostName: "Elissa",
+    },
+    {
+      id: "sub-60-second-comedy",
+      conceptTitle: "60 Second Comedy",
+      category: "Comedy",
+      kind: "Video",
+      title: "60 seconds, three excuses",
+      thumbnail: excuse,
+      date: "May 30, 2026",
+      hostId: "basit",
+      hostName: "Basit",
+      placementLabel: "Top 5",
+      recognitionType: "Host Pick",
+    },
+    {
+      id: "sub-worst-alibi-ever",
+      conceptTitle: "Worst Alibi Ever",
+      category: "Comedy",
+      kind: "Video",
+      thumbnail: voicenote,
+      date: "Apr 2, 2026",
+      hostId: "basit",
+      hostName: "Basit",
+    },
+    {
+      id: "sub-roast-battle-royale",
+      conceptTitle: "Roast Battle Royale",
+      category: "Comedy",
+      kind: "Video",
+      thumbnail: impostor,
+      date: "Feb 9, 2026",
+      hostId: "basit",
+      hostName: "Basit",
+    },
+    {
+      id: "sub-cold-open-challenge",
+      conceptTitle: "Cold Open Challenge",
+      category: "Comedy",
+      kind: "Audio",
+      preview: "Cold open: a wedding toast that slowly turns into a confession.",
+      date: "Jan 12, 2026",
+      hostId: "elissa",
+      hostName: "Elissa",
+    },
+    {
+      id: "sub-punchline-sprint",
+      conceptTitle: "Punchline Sprint",
+      category: "Comedy",
+      kind: "Video",
+      thumbnail: courtroom,
+      date: "Jun 16, 2026",
+      hostId: "basit",
+      hostName: "Basit",
+    },
+    {
+      id: "sub-rooftop-frames",
+      conceptTitle: "Rooftop Frames",
+      category: "Photo",
+      kind: "Photo",
+      thumbnail: beirut,
+      date: "May 15, 2026",
+      hostId: "elissa",
+      hostName: "Elissa",
+    },
+    {
+      id: "sub-late-night-report",
+      conceptTitle: "Field Report: Late Night",
+      category: "Video",
+      kind: "Video",
+      thumbnail: survivor,
+      date: "Jul 1, 2026",
+      hostId: "samer",
+      hostName: "Samer",
+    },
   ],
-  recognition: [
-    { label: "Wins", value: "12" },
-    { label: "Top placements", value: "25" },
-    { label: "Featured entries", value: "7" },
-    { label: "Average rating", value: "4.8" },
-  ],
-  badges: [
-    {
-      id: "first-place",
-      name: "First Place",
-      count: 3,
-      description: "Finished at the top of ranked concepts.",
-    },
-    {
-      id: "top-10",
-      name: "Top 10%",
-      count: 9,
-      description: "Placed in the top tier across judged episodes.",
-    },
-    {
-      id: "featured-host",
-      name: "Featured by Host",
-      count: 4,
-      description: "Selected by a host for standout contribution.",
-    },
-    {
-      id: "fast-finisher",
-      name: "Fast Finisher",
-      count: 5,
-      description: "Submitted high-quality work early.",
-    },
-    {
-      id: "reliable",
-      name: "Reliable Participant",
-      count: 12,
-      description: "Consistently completed entries and votes.",
-    },
-    {
-      id: "community-favorite",
-      name: "Community Favorite",
-      count: 2,
-      description: "Earned strong audience support.",
-    },
-  ],
-  history: [
-    {
-      id: "courtroom-ep3",
-      format: "Narrative",
-      conceptTitle: "The Courtroom",
-      episodeLabel: "Episode 3 - The Missing Witness",
-      status: "Completed",
-      date: "May 28, 2026",
-      result: "Top 5%",
-      xp: 180,
-      badges: ["Top 10%", "Featured by Host"],
-      submission: {
-        kind: "Text",
-        preview:
-          "The witness did not disappear after the argument. The voice note proves he was still near the courthouse at 9:42 PM, which breaks the prosecution timeline.",
-      },
-      score: 8.9,
-      averageScore: 7.1,
-      rank: "18 / 438",
-      hostFeedback: "Strong timeline logic with a clean final argument.",
-      communityRating: 4.8,
-    },
-    {
-      id: "courtroom-ep2",
-      format: "Narrative",
-      conceptTitle: "The Courtroom",
-      episodeLabel: "Episode 2 - The Evidence",
-      status: "Completed",
-      date: "May 21, 2026",
-      result: "Top 10%",
-      xp: 140,
-      badges: ["Top 10%"],
-      submission: {
-        kind: "Text",
-        preview:
-          "The missing evidence label matters because the room log and the witness statement disagree by eleven minutes.",
-      },
-      score: 8.6,
-      averageScore: 7.0,
-      rank: "31 / 421",
-      hostFeedback: "Persuasive and easy for voters to follow.",
-      communityRating: 4.7,
-    },
-    {
-      id: "escape-ep2",
-      format: "Episodic",
-      conceptTitle: "Escape Beirut",
-      episodeLabel: "Episode 2 - Rooftop Route",
-      status: "Submitted",
-      date: "June 2, 2026",
-      result: "Completed",
-      xp: 90,
-      badges: ["Reliable Participant"],
-      submission: {
-        kind: "Image",
-        preview: "Mock image submission: annotated rooftop route with three escape checkpoints.",
-      },
-      score: 7.8,
-      averageScore: 7.3,
-      hostFeedback: "Practical idea with a memorable visual hook.",
-      communityRating: 4.4,
-    },
-    {
-      id: "impostor-r3",
-      format: "Competitive",
-      conceptTitle: "Impostor League",
-      episodeLabel: "Round 3 - Voting",
-      status: "Qualified",
-      date: "June 4, 2026",
-      result: "Qualified",
-      xp: 160,
-      badges: ["Fast Finisher"],
-      submission: {
-        kind: "Text",
-        preview:
-          "Basit’s round-three pattern points to a late alliance shift: the safest player voted second, not last.",
-      },
-      score: 8.1,
-      averageScore: 7.4,
-      rank: "22 / 128",
-      hostFeedback: "Smart strategy, especially the timing callout.",
-      communityRating: 4.5,
-    },
-    {
-      id: "excuse-final",
-      format: "One Shot",
-      conceptTitle: "Worst Excuse Championship",
-      status: "Completed",
-      date: "May 4, 2026",
-      result: "Top 5%",
-      xp: 130,
-      badges: ["Community Favorite"],
-      submission: {
-        kind: "Video",
-        preview:
-          "Mock video submission: 34-second comedy clip explaining three impossible family emergencies.",
-      },
-      score: 8.4,
-      averageScore: 6.9,
-      rank: "9 / 220",
-      hostFeedback: "Funny, specific, and instantly readable.",
-      communityRating: 4.9,
-    },
-    {
-      id: "chifomi-live",
-      format: "Minigames",
-      conceptTitle: "Chifomi Duel",
-      episodeLabel: "Live Room 12",
-      status: "Played",
-      date: "June 6, 2026",
-      result: "Final 16",
-      xp: 55,
-      badges: ["Fast Finisher"],
-      submission: {
-        kind: "Live Action",
-        preview: "Live game log: rock, paper, paper, scissors, rock, rock, scissors.",
-      },
-      score: 7.2,
-      averageScore: 6.8,
-      rank: "14 / 120",
-      communityRating: 4.2,
-    },
-  ] satisfies PassportHistoryItem[],
+  participation: {
+    completionRate: 94,
+    onTimeRate: 96,
+    conceptsCompleted: 23,
+    averageJudgeScore: 4.8,
+    votingCompletionRate: 88,
+    dropoutRate: 4,
+    repeatHostRate: 71,
+  },
 };

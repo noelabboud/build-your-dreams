@@ -1,22 +1,31 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { BarChart3, Bell, ChevronRight, LayoutDashboard, Menu, Plus, Settings, Sparkles, Users, Wallet, X } from "lucide-react";
+import {
+  BarChart3,
+  Bell,
+  ChevronRight,
+  LayoutDashboard,
+  Menu,
+  Plus,
+  Settings,
+  Sparkles,
+  Users,
+  Wallet,
+  X,
+} from "lucide-react";
 import { useState, type ReactNode } from "react";
 
 const navItems = [
   { to: "/creator", label: "Overview", icon: LayoutDashboard, exact: true },
   { to: "/creator/concepts", label: "Concepts", icon: Sparkles },
-  { to: "/creator/create", label: "Create Concept", icon: Plus, primary: true },
   { to: "/creator/submissions", label: "Submissions", icon: Users },
   { to: "/creator/analytics", label: "Analytics", icon: BarChart3 },
-  { to: "/creator/settings", label: "Settings", icon: Settings },
   { to: "/creator/earnings", label: "Earnings", icon: Wallet },
+  { to: "/creator/settings", label: "Settings", icon: Settings },
 ];
 
 export function CreatorStudioShell({
   children,
   title,
-  subtitle,
-  action,
 }: {
   children: ReactNode;
   title: string;
@@ -26,89 +35,60 @@ export function CreatorStudioShell({
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const isActive = (to: string, exact?: boolean) => {
-    if (exact) return pathname === to;
-    return pathname === to || pathname.startsWith(`${to}/`);
-  };
+  const isActive = (to: string, exact?: boolean) =>
+    exact ? pathname === to : pathname === to || pathname.startsWith(`${to}/`);
 
   return (
-    <div className="min-h-screen bg-background">
-      <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col border-r border-border bg-surface/95 lg:flex">
-        <div className="flex h-16 items-center gap-2 px-5">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-primary font-display text-lg font-semibold text-primary-foreground">M</div>
-          <div className="min-w-0">
-            <div className="font-display text-lg font-semibold leading-none">Midan</div>
-            <div className="mt-0.5 text-[11px] text-muted-foreground">Creator Studio</div>
+    <div className="grid h-screen min-h-screen place-items-center bg-[radial-gradient(circle_at_top,_rgba(86,155,255,.16),_transparent_42%),var(--app-gradient)] sm:p-4">
+      <div className="relative flex h-full w-full max-w-[430px] flex-col overflow-hidden bg-background shadow-[0_28px_90px_-30px_rgba(15,23,42,.42)] sm:h-[calc(100dvh-2rem)] sm:max-h-[900px] sm:rounded-[2rem] sm:border sm:border-white/80">
+        <header className="relative z-20 flex min-h-16 shrink-0 items-center gap-3 bg-surface/90 px-4 pt-[env(safe-area-inset-top)] backdrop-blur-xl">
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-primary font-display text-sm font-black text-primary-foreground shadow-soft">
+            M
           </div>
-        </div>
-        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-2">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const active = isActive(item.to, item.exact);
-
-            if (item.primary) {
-              return (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className="my-2 flex items-center justify-center gap-2 rounded-xl bg-primary px-3 py-2.5 text-sm font-semibold text-primary-foreground shadow-soft transition hover:opacity-95"
-                >
-                  <Icon className="h-4 w-4" /> {item.label}
-                </Link>
-              );
-            }
-
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition " +
-                  (active ? "bg-primary-soft text-primary font-medium" : "text-muted-foreground hover:bg-secondary hover:text-foreground")
-                }
-              >
-                <Icon className="h-4 w-4" /> {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-      </aside>
-
-      <div className="lg:pl-64">
-        <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-border bg-surface/90 px-4 backdrop-blur">
+          <div className="min-w-0 flex-1">
+            <div className="truncate font-display text-base font-bold">Creator Studio</div>
+            <div className="truncate text-[11px] font-medium text-muted-foreground">
+              {pathname === "/creator" ? "Home" : title}
+            </div>
+          </div>
           <button
-            onClick={() => setMenuOpen(true)}
-            className="grid h-9 w-9 place-items-center rounded-lg border border-border lg:hidden"
-            aria-label="Open menu"
+            className="relative grid h-10 w-10 place-items-center rounded-full bg-white/80 shadow-sm"
+            aria-label="Notifications"
           >
-            <Menu className="h-4 w-4" />
-          </button>
-          <div className="flex-1">
-            <div className="truncate font-display text-lg font-semibold">{title}</div>
-            {subtitle && <div className="text-sm text-muted-foreground">{subtitle}</div>}
-          </div>
-          {action && <div className="shrink-0">{action}</div>}
-          <div className="flex items-center rounded-xl border border-border bg-surface-2 p-0.5 text-xs font-medium">
-            <Link to="/" className={`rounded-lg px-2.5 py-1 ${pathname === "/" ? "bg-primary text-primary-foreground shadow-soft" : "text-muted-foreground"}`}>Participant</Link>
-            <Link to="/creator" className={`rounded-lg px-2.5 py-1 ${pathname.startsWith("/creator") ? "bg-primary text-primary-foreground shadow-soft" : "text-muted-foreground"}`}>Creator</Link>
-          </div>
-          <button className="relative grid h-9 w-9 place-items-center rounded-lg border border-border" aria-label="Notifications">
             <Bell className="h-4 w-4" />
-            <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-accent" />
+            <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-accent" />
           </button>
         </header>
 
         {menuOpen && (
-          <div className="fixed inset-0 z-40 lg:hidden">
-            <div className="absolute inset-0 bg-foreground/30" onClick={() => setMenuOpen(false)} />
-            <div className="absolute inset-y-0 left-0 w-72 max-w-[85%] bg-surface p-4">
-              <div className="mb-4 flex items-center justify-between">
-                <div className="font-display text-lg font-semibold">Midan Studio</div>
-                <button onClick={() => setMenuOpen(false)} aria-label="Close">
+          <div className="absolute inset-0 z-40">
+            <button
+              className="absolute inset-0 w-full bg-foreground/35"
+              onClick={() => setMenuOpen(false)}
+              aria-label="Close menu"
+            />
+            <div className="absolute inset-y-0 left-0 w-[82%] rounded-r-[2rem] bg-surface px-5 pb-6 pt-[max(1.25rem,env(safe-area-inset-top))] shadow-2xl">
+              <div className="mb-6 flex items-center justify-between">
+                <div>
+                  <div className="font-display text-xl font-bold">Midan</div>
+                  <div className="text-xs font-medium text-muted-foreground">Creator Studio</div>
+                </div>
+                <button
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white"
+                  onClick={() => setMenuOpen(false)}
+                  aria-label="Close"
+                >
                   <X className="h-5 w-5" />
                 </button>
               </div>
-              <div className="space-y-1">
+              <Link
+                to="/creator/create"
+                onClick={() => setMenuOpen(false)}
+                className="mb-5 flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-primary px-4 font-bold text-primary-foreground shadow-soft"
+              >
+                <Plus className="h-5 w-5" /> Create concept
+              </Link>
+              <nav className="space-y-1">
                 {navItems.map((item) => {
                   const Icon = item.icon;
                   const active = isActive(item.to, item.exact);
@@ -117,33 +97,117 @@ export function CreatorStudioShell({
                       key={item.to}
                       to={item.to}
                       onClick={() => setMenuOpen(false)}
-                      className={"flex items-center gap-3 rounded-lg px-3 py-2 text-sm " + (active ? "bg-primary-soft text-primary font-medium" : "text-muted-foreground")}
+                      className={`flex min-h-12 items-center gap-3 rounded-xl px-3 text-sm ${
+                        active ? "bg-primary-soft font-bold text-primary" : "text-muted-foreground"
+                      }`}
                     >
                       <Icon className="h-4 w-4" /> {item.label}
                     </Link>
                   );
                 })}
-              </div>
+              </nav>
+              <Link
+                to="/"
+                className="absolute bottom-7 left-5 right-5 rounded-xl border border-border bg-white px-4 py-3 text-center text-sm font-semibold text-muted-foreground"
+              >
+                Switch to participant
+              </Link>
             </div>
           </div>
         )}
 
-        <main className="px-4 py-6 lg:px-8 lg:py-8">
-          <div className="mx-auto max-w-7xl space-y-6">{children}</div>
+        <main className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain px-4 pb-[calc(6.5rem+env(safe-area-inset-bottom))] pt-4">
+          <div className="space-y-5">{children}</div>
         </main>
+
+        <nav className="absolute inset-x-0 bottom-0 z-30 border-t border-white/80 bg-white/92 px-2 pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_32px_-24px_rgba(15,23,42,.5)] backdrop-blur-xl">
+          <div className="grid h-[4.75rem] grid-cols-5 items-end">
+            <MobileNavLink
+              to="/creator"
+              label="Home"
+              icon={LayoutDashboard}
+              active={isActive("/creator", true)}
+            />
+            <MobileNavLink
+              to="/creator/concepts"
+              label="Concepts"
+              icon={Sparkles}
+              active={isActive("/creator/concepts")}
+            />
+            <Link
+              to="/creator/create"
+              aria-label="Create concept"
+              className="group flex h-full flex-col items-center justify-end gap-1 pb-2 text-[10px] font-bold text-primary"
+            >
+              <span className="-mt-4 grid h-14 w-14 place-items-center rounded-2xl border-4 border-white bg-primary text-primary-foreground shadow-lg transition group-active:scale-95">
+                <Plus className="h-6 w-6" />
+              </span>
+              Create
+            </Link>
+            <MobileNavLink
+              to="/creator/submissions"
+              label="Entries"
+              icon={Users}
+              active={isActive("/creator/submissions")}
+            />
+            <button
+              onClick={() => setMenuOpen(true)}
+              className="flex h-full flex-col items-center justify-end gap-1 pb-2 text-[10px] font-semibold text-muted-foreground"
+            >
+              <Menu className="h-5 w-5" />
+              More
+            </button>
+          </div>
+        </nav>
       </div>
     </div>
   );
 }
 
-export function PageHeader({ title, subtitle, action }: { title: string; subtitle?: string; action?: ReactNode }) {
+function MobileNavLink({
+  to,
+  label,
+  icon: Icon,
+  active,
+}: {
+  to: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  active: boolean;
+}) {
   return (
-    <header className="flex flex-col gap-4 border-b border-border/70 pb-6 sm:flex-row sm:items-end sm:justify-between">
+    <Link
+      to={to}
+      className={`flex h-full flex-col items-center justify-end gap-1 pb-2 text-[10px] font-semibold ${
+        active ? "text-primary" : "text-muted-foreground"
+      }`}
+    >
+      <span
+        className={`grid h-8 w-12 place-items-center rounded-full ${active ? "bg-primary/10" : ""}`}
+      >
+        <Icon className="h-5 w-5" />
+      </span>
+      {label}
+    </Link>
+  );
+}
+
+export function PageHeader({
+  title,
+  subtitle,
+  action,
+}: {
+  title: string;
+  subtitle?: string;
+  action?: ReactNode;
+}) {
+  return (
+    <header className="flex flex-col gap-4 border-b border-border/70 pb-6">
       <div>
         <h1 className="font-display text-2xl font-semibold">{title}</h1>
         {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
       </div>
-      {action && <div className="shrink-0">{action}</div>}
+      {action && <div>{action}</div>}
     </header>
   );
 }
